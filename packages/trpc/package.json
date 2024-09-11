@@ -1,0 +1,39 @@
+{
+  "name": "@cepe/trpc",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@cepe/auth": "workspace:*",
+    "@cepe/cloudflare": "workspace:*",
+    "@cepe/dayjs": "workspace:*",
+    "@cepe/env": "workspace:*",
+    "@cepe/prisma": "workspace:*",
+    "@cepe/schema": "workspace:*",
+    "@prisma/client": "5.11.0",
+    "@trpc/server": "11.0.0-next.324",
+    "bcryptjs": "^2.4.3",
+    "date-fns": "^3.6.0",
+    "date-fns-tz": "^3.1.3",
+    "kutt": "^3.0.2",
+    "superjson": "^2.2.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@cepe/eslint-config": "workspace:*",
+    "@cepe/prettier": "workspace:*",
+    "@cepe/tsconfig": "workspace:*",
+    "@types/bcryptjs": "^2.4.6"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@cepe/eslint-config/lib"
+    ]
+  },
+  "prettier": "@cepe/prettier"
+}

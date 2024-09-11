@@ -1,0 +1,25 @@
+{
+  "name": "@cepe/dayjs",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "dayjs": "^1.11.10"
+  },
+  "devDependencies": {
+    "@cepe/tsconfig": "workspace:*",
+    "@cepe/prettier": "workspace:*",
+    "@cepe/eslint-config": "workspace:*"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@cepe/eslint-config/lib"
+    ]
+  },
+  "prettier": "@cepe/prettier"
+}

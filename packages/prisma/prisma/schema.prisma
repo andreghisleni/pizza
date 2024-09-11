@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String  @id @default(uuid())
+  name     String
+  userName String  @unique @map("user_name")
+  email    String  @unique
+  image    String?
+
+  passwordHash String @map("password_hash")
+
+  type UserType @default(DEFAULT)
+
+  isActive Boolean @default(true) @map("is_active")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+enum UserType {
+  DEFAULT
+  ADMIN
+}
+
+model Settings {
+  id String @id @default(uuid())
+
+  // saveScore  Boolean @default(true) @map("save_score")
+  // saveReport Boolean @default(true) @map("save_report")
+  // saveVote   Boolean @default(false) @map("save_vote")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}
+
+model Member {
+  id String @id @default(uuid())
+
+  visionId  String? @map("vision_id")
+  name      String
+  cleamName String  @map("clean_name")
+  register  String?
+
+  sessionId String  @map("session_id")
+  session   Session @relation(fields: [sessionId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+}
+
+model Session {
+  id String @id @default(uuid())
+
+  name String @unique
+
+  type SessionType
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  members Member[]
+
+  @@map("sessions")
+}
+
+enum SessionType {
+  LOBINHO
+  ESCOTEIRO
+  SENIOR
+  PIONEIRO
+  OUTRO
+}
