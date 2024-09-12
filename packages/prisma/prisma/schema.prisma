@@ -48,7 +48,7 @@ model Member {
 
   visionId  String? @map("vision_id")
   name      String
-  cleamName String  @map("clean_name")
+  cleanName String  @map("clean_name")
   register  String?
 
   sessionId String  @map("session_id")

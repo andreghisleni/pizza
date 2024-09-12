@@ -1,7 +1,7 @@
 'use client'
 
-import { teamSchema } from '@pizza/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { memberSchema } from '@pizza/schema'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -28,53 +28,61 @@ import {
 import { useToast } from '@/components/ui/use-toast'
 import { trpc } from '@/lib/trpc/react'
 
-import { Team } from './columns'
+import { Member } from './columns'
 
-const formName = teamSchema.description
+const formName = memberSchema.description
 
-const values = {}
+const values = {
+  type: [
+    { value: 'LOBINHO', label: 'Lobinho' },
+    { value: 'ESCOTEIRO', label: 'Escoteiro' },
+    { value: 'SENIOR', label: 'Senior' },
+    { value: 'PIONEIRO', label: 'Pioneiro' },
+    { value: 'OUTRO', label: 'Outro' },
+  ],
+}
 
-export function TeamForm({
+export function MemberForm({
   refetch,
-  team,
+  member,
 }: {
   refetch: () => void
-  team?: Team
+  member?: Member
 }) {
   const { toast } = useToast()
   const [isOpen, setIsOpen] = useState(false)
-  const form = useForm<z.infer<typeof teamSchema>>({
-    resolver: zodResolver(teamSchema),
-    defaultValues: team
+  const form = useForm<z.infer<typeof memberSchema>>({
+    resolver: zodResolver(memberSchema),
+    defaultValues: member
       ? {
-          ...team,
+          ...(member as any), // eslint-disable-line @typescript-eslint/no-explicit-any
         }
       : undefined,
   })
 
-  const createTeam = trpc.createTeam.useMutation({
-    onSuccess: () => {
-      form.reset()
-      setIsOpen(false)
-      refetch()
+  // const createMember = trpc.createMember.useMutation({
+  //   onSuccess: () => {
+  //     form.reset()
+  //     setIsOpen(false)
+  //     refetch()
 
-      toast({
-        title: `${formName} cadastrado com sucesso`,
-      })
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onError: (error: any) => {
-      console.log(error) // eslint-disable-line no-console
-      toast({
-        title: `Erro ao cadastrar o ${formName}`,
-        description: error.response?.data as string,
+  //     toast({
+  //       title: `${formName} cadastrado com sucesso`,
+  //     })
+  //   },
+  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   onError: (error: any) => {
+  //     console.log(error) // eslint-disable-line no-console
+  //     toast({
+  //       title: `Erro ao cadastrar o ${formName}`,
+  //       description: error.response?.data as string,
 
-        variant: 'destructive',
-      })
-    },
-  })
+  //       variant: 'destructive',
+  //     })
+  //   },
+  // })
 
-  const updateTeam = trpc.updateTeam.useMutation({
+  const updateMember = trpc.updateMember.useMutation({
     onSuccess: () => {
       form.reset()
       setIsOpen(false)
@@ -96,15 +104,16 @@ export function TeamForm({
     },
   })
 
-  async function onSubmit(values: z.infer<typeof teamSchema>) {
+  async function onSubmit(values: z.infer<typeof memberSchema>) {
     try {
-      if (team) {
-        await updateTeam.mutateAsync({
-          id: team.id,
+      if (member) {
+        await updateMember.mutateAsync({
+          id: member.id,
           ...values,
+          sessionId: '',
         })
       } else {
-        await createTeam.mutateAsync(values)
+        // await createMember.mutateAsync(values)
       }
 
       console.log('values', values)
@@ -120,22 +129,22 @@ export function TeamForm({
   return (
     <Sheet onOpenChange={setIsOpen} open={isOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline">{team ? 'Editar' : 'Adicionar'}</Button>
+        <Button variant="outline">{member ? 'Editar' : 'Adicionar'}</Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
           <SheetTitle>
-            {team ? 'Editar' : 'Cadastrar'} {formName}
+            {member ? 'Editar' : 'Cadastrar'} {formName}
           </SheetTitle>
         </SheetHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             {/* <pre>
-              {JSON.stringify(Object.keys(teamSchema.shape), null, 2)}
+              {JSON.stringify(Object.keys(memberSchema.shape), null, 2)}
             </pre> */}
 
-            {Object.keys(teamSchema.shape).map((fieldName) => {
-              const fieldSchema = teamSchema.shape[fieldName]
+            {Object.keys(memberSchema.shape).map((fieldName) => {
+              const fieldSchema = memberSchema.shape[fieldName]
               const label = fieldSchema._def.description // Obtém a descrição do campo
 
               if (fieldSchema._def.typeName === 'ZodEnum') {
@@ -145,7 +154,7 @@ export function TeamForm({
                   <FormField
                     key={fieldName}
                     control={form.control}
-                    name={fieldName as keyof typeof teamSchema.shape}
+                    name={fieldName as keyof typeof memberSchema.shape}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{label}</FormLabel>
@@ -157,7 +166,7 @@ export function TeamForm({
                             value={v.filter(
                               (value) => value.value === field.value,
                             )}
-                onChange={(value: any) => { // eslint-disable-line
+                            onChange={(value: any) => { // eslint-disable-line
                               field.onChange(value.value)
                             }}
                             options={v}
@@ -180,7 +189,7 @@ export function TeamForm({
                   <FormField
                     key={fieldName}
                     control={form.control}
-                    name={fieldName as keyof typeof teamSchema.shape}
+                    name={fieldName as keyof typeof memberSchema.shape}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{label}</FormLabel>
@@ -203,7 +212,7 @@ export function TeamForm({
                     <FormField
                       key={fieldName}
                       control={form.control}
-                      name={fieldName as keyof typeof teamSchema.shape}
+                      name={fieldName as keyof typeof memberSchema.shape}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>{label}</FormLabel>
@@ -224,7 +233,7 @@ export function TeamForm({
             <Button type="submit" className="w-full">
               {form.formState.isSubmitting ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : team ? (
+              ) : member ? (
                 'Editar'
               ) : (
                 'Cadastrar'

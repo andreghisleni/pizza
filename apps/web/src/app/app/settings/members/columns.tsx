@@ -4,23 +4,23 @@ import { RouterOutput } from '@pizza/trpc'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
-import { tableDataButton } from '@/components/TableDataButton'
+import { tdb } from '@/components/TableDataButton'
 
-import { TeamForm } from './team-form'
+import { MemberForm } from './member-form'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Team = RouterOutput['getTeams']['teams'][0]
+export type Member = RouterOutput['getMembers']['members'][0]
 
 type ColumnsProps = {
   refetch: () => void
 }
 
-export const columns = ({ refetch }: ColumnsProps): ColumnDef<Team>[] => [
-  {
-    accessorKey: 'name',
-    header: tableDataButton('Nome da equipe'),
-  },
+export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
+  tdb('visionId', 'Vision'),
+  tdb('name', 'Nome'),
+  tdb('register', 'Registro'),
+  tdb('session.name', 'Seção'),
   {
     accessorKey: 'createdAt',
     header: 'Criado em',
@@ -35,6 +35,6 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Team>[] => [
   {
     id: 'actions',
     enableHiding: false,
-    cell: ({ row }) => <TeamForm refetch={refetch} team={row.original} />,
+    cell: ({ row }) => <MemberForm refetch={refetch} member={row.original} />,
   },
 ]

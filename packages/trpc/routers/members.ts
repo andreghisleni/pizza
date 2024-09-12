@@ -1,81 +1,70 @@
 import { prisma } from '@pizza/prisma'
-import {
-  memberBaseSchema,
-  memberBaseUpdateSchema,
-  memberWithAlimentationSchema,
-  memberWithAlimentationUpdateSchema,
-  memberWithOutAlimentationSchema,
-  memberWithOutAlimentationUpdateSchema,
-} from '@pizza/schema'
+import { memberSchema, memberUpdateSchema } from '@pizza/schema'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
-async function checkMember(
-  scoutGroupId: string | null,
-  registerNumber: string,
-) {
-  if (!scoutGroupId) {
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'User not authenticated',
-    })
-  }
-
-  const findMember = await prisma.members.findFirst({
-    where: {
-      registerNumber,
-    },
-  })
-
-  if (findMember) {
-    throw new TRPCError({
-      code: 'CONFLICT',
-      message: 'Member already exists',
-    })
-  }
-
-  return { scoutGroupId }
-}
-
 export const membersRouter = createTRPCRouter({
-  createDonateMember: protectedProcedure
-    .input(memberBaseSchema)
-    .mutation(async ({ input, ctx }) => {
-      const { scoutGroupId } = await checkMember(
-        ctx.session.user.scoutGroupId,
-        input.registerNumber,
+  createMembers: protectedProcedure
+    .input(
+      z.object({
+        data: z.array(memberSchema),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const sessionNames = Array.from(
+        new Set(input.data.map((member) => member.sessionName)),
       )
 
-      const member = await prisma.members.create({
-        data: {
-          ...input,
-          scoutGroupId,
-          type: 'DONATION',
+      const sessions = await prisma.session.findMany({
+        where: {
+          name: {
+            in: sessionNames,
+          },
         },
       })
 
-      return member
+      console.log(sessions)
+
+      if (sessions.length !== sessionNames.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Session not found',
+        })
+      }
+
+      const members = await prisma.member.createMany({
+        data: input.data.map(({ sessionName, ...d }) => ({
+          ...d,
+          visionId: d.visionId === 'undefined' ? null : d.visionId,
+          name: d.name.trim(),
+          cleanName: d.name
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, ''),
+          sessionId: sessions.find((s) => s.name === sessionName)!.id,
+        })),
+        skipDuplicates: true,
+      })
+
+      return { members }
     }),
 
-  updateDonateMember: protectedProcedure
-    .input(memberBaseUpdateSchema)
+  updateMember: protectedProcedure
+    .input(memberUpdateSchema)
     .mutation(async ({ input }) => {
-      const findMember = await prisma.members.findFirst({
+      const findMember = await prisma.member.findFirst({
         where: {
           id: input.id,
         },
       })
 
       if (!findMember) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Member not found',
-        })
+        throw new Error('Member not found')
       }
 
-      const member = await prisma.members.update({
+      const member = await prisma.member.update({
         where: {
           id: input.id,
         },
@@ -85,148 +74,28 @@ export const membersRouter = createTRPCRouter({
       return member
     }),
 
-  createWithOutAlimentationMember: protectedProcedure
-    .input(memberWithOutAlimentationSchema)
-    .mutation(async ({ input, ctx }) => {
-      const { scoutGroupId } = await checkMember(
-        ctx.session.user.scoutGroupId,
-        input.registerNumber,
-      )
-
-      const member = await prisma.members.create({
-        data: {
-          ...input,
-          birthDate: new Date(input.birthDate),
-          scoutGroupId,
-          type: 'WITHOUT_ALIMENTATION',
-        },
-      })
-
-      return member
-    }),
-
-  updateWithOutAlimentationMember: protectedProcedure
-    .input(memberWithOutAlimentationUpdateSchema)
-    .mutation(async ({ input }) => {
-      const findMember = await prisma.members.findFirst({
+  getMember: protectedProcedure
+    .input(memberUpdateSchema)
+    .query(async ({ input }) => {
+      const member = await prisma.member.findFirst({
         where: {
           id: input.id,
         },
       })
 
-      if (!findMember) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Member not found',
-        })
-      }
-
-      const member = await prisma.members.update({
-        where: {
-          id: input.id,
-        },
-        data: { ...input, birthDate: new Date(input.birthDate) },
-      })
-
-      return member
+      return { member }
     }),
 
-  createWithAlimentationMember: protectedProcedure
-    .input(memberWithAlimentationSchema)
-    .mutation(async ({ input, ctx }) => {
-      const { scoutGroupId } = await checkMember(
-        ctx.session.user.scoutGroupId,
-        input.registerNumber,
-      )
-
-      const member = await prisma.members.create({
-        data: {
-          ...input,
-          birthDate: new Date(input.birthDate),
-          scoutGroupId,
-          type: 'WITH_ALIMENTATION',
-        },
-      })
-
-      return member
-    }),
-
-  updateWithAlimentationMember: protectedProcedure
-    .input(memberWithAlimentationUpdateSchema)
-    .mutation(async ({ input }) => {
-      const findMember = await prisma.members.findFirst({
-        where: {
-          id: input.id,
-        },
-      })
-
-      if (!findMember) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Member not found',
-        })
-      }
-
-      const member = await prisma.members.update({
-        where: {
-          id: input.id,
-        },
-        data: { ...input, birthDate: new Date(input.birthDate) },
-      })
-
-      return member
-    }),
-
-  getMyMembers: protectedProcedure.query(async ({ ctx }) => {
-    const { scoutGroupId } = ctx.session.user
-
-    if (!scoutGroupId) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'User not authenticated',
-      })
-    }
-
-    const members = await prisma.members.findMany({
+  getMembers: protectedProcedure.query(async () => {
+    const members = await prisma.member.findMany({
       orderBy: {
         name: 'asc',
       },
-      where: {
-        scoutGroupId,
+      include: {
+        session: true,
       },
     })
 
     return { members }
   }),
-
-  getTotalMembers: protectedProcedure.query(async () => {
-    const totalMembers = await prisma.members.count()
-
-    return { totalMembers }
-  }),
-
-  deleteMember: protectedProcedure
-    .input(z.string())
-    .mutation(async ({ input }) => {
-      const findMember = await prisma.members.findFirst({
-        where: {
-          id: input,
-        },
-      })
-
-      if (!findMember) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Member not found',
-        })
-      }
-
-      await prisma.members.delete({
-        where: {
-          id: input,
-        },
-      })
-
-      return true
-    }),
 })

@@ -6,15 +6,15 @@ import { DataTable } from '@/components/data-table'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { trpc } from '@/lib/trpc/react'
 
-import { columns, Team } from './columns'
-import { TeamForm } from './team-form'
+import { columns, Session } from './columns'
+import { SessionForm } from './session-form'
 
 type IProps = {
-  teams: Team[]
+  sessions: Session[]
 }
 
-export const TeamsTable: React.FC<IProps> = ({ teams }) => {
-  const { data, refetch } = trpc.getTeams.useQuery()
+export const SessionsTable: React.FC<IProps> = ({ sessions }) => {
+  const { data, refetch } = trpc.getSessions.useQuery()
 
   return (
     <Card>
@@ -24,8 +24,8 @@ export const TeamsTable: React.FC<IProps> = ({ teams }) => {
       <CardContent>
         <DataTable
           columns={columns({ refetch })}
-          data={data?.teams || teams}
-          addComponent={<TeamForm refetch={refetch} />}
+          data={data?.sessions || sessions}
+          addComponent={<SessionForm refetch={refetch} />}
         />
       </CardContent>
     </Card>
