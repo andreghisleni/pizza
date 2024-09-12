@@ -6,14 +6,12 @@ import type { UserTypes } from '.'
 
 declare module '@auth/core/adapters' {
   export interface AdapterUser extends AdapterUserBase {
-    scoutGroupId: string | null
     type: UserTypes
   }
 }
 
 declare module 'next-auth' {
   interface User extends DefaultUser {
-    scoutGroupId: string | null
     type: UserTypes
   }
 
@@ -24,7 +22,6 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
   interface JWT extends DefaultJWT {
-    scoutGroupId: string | null
     type: UserTypes
   }
 }

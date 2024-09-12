@@ -4,7 +4,7 @@ import NextAuth from 'next-auth'
 
 import { authConfig } from './auth.config'
 
-export type UserTypes = 'DEFAULT' | 'ACTIVITY' | 'ADMIN'
+export type UserTypes = 'DEFAULT' | 'ADMIN'
 
 export type { Session, User, AuthError } from 'next-auth'
 

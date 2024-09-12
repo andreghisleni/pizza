@@ -51,7 +51,6 @@ export const credentialsProvider = CredentialsProvider({
       userName: userExists.userName,
       name: userExists.name,
       image: userExists.image,
-      scoutGroupId: userExists.scoutGroup?.id || null,
       type: userExists?.type || 'DEFAULT',
     }
   },

@@ -25,7 +25,6 @@ export const authConfig = {
     },
     jwt({ token, user, session, trigger }) {
       if (user) {
-        token.scoutGroupId = user.scoutGroupId
         token.type = user.type
       }
 
@@ -39,7 +38,6 @@ export const authConfig = {
         token.name = session.user.name
         token = {
           ...token,
-          scoutGroupId: session.user.scoutGroupId,
           type: session.user.type,
           user: session,
         }
@@ -49,7 +47,6 @@ export const authConfig = {
     },
     session({ session, ...params }) {
       if ('token' in params && session.user) {
-        session.user.scoutGroupId = params.token.scoutGroupId
         session.user.type = params.token.type
         session.user.id = params.token.sub!
       }
@@ -59,9 +56,7 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
       // const isAdmin = auth?.user?.type === 'ADMIN'
-      const isActivity = auth?.user?.type === 'ACTIVITY'
       const isDefault = auth?.user?.type === 'DEFAULT'
-      const scoutGroupId = auth?.user?.scoutGroupId
 
       const isOnPublicPages = nextUrl.pathname.startsWith('/auth')
       const isOnWebhooks = nextUrl.pathname.startsWith('/api/webhooks')
@@ -69,7 +64,6 @@ export const authConfig = {
       const isOnAPIRoutes = nextUrl.pathname.startsWith('/api')
       const isOnPrivatePages = !isOnPublicPages
       // const isOnOnboarding = nextUrl.pathname.startsWith('/onboarding')
-      const isOnScoutGroupPage = nextUrl.pathname.startsWith('/app/scout-group')
 
       const isOnPublicPage =
         nextUrl.pathname.startsWith('/p/') ||
@@ -97,10 +91,6 @@ export const authConfig = {
         return false
       }
 
-      if (isDefault && !isOnScoutGroupPage) {
-        return Response.redirect(new URL('/app/scout-group', nextUrl))
-      }
-
       // if (
       //   isActivity &&
       //   !(isOnActivityPage || isOnPointDiscountPage || isOnVotePage)
@@ -109,10 +99,7 @@ export const authConfig = {
       // }
 
       console.log('here', {
-        isActivity,
         isDefault,
-        scoutGroupId,
-        isOnScoutGroupPage,
         type: auth?.user?.type,
       })
 
