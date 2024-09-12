@@ -1,7 +1,7 @@
 'use client'
 
-import { ScoreOrdination, ScoreType } from '@cepe/schema'
-import { RouterOutput } from '@cepe/trpc'
+import { ScoreOrdination, ScoreType } from '@pizza/schema'
+import { RouterOutput } from '@pizza/trpc'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { Loader2 } from 'lucide-react'

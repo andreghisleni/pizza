@@ -1,6 +1,6 @@
 'use client'
 
-import { RouterOutput } from '@cepe/trpc'
+import { RouterOutput } from '@pizza/trpc'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'

@@ -1,4 +1,4 @@
-// import { env } from '@cepe/env'
+// import { env } from '@pizza/env'
 // import { neonConfig, Pool } from '@neondatabase/serverless'
 // import { PrismaNeon } from '@prisma/adapter-neon'
 // import { PrismaClient } from '@prisma/client'
@@ -25,7 +25,7 @@
 
 // if (process.env.NODE_ENV !== 'production') globalThis.prisma = prisma
 
-import { env } from '@cepe/env'
+import { env } from '@pizza/env'
 import { PrismaClient } from '@prisma/client'
 
 export * from '@prisma/client'

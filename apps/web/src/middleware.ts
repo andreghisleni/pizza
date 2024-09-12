@@ -1,4 +1,4 @@
-export { auth as middleware } from '@cepe/auth'
+export { auth as middleware } from '@pizza/auth'
 
 export const config = {
   matcher: [

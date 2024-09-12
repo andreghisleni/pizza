@@ -4,8 +4,8 @@ import {
   getSignedUrl,
   PutObjectCommand,
   r2,
-} from '@cepe/cloudflare'
-import { env } from '@cepe/env'
+} from '@pizza/cloudflare'
+import { env } from '@pizza/env'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { RouterOutput } from '@cepe/trpc'
+import { RouterOutput } from '@pizza/trpc'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 

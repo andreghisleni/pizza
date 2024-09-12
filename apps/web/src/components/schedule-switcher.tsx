@@ -1,4 +1,4 @@
-import { RouterOutput } from '@cepe/trpc'
+import { RouterOutput } from '@pizza/trpc'
 import { CaretSortIcon, PlusCircledIcon } from '@radix-ui/react-icons'
 import { CheckIcon, Loader2 } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'

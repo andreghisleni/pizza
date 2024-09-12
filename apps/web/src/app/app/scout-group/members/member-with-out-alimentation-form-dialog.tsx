@@ -1,7 +1,7 @@
 'use client'
 
-import { FunctionsMember, memberWithOutAlimentationSchema } from '@cepe/schema'
-import { RouterOutput } from '@cepe/trpc'
+import { FunctionsMember, memberWithOutAlimentationSchema } from '@pizza/schema'
+import { RouterOutput } from '@pizza/trpc'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'

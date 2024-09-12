@@ -1,5 +1,5 @@
 {
-  "name": "@cepe/eslint-config",
+  "name": "@pizza/eslint-config",
   "version": "0.0.0",
   "files": [
     "lib.js",
@@ -12,7 +12,7 @@
     "@rocketseat/eslint-config": "2.2.2",
     "eslint-config-next": "^14.1.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
-    "@cepe/prettier": "workspace:*"
+    "@pizza/prettier": "workspace:*"
   },
   "overrides": {
     "@typescript-eslint/eslint-plugin": "^6.21.0",
@@ -25,5 +25,5 @@
       "./lib.js"
     ]
   },
-  "prettier": "@cepe/prettier"
+  "prettier": "@pizza/prettier"
 }

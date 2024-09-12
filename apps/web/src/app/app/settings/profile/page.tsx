@@ -1,4 +1,4 @@
-import { auth } from '@cepe/auth'
+import { auth } from '@pizza/auth'
 import { Metadata } from 'next'
 import Image from 'next/image'
 

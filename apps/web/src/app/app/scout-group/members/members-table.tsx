@@ -1,6 +1,6 @@
 'use client'
 
-import { RouterOutput } from '@cepe/trpc'
+import { RouterOutput } from '@pizza/trpc'
 import React from 'react'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'

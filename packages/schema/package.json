@@ -1,5 +1,5 @@
 {
-  "name": "@cepe/schema",
+  "name": "@pizza/schema",
   "main": "./index.ts",
   "types": "./index.ts",
   "version": "0.0.0",
@@ -11,16 +11,16 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@cepe/eslint-config": "workspace:*",
-    "@cepe/prettier": "workspace:*",
-    "@cepe/tsconfig": "workspace:*",
+    "@pizza/eslint-config": "workspace:*",
+    "@pizza/prettier": "workspace:*",
+    "@pizza/tsconfig": "workspace:*",
     "tsx": "4.7.1"
   },
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@cepe/eslint-config/lib"
+      "@pizza/eslint-config/lib"
     ]
   },
-  "prettier": "@cepe/prettier"
+  "prettier": "@pizza/prettier"
 }

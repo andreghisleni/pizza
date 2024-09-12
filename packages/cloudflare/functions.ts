@@ -1,5 +1,5 @@
 import { CopyObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
-import { env } from '@cepe/env'
+import { env } from '@pizza/env'
 
 import { r2 } from './r2'
 

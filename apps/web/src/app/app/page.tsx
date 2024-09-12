@@ -1,5 +1,5 @@
-// import { auth } from '@cepe/auth'
-import { auth } from '@cepe/auth'
+// import { auth } from '@pizza/auth'
+import { auth } from '@pizza/auth'
 import { redirect } from 'next/navigation'
 
 export default async function Homepage() {

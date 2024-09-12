@@ -1,5 +1,5 @@
 {
-  "name": "@cepe/prisma",
+  "name": "@pizza/prisma",
   "main": "./index.ts",
   "types": "./index.ts",
   "version": "0.0.0",
@@ -16,11 +16,11 @@
     "env:load": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@pizza/env": "workspace:*",
     "@faker-js/faker": "^8.4.1",
-    "@cepe/env": "workspace:*",
     "@neondatabase/serverless": "^0.7.2",
     "@prisma/adapter-neon": "^5.11.0",
-    "@prisma/client": "5.11.0",
+    "@prisma/client": "5.19.1",
     "axios": "1.4.0",
     "bcryptjs": "^2.4.3",
     "dotenv-cli": "7.3.0",
@@ -28,20 +28,20 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@cepe/eslint-config": "workspace:*",
-    "@cepe/prettier": "workspace:*",
-    "@cepe/tsconfig": "workspace:*",
+    "@pizza/eslint-config": "workspace:*",
+    "@pizza/prettier": "workspace:*",
+    "@pizza/tsconfig": "workspace:*",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "20.4.0",
     "@types/ws": "^8.5.10",
-    "prisma": "^5.11.0",
+    "prisma": "^5.19.1",
     "tsx": "4.7.1"
   },
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@cepe/eslint-config/lib"
+      "@pizza/eslint-config/lib"
     ]
   },
-  "prettier": "@cepe/prettier"
+  "prettier": "@pizza/prettier"
 }

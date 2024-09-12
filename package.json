@@ -12,6 +12,8 @@
     "db:seed": "turbo run db:seed"
   },
   "dependencies": {
-    "turbo": "^1.13.3"
-  }
+    "turbo": "^2.1.1"
+  },
+  "packageManager": "pnpm@8.15.9",
+  "name": "pizza"
 }

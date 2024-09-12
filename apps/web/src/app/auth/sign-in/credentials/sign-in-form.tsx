@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/use-toast'
 
 const signInFormSchema = z.object({
-  userName: z.string().min(1, { message: 'Use admin' }),
+  email: z.string().min(1, { message: 'Use admin' }),
   password: z.string().min(1, { message: 'Use 123456' }),
 })
 
@@ -29,16 +29,16 @@ export function SignInForm({ user, pass }: { user?: string; pass?: string }) {
   } = useForm<SignInFormSchema>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
-      userName: user || '',
+      email: user || '',
       password: pass || '',
     },
   })
 
   async function handleSignIn(data: SignInFormSchema) {
-    const { userName, password } = data
+    const { email, password } = data
 
     const response = await signIn('credentials', {
-      userName,
+      email,
       password,
       redirect: false,
       callbackUrl: '/',
@@ -65,18 +65,16 @@ export function SignInForm({ user, pass }: { user?: string; pass?: string }) {
   return (
     <form onSubmit={handleSubmit(handleSignIn)} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="userName">
-          Nome de usuário / registro (sem o Dígito verificador)
-        </Label>
+        <Label htmlFor="email">E-mail</Label>
         <Input
-          id="userName"
+          id="email"
           type="text"
-          placeholder="Nome do usuário / registro sem o Dígito verificador"
-          {...register('userName')}
+          placeholder="E-mail"
+          {...register('email')}
         />
-        {errors.userName && (
+        {errors.email && (
           <p className="text-sm font-medium text-red-500 dark:text-red-400">
-            {errors.userName.message}
+            {errors.email.message}
           </p>
         )}
       </div>

@@ -1,6 +1,6 @@
 import './globals.css'
 
-import { env } from '@cepe/env'
+import { env } from '@pizza/env'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ReactNode } from 'react'
@@ -14,10 +14,10 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | III Mutirão no CEPE - Campo Escoteiro Padre Edgard',
-    absolute: 'III Mutirão no CEPE - Campo Escoteiro Padre Edgard',
+    template: '%s | Pizza extra',
+    absolute: 'Pizza extra',
   },
-  description: 'III Mutirão no CEPE - Campo Escoteiro Padre Edgard.',
+  description: 'Pizza extra.',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       {env.NODE_ENV === 'production' && (
         <script
           defer
-          data-domain="eventos.gexapeco.com"
+          data-domain="pizza.gexapeco.com"
           src="https://analytics.andreg.com.br/js/script.js"
         ></script>
       )}

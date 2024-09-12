@@ -1,6 +1,6 @@
 'use client'
 
-import { activitySchema, ScoreOrdination, ScoreType } from '@cepe/schema'
+import { activitySchema, ScoreOrdination, ScoreType } from '@pizza/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'

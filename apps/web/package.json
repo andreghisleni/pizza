@@ -3,21 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm env:load next dev -p 6000",
+    "dev": "pnpm env:load next dev -p 6010",
     "build": "pnpm env:load next build",
-    "start": "pnpm env:load next start -p 6000",
+    "start": "pnpm env:load next start -p 6010",
     "lint": "eslint .",
     "env:load": "dotenv -e ../../.env --"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.509.0",
-    "@cepe/auth": "workspace:*",
-    "@cepe/cloudflare": "workspace:*",
-    "@cepe/dayjs": "workspace:*",
-    "@cepe/env": "workspace:*",
-    "@cepe/prisma": "workspace:*",
-    "@cepe/schema": "workspace:*",
-    "@cepe/trpc": "workspace:*",
+    "@pizza/auth": "workspace:*",
+    "@pizza/cloudflare": "workspace:*",
+    "@pizza/dayjs": "workspace:*",
+    "@pizza/env": "workspace:*",
+    "@pizza/prisma": "workspace:*",
+    "@pizza/schema": "workspace:*",
+    "@pizza/trpc": "workspace:*",
     "@highlight-run/node": "^3.9.0",
     "@hookform/resolvers": "3.3.4",
     "@prisma/client": "5.11.0",
@@ -104,9 +104,9 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@cepe/eslint-config": "workspace:*",
-    "@cepe/prettier": "workspace:*",
-    "@cepe/tsconfig": "workspace:*",
+    "@pizza/eslint-config": "workspace:*",
+    "@pizza/prettier": "workspace:*",
+    "@pizza/tsconfig": "workspace:*",
     "@prisma/nextjs-monorepo-workaround-plugin": "^5.12.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "20.4.0",
@@ -123,8 +123,8 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@cepe/eslint-config/next"
+      "@pizza/eslint-config/next"
     ]
   },
-  "prettier": "@cepe/prettier"
+  "prettier": "@pizza/prettier"
 }

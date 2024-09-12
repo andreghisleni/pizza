@@ -1,5 +1,5 @@
 {
-  "extends": "@cepe/tsconfig/nextjs.json",
+  "extends": "@pizza/tsconfig/nextjs.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

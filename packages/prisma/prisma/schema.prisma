@@ -8,11 +8,10 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  name     String
-  userName String  @unique @map("user_name")
-  email    String  @unique
-  image    String?
+  id    String  @id @default(uuid())
+  name  String
+  email String  @unique
+  image String?
 
   passwordHash String @map("password_hash")
 

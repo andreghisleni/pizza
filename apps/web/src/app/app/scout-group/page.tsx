@@ -1,4 +1,4 @@
-import { auth } from '@cepe/auth'
+import { auth } from '@pizza/auth'
 import { CheckCircle, Circle } from 'lucide-react'
 import { Metadata } from 'next'
 import { unstable_noStore } from 'next/cache'

@@ -1,6 +1,6 @@
 // For loading example data
-import { env } from '@cepe/env'
-import { prisma } from '@cepe/prisma'
+import { env } from '@pizza/env'
+import { prisma } from '@pizza/prisma'
 import * as XLSX from 'xlsx'
 
 import { inputPhoneMask } from '@/utils/inputMasks'

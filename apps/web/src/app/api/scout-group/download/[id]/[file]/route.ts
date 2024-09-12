@@ -1,6 +1,6 @@
-import { GetObjectCommand, getSignedUrl, r2 } from '@cepe/cloudflare'
-import { env } from '@cepe/env'
-import { prisma } from '@cepe/prisma'
+import { GetObjectCommand, getSignedUrl, r2 } from '@pizza/cloudflare'
+import { env } from '@pizza/env'
+import { prisma } from '@pizza/prisma'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 

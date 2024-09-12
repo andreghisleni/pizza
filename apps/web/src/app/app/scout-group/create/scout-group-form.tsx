@@ -1,7 +1,7 @@
 'use client'
 
-import { scoutGroupSchema } from '@cepe/schema'
-import { RouterOutput } from '@cepe/trpc'
+import { scoutGroupSchema } from '@pizza/schema'
+import { RouterOutput } from '@pizza/trpc'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'

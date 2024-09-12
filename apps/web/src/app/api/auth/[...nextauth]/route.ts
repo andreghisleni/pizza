@@ -1,4 +1,4 @@
-import { handlers } from '@cepe/auth'
+import { handlers } from '@pizza/auth'
 
 export const { GET, POST } = handlers
 

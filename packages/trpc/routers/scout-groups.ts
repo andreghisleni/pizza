@@ -1,5 +1,5 @@
-import { prisma } from '@cepe/prisma'
-import { scoutGroupSchema, scoutGroupUpdateSchema } from '@cepe/schema'
+import { prisma } from '@pizza/prisma'
+import { scoutGroupSchema, scoutGroupUpdateSchema } from '@pizza/schema'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 

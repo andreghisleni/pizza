@@ -1,4 +1,4 @@
-import { dayjs } from '@cepe/dayjs'
+import { dayjs } from '@pizza/dayjs'
 import { Eye } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'

@@ -20,7 +20,6 @@ async function seed() {
     data: {
       id: '8fe74579-01c3-4c98-bd24-9e86aebe507b',
       name: 'André Ghisleni Raimann',
-      userName: 'andre',
       email: 'andre@andreg.com.br',
       image: 'https://github.com/andreghisleni.png',
       passwordHash: hashedPassword,

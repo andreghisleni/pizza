@@ -1,4 +1,4 @@
-import { RouterOutput } from '@cepe/trpc'
+import { RouterOutput } from '@pizza/trpc'
 import { compareAsc, format, getDaysInMonth, parseISO } from 'date-fns'
 
 const week = [

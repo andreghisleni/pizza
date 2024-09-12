@@ -14,7 +14,7 @@ export default function SignInPage() {
         <div className="flex flex-col items-center space-y-8">
           <div className="space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
-              III Mutirão CEPE
+              Pizza extra
             </h1>
           </div>
         </div>

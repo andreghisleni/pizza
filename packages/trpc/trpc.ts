@@ -1,4 +1,4 @@
-import { Session } from '@cepe/auth'
+import { Session } from '@pizza/auth'
 import { initTRPC, TRPCError } from '@trpc/server'
 import SuperJSON from 'superjson'
 import { ZodError } from 'zod'

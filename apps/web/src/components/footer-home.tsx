@@ -7,7 +7,7 @@ export function FooterHome() {
       <Container>
         <div className="flex flex-col items-center gap-4 px-8 py-8">
           <p className="text-sm text-muted-foreground">
-            © 2024 III Mutirão no CEPE - Campo Escoteiro Padre Edgard
+            © 2024 Pizza extra
           </p>
 
           <p>

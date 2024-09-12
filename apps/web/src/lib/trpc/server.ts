@@ -1,9 +1,9 @@
 import 'server-only'
 
-import { auth } from '@cepe/auth'
-import { env } from '@cepe/env'
-import { appRouter, createCallerFactory } from '@cepe/trpc'
 import { Handlers } from '@highlight-run/node'
+import { auth } from '@pizza/auth'
+import { env } from '@pizza/env'
+import { appRouter, createCallerFactory } from '@pizza/trpc'
 
 export const serverClient = createCallerFactory(appRouter)(
   async () => {
@@ -24,7 +24,7 @@ export const serverClient = createCallerFactory(appRouter)(
           },
         },
         {
-          projectID: env.HIGHLIGHT_PROJECT_ID,
+          projectID: env.HIGHLIGHT_PROJECT_ID || '',
           serviceName: 'gincana-trpc-app',
           environment: env.NODE_ENV,
         },

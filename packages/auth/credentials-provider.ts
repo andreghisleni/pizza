@@ -1,4 +1,4 @@
-import { prisma } from '@cepe/prisma'
+import { prisma } from '@pizza/prisma'
 import { compare } from 'bcryptjs'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
@@ -6,8 +6,8 @@ export const credentialsProvider = CredentialsProvider({
   name: 'credentials',
 
   credentials: {
-    userName: {
-      label: 'UserName',
+    email: {
+      label: 'Email',
       type: 'text',
       placeholder: 'use admin',
       value: 'admin',
@@ -20,16 +20,13 @@ export const credentialsProvider = CredentialsProvider({
     },
   },
   async authorize(credentials) {
-    if (!credentials.userName || !credentials.password) {
+    if (!credentials.email || !credentials.password) {
       return null
     }
 
     const userExists = await prisma.user.findFirst({
       where: {
-        userName: credentials.userName,
-      },
-      include: {
-        scoutGroup: true,
+        email: credentials.email,
       },
     })
 
@@ -48,7 +45,7 @@ export const credentialsProvider = CredentialsProvider({
 
     return {
       id: userExists.id,
-      userName: userExists.userName,
+      email: userExists.email,
       name: userExists.name,
       image: userExists.image,
       type: userExists?.type || 'DEFAULT',

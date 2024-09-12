@@ -1,5 +1,4 @@
-import { prisma } from '@cepe/prisma'
-import { TRPCError } from '@trpc/server'
+import { prisma } from '@pizza/prisma'
 import { hash } from 'bcryptjs'
 import { z } from 'zod'
 
@@ -10,7 +9,6 @@ export const usersRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string().min(1),
-        userName: z.string().min(1),
         email: z.string().email(),
         password: z.string().min(1),
       }),
@@ -18,7 +16,7 @@ export const usersRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       const existingUser = await prisma.user.findUnique({
         where: {
-          userName: input.userName,
+          email: input.email,
         },
       })
 
@@ -31,62 +29,6 @@ export const usersRouter = createTRPCRouter({
       const user = await prisma.user.create({
         data: {
           name: input.name,
-          userName: input.userName,
-          email: input.email,
-          passwordHash: hashedPassword,
-        },
-      })
-
-      return user
-    }),
-
-  createUserWithScoutGroup: publicProcedure
-    .input(
-      z.object({
-        name: z.string().min(1),
-        userName: z.string().min(1),
-        email: z.string().email(),
-        password: z.string().min(1),
-        numeral: z.string().min(1),
-        state: z.string().min(1),
-      }),
-    )
-    .mutation(async ({ input }) => {
-      const existingUser = await prisma.user.findUnique({
-        where: {
-          userName: input.userName,
-        },
-      })
-
-      if (existingUser) {
-        throw new TRPCError({
-          code: 'CONFLICT',
-          message: 'Usuário já cadastrado',
-        })
-      }
-
-      const existingScoutGroup = await prisma.scoutGroups.findUnique({
-        where: {
-          numeral_state: {
-            numeral: input.numeral,
-            state: input.state,
-          },
-        },
-      })
-
-      if (existingScoutGroup) {
-        throw new TRPCError({
-          code: 'CONFLICT',
-          message: 'O seu grupo escoteiro já está cadastrado',
-        })
-      }
-
-      const hashedPassword = await hash(input.password, 10)
-
-      const user = await prisma.user.create({
-        data: {
-          name: input.name,
-          userName: input.userName,
           email: input.email,
           passwordHash: hashedPassword,
         },
@@ -205,10 +147,6 @@ export const usersRouter = createTRPCRouter({
         throw new Error('User not found')
       }
 
-      if (user.userName === 'andre') {
-        throw new Error('You cannot deactivate the admin user')
-      }
-
       const updatedUser = await prisma.user.update({
         where: {
           id: input.userId,
@@ -241,10 +179,6 @@ export const usersRouter = createTRPCRouter({
 
       if (!user) {
         throw new Error('User not found')
-      }
-
-      if (user.userName === 'andre') {
-        throw new Error('You cannot change the type of the admin user')
       }
 
       const updatedUser = await prisma.user.update({

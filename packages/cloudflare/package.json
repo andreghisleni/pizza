@@ -1,5 +1,5 @@
 {
-  "name": "@cepe/cloudflare",
+  "name": "@pizza/cloudflare",
   "main": "./index.ts",
   "types": "./index.ts",
   "version": "0.0.0",
@@ -10,18 +10,18 @@
   "dependencies": {
     "@aws-sdk/client-s3": "3.509.0",
     "@aws-sdk/s3-request-presigner": "3.509.0",
-    "@cepe/env": "workspace:*"
+    "@pizza/env": "workspace:*"
   },
   "devDependencies": {
-    "@cepe/tsconfig": "workspace:*",
-    "@cepe/prettier": "workspace:*",
-    "@cepe/eslint-config": "workspace:*"
+    "@pizza/tsconfig": "workspace:*",
+    "@pizza/prettier": "workspace:*",
+    "@pizza/eslint-config": "workspace:*"
   },
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@cepe/eslint-config/lib"
+      "@pizza/eslint-config/lib"
     ]
   },
-  "prettier": "@cepe/prettier"
+  "prettier": "@pizza/prettier"
 }

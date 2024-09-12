@@ -1,4 +1,4 @@
-import { prisma } from '@cepe/prisma'
+import { prisma } from '@pizza/prisma'
 import {
   memberBaseSchema,
   memberBaseUpdateSchema,
@@ -6,7 +6,7 @@ import {
   memberWithAlimentationUpdateSchema,
   memberWithOutAlimentationSchema,
   memberWithOutAlimentationUpdateSchema,
-} from '@cepe/schema'
+} from '@pizza/schema'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 

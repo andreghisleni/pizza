@@ -1,4 +1,4 @@
-import { auth, signOut } from '@cepe/auth'
+import { auth, signOut } from '@pizza/auth'
 import { Cog, LogOut } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

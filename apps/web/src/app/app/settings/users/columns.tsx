@@ -1,6 +1,6 @@
 'use client'
 
-import { RouterOutput } from '@cepe/trpc'
+import { RouterOutput } from '@pizza/trpc'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 

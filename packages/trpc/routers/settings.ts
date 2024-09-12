@@ -1,5 +1,5 @@
-import { prisma } from '@cepe/prisma'
-import { settingSchema } from '@cepe/schema'
+import { prisma } from '@pizza/prisma'
+import { settingSchema } from '@pizza/schema'
 
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 

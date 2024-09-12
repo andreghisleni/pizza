@@ -23,20 +23,19 @@ export function RegisterForm() {
   } = useForm<RegisterFormSchema>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
-      userName: '',
+      email: '',
       password: '',
     },
   })
 
   async function handleRegister(data: RegisterFormSchema) {
-    const { name, userName, password, email } = data
+    const { name, email, password } = data
 
     try {
       const response = await nativeClient.createUser.mutate({
         name,
-        userName,
-        password,
         email,
+        password,
       })
 
       console.log(response)
@@ -74,20 +73,6 @@ export function RegisterForm() {
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="userName">Nome de usuário</Label>
-        <Input
-          id="userName"
-          type="text"
-          placeholder="Nome do usuário"
-          {...register('userName')}
-        />
-        {errors.userName && (
-          <p className="text-sm font-medium text-red-500 dark:text-red-400">
-            {errors.userName.message}
-          </p>
-        )}
-      </div>
       <div className="space-y-2">
         <Label htmlFor="email">E-mail</Label>
         <Input

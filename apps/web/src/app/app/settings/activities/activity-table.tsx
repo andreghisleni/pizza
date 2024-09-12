@@ -1,6 +1,6 @@
 'use client'
 
-import { env } from '@cepe/env'
+import { env } from '@pizza/env'
 import React from 'react'
 
 import { DataTable } from '@/components/data-table'

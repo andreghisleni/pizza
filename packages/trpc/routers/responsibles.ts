@@ -1,5 +1,5 @@
-import { prisma } from '@cepe/prisma'
-import { responsibleSchema, responsibleUpdateSchema } from '@cepe/schema'
+import { prisma } from '@pizza/prisma'
+import { responsibleSchema, responsibleUpdateSchema } from '@pizza/schema'
 import { TRPCError } from '@trpc/server'
 
 import { createTRPCRouter, protectedProcedure } from '../trpc'

@@ -27,7 +27,7 @@ export default async function SignInPage({
           <div className="flex flex-col items-center space-y-8">
             <div className="space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
-                Gincana aniversario GE Xapecó
+                Pizza extra
               </h1>
             </div>
           </div>
@@ -45,7 +45,7 @@ export default async function SignInPage({
         <div className="flex flex-col items-center space-y-8">
           <div className="space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
-              III Mutirão CEPE
+              Pizza extra
             </h1>
           </div>
         </div>
@@ -56,7 +56,7 @@ export default async function SignInPage({
             <h1 className="text-lg font-bold">Não tem uma conta?</h1>
             <span>
               Crie uma conta{' '}
-              <Link href="/auth/register/scout-group" className="font-bold">
+              <Link href="/auth/register" className="font-bold">
                 Clicando aqui!
               </Link>
             </span>

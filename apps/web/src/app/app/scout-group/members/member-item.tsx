@@ -1,6 +1,6 @@
 'use client'
 
-import { FunctionsMember } from '@cepe/schema'
+import { FunctionsMember } from '@pizza/schema'
 import React, { ReactNode } from 'react'
 
 import {

@@ -1,5 +1,5 @@
 {
-  "name": "@cepe/auth",
+  "name": "@pizza/auth",
   "main": "./index.ts",
   "types": "./index.ts",
   "version": "0.0.0",
@@ -9,23 +9,23 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.5.1",
-    "@cepe/env": "workspace:*",
-    "@cepe/prisma": "workspace:*",
+    "@pizza/env": "workspace:*",
+    "@pizza/prisma": "workspace:*",
     "@prisma/client": "5.11.0",
     "bcryptjs": "^2.4.3",
     "next-auth": "5.0.0-beta.16"
   },
   "devDependencies": {
-    "@cepe/eslint-config": "workspace:*",
-    "@cepe/prettier": "workspace:*",
-    "@cepe/tsconfig": "workspace:*",
+    "@pizza/eslint-config": "workspace:*",
+    "@pizza/prettier": "workspace:*",
+    "@pizza/tsconfig": "workspace:*",
     "@types/bcryptjs": "^2.4.6"
   },
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@cepe/eslint-config/lib"
+      "@pizza/eslint-config/lib"
     ]
   },
-  "prettier": "@cepe/prettier"
+  "prettier": "@pizza/prettier"
 }

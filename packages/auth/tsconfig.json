@@ -1,5 +1,5 @@
 {
-  "extends": "@cepe/tsconfig/lib.json",
+  "extends": "@pizza/tsconfig/lib.json",
   "include": [
     "."
   ],

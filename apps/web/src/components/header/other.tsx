@@ -1,4 +1,4 @@
-import { auth } from '@cepe/auth'
+import { auth } from '@pizza/auth'
 
 import { ThemeSwitcher } from './theme-switcher'
 import { UserProfileButton } from './user-profile-button'

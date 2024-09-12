@@ -1,4 +1,4 @@
-import { auth } from '@cepe/auth'
+import { auth } from '@pizza/auth'
 
 import { cn } from '@/lib/utils'
 

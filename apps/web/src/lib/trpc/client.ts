@@ -1,4 +1,4 @@
-import { AppRouter } from '@cepe/trpc'
+import { AppRouter } from '@pizza/trpc'
 import { createTRPCClient, httpBatchLink, TRPCLink } from '@trpc/client'
 import SuperJSON from 'superjson'
 

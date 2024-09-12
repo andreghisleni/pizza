@@ -1,4 +1,4 @@
-// import { auth } from '@cepe/auth'
+// import { auth } from '@pizza/auth'
 import { redirect } from 'next/navigation'
 
 export default async function Homepage() {
@@ -15,7 +15,7 @@ export default async function Homepage() {
     <div className="flex h-screen items-center justify-center px-6">
       <div className="w-full max-w-[400px] space-y-8">
         <div className="flex items-center gap-3">
-          <h1 className="text-sm font-medium">Gincana aniversario GE Xapecó</h1>
+          <h1 className="text-sm font-medium">Pizza extra</h1>
         </div>
       </div>
     </div>
