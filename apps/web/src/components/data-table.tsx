@@ -9,7 +9,9 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  Row,
   SortingState,
+  Table as TableInstance,
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
@@ -34,6 +36,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+import { Checkbox } from './ui/checkbox'
 import { ScrollArea, ScrollBar } from './ui/scroll-area'
 
 interface DataTableProps<TData, TValue> {
@@ -52,6 +55,11 @@ interface DataTableProps<TData, TValue> {
 
   filterComponent?: React.ReactNode
   ifJustFilterComponent?: boolean
+
+  actionComponent?: (props: { table: TableInstance<TData> }) => React.ReactNode
+  actionDisabledFunction?: (props: { row: Row<TData> }) => boolean
+
+  initialColumnVisibility?: VisibilityState
 }
 
 const getHeaderValue = (column: Column<unknown>): string => {
@@ -68,8 +76,39 @@ const getHeaderValue = (column: Column<unknown>): string => {
   return column.id
 }
 
+const select = ({
+  actionDisabledFunction,
+}: {
+  actionDisabledFunction: DataTableProps<any, any>['actionDisabledFunction'] // eslint-disable-line
+}) => ({
+  id: 'select',
+  header: ({ table }) => (
+    <Checkbox
+      checked={
+        table.getIsAllPageRowsSelected() ||
+        (table.getIsSomePageRowsSelected() && 'indeterminate')
+      }
+      onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+      aria-label="Select all"
+      className="dark:border-gray-500"
+    />
+  ),
+  cell: ({ row }) => (
+    <Checkbox
+      checked={row.getIsSelected()}
+      onCheckedChange={(value) => row.toggleSelected(!!value)}
+      aria-label="Select row"
+      className="dark:border-gray-500"
+      disabled={actionDisabledFunction && actionDisabledFunction({ row })}
+    />
+  ),
+  enableSorting: false,
+  enableHiding: false,
+  maxSize: 2,
+})
+
 export function DataTable<TData, TValue>({
-  columns,
+  columns: c,
   data,
   pagination = undefined,
   addFunction,
@@ -78,13 +117,20 @@ export function DataTable<TData, TValue>({
   onRowSelectionChange,
   filterComponent,
   ifJustFilterComponent = false,
+  actionComponent,
+  actionDisabledFunction,
+  initialColumnVisibility = {},
 }: DataTableProps<TData, TValue>) {
+  const columns = actionComponent
+    ? [select({ actionDisabledFunction }), ...c]
+    : c
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   )
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>(initialColumnVisibility)
   const [rowSelection, setRowSelection] = React.useState({})
   const [globalFilter, setGlobalFilter] = React.useState('')
 
@@ -100,6 +146,9 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    enableRowSelection(row) {
+      return actionDisabledFunction ? !actionDisabledFunction({ row }) : true
+    },
     state: {
       sorting,
       columnFilters,
@@ -175,6 +224,7 @@ export function DataTable<TData, TValue>({
                 </Button>
               )}
               {addComponent && addComponent}
+              {actionComponent && actionComponent({ table })}
             </div>
           </div>
           <div className="overflow-x-auto rounded-md border">
@@ -208,6 +258,7 @@ export function DataTable<TData, TValue>({
                     <TableRow
                       key={row.id}
                       data-state={row.getIsSelected() && 'selected'}
+                      onDoubleClick={() => row.toggleSelected()}
                     >
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id}>

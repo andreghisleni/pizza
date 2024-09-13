@@ -57,9 +57,16 @@ export const ticketsRouter = createTRPCRouter({
 
   getTickets: protectedProcedure.query(async () => {
     const tickets = await prisma.ticket.findMany({
-      orderBy: {
-        name: 'asc',
-      },
+      orderBy: [
+        {
+          member: {
+            name: 'asc',
+          },
+        },
+        {
+          number: 'asc',
+        },
+      ],
       include: {
         member: true,
       },
@@ -67,4 +74,48 @@ export const ticketsRouter = createTRPCRouter({
 
     return { tickets }
   }),
+
+  confirmTickets: protectedProcedure
+    .input(z.array(z.string()))
+    .mutation(async ({ input }) => {
+      const ticket = await prisma.ticket.updateMany({
+        where: {
+          id: {
+            in: input,
+          },
+        },
+        data: {
+          status: 'DELIVERED',
+          deliveredAt: new Date(),
+        },
+      })
+
+      return ticket
+    }),
+
+  confirmTicketsWithoutTicket: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        phone: z.string(),
+        ticketIds: z.array(z.string()),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const tickets = await prisma.ticket.updateMany({
+        where: {
+          id: {
+            in: input.ticketIds,
+          },
+        },
+        data: {
+          status: 'DELIVERED',
+          deliveredAt: new Date(),
+          name: input.name,
+          phone: input.phone,
+        },
+      })
+
+      return tickets
+    }),
 })

@@ -1,4 +1,4 @@
-import { Settings, User2, Users } from 'lucide-react'
+import { Settings, Ticket, User2, Users } from 'lucide-react'
 import { ReactNode } from 'react'
 
 import { Screen } from '@/components/screen'
@@ -36,6 +36,10 @@ export default async function Layout({ children }: { children: ReactNode }) {
               <AsideLink href="/app/settings/members">
                 <Users className="mr-2 size-4" />
                 Membros
+              </AsideLink>
+              <AsideLink href="/app/settings/tickets/import">
+                <Ticket className="mr-2 size-4" />
+                Tickets
               </AsideLink>
             </div>
             {/* <div className="flex flex-col gap-1">

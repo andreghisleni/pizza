@@ -3,16 +3,16 @@ import { unstable_noStore } from 'next/cache'
 
 import { serverClient } from '@/lib/trpc/server'
 
-import { SessionsTable } from './session-table'
+import { TicketsTable } from './ticket-table'
 
 export const metadata: Metadata = {
   title: 'Seções',
 }
 
-export default async function SessionPage() {
+export default async function TicketPage() {
   unstable_noStore()
 
-  const { sessions } = await serverClient.getSessions()
+  const { tickets } = await serverClient.getTickets()
 
-  return <SessionsTable sessions={sessions} />
+  return <TicketsTable tickets={tickets} />
 }
