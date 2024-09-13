@@ -38,7 +38,9 @@ export const membersRouter = createTRPCRouter({
         data: input.data.map(({ sessionName, ...d }) => ({
           ...d,
           visionId: d.visionId === 'undefined' ? null : d.visionId,
-          name: d.name.trim(),
+          name: d.name
+            .toLowerCase()
+            .replace(/(?:^|\s)\S/g, (a) => a.toUpperCase()),
           cleanName: d.name
             .toLowerCase()
             .normalize('NFD')
@@ -98,4 +100,37 @@ export const membersRouter = createTRPCRouter({
 
     return { members }
   }),
+
+  getMembersWithVisionIdsOrNames: protectedProcedure
+    .input(
+      z.object({
+        visionIds: z.array(z.string()),
+        names: z.array(z.string()),
+      }),
+    )
+    .query(async ({ input }) => {
+      const members = await prisma.member.findMany({
+        where: {
+          OR: [
+            {
+              visionId: {
+                in: input.visionIds,
+              },
+            },
+            {
+              cleanName: {
+                in: input.names.map((name) =>
+                  name
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, ''),
+                ),
+              },
+            },
+          ],
+        },
+      })
+
+      return { members }
+    }),
 })

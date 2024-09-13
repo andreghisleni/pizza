@@ -20,7 +20,7 @@ export const MembersTable: React.FC<IProps> = ({ members }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Equipes</CardTitle>
+        <CardTitle>Membros</CardTitle>
       </CardHeader>
       <CardContent>
         <DataTable
