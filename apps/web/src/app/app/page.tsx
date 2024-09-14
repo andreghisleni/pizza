@@ -10,7 +10,7 @@ export default async function Homepage() {
       redirect(`/app/dashboard`)
     }
     if (session.user.type === 'DEFAULT') {
-      redirect(`/app/scout-group`)
+      redirect(`/app/aa`)
     }
   }
 
