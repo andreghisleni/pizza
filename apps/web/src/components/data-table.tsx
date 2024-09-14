@@ -91,7 +91,7 @@ const select = ({
       }
       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
       aria-label="Select all"
-      className="dark:border-gray-500"
+      className="border-gray-950 disabled:border-gray-400 dark:border-gray-500"
     />
   ),
   cell: ({ row }) => (
@@ -99,7 +99,7 @@ const select = ({
       checked={row.getIsSelected()}
       onCheckedChange={(value) => row.toggleSelected(!!value)}
       aria-label="Select row"
-      className="dark:border-gray-500"
+      className="border-gray-950 disabled:border-gray-400 dark:border-gray-500"
       disabled={actionDisabledFunction && actionDisabledFunction({ row })}
     />
   ),

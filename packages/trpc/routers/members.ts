@@ -157,4 +157,10 @@ export const membersRouter = createTRPCRouter({
 
       return { member }
     }),
+
+  getTotalMembers: protectedProcedure.query(async () => {
+    const totalMembers = await prisma.member.count()
+
+    return { totalMembers }
+  }),
 })

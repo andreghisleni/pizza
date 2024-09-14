@@ -2,15 +2,15 @@ import { Metadata } from 'next'
 import { Suspense } from 'react'
 
 import { Loading } from '@/components/summary/loading'
+import { TotalDeliveredTicket } from '@/components/summary/total-delivered-tickets'
 import { TotalMembers } from '@/components/summary/total-members'
-import { TotalScoutGroup } from '@/components/summary/total-scout-groups'
-import { TotalUsers } from '@/components/summary/total-users'
+import { TotalTicket } from '@/components/summary/total-tickets'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
 }
 
-export const revalidate = 900
+export const revalidate = 30
 
 export default function DashboardPage() {
   return (
@@ -19,17 +19,17 @@ export default function DashboardPage() {
       <div className="grid grid-cols-6 gap-4">
         <div className="col-span-2">
           <Suspense fallback={<Loading />}>
-            <TotalScoutGroup />
+            <TotalTicket />
+          </Suspense>
+        </div>
+        <div className="col-span-2">
+          <Suspense fallback={<Loading />}>
+            <TotalDeliveredTicket />
           </Suspense>
         </div>
         <div className="col-span-2">
           <Suspense fallback={<Loading />}>
             <TotalMembers />
-          </Suspense>
-        </div>
-        <div className="col-span-2">
-          <Suspense fallback={<Loading />}>
-            <TotalUsers />
           </Suspense>
         </div>
       </div>
