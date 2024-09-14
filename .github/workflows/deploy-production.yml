@@ -15,10 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Show environment variables
-        shell: bash
-        run: echo $DATABASE_URL
-
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -44,6 +40,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Create .env file
+        run: echo "DATABASE_URL=$DATABASE_URL" > .env
 
       - name: Run Prisma Migrate
         run: pnpm run db:migrate:deploy
