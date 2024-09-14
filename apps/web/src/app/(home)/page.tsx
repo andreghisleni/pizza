@@ -1,6 +1,7 @@
 import { Container } from '@/components/my-ui/container'
 import { Section } from '@/components/my-ui/section'
-import { Button } from '@/components/ui/button'
+
+import { FindMemberTickets } from './find-member-tickets'
 
 export default function Homepage() {
   return (
@@ -11,7 +12,9 @@ export default function Homepage() {
             10º Edição EXTRA da pizza escoteira do G.E. Xapecó
           </h1>
 
-          <Button>Consulte o status dos ingrenços dos membros juvenil</Button>
+          {/* <Button>Consulte o status dos ingrenços dos membros juvenil</Button> */}
+
+          <FindMemberTickets />
         </Container>
       </Section>
     </div>

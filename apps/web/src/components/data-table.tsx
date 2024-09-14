@@ -60,6 +60,7 @@ interface DataTableProps<TData, TValue> {
   actionDisabledFunction?: (props: { row: Row<TData> }) => boolean
 
   initialColumnVisibility?: VisibilityState
+  showVisibilityToggle?: boolean
 }
 
 const getHeaderValue = (column: Column<unknown>): string => {
@@ -120,6 +121,7 @@ export function DataTable<TData, TValue>({
   actionComponent,
   actionDisabledFunction,
   initialColumnVisibility = {},
+  showVisibilityToggle = true,
 }: DataTableProps<TData, TValue>) {
   const columns = actionComponent
     ? [select({ actionDisabledFunction }), ...c]
@@ -188,32 +190,34 @@ export function DataTable<TData, TValue>({
               filterComponent && filterComponent
             )}
             <div className="ml-auto flex gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline">
-                    Columns <ChevronDown className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {table
-                    .getAllColumns()
-                    .filter((column) => column.getCanHide())
-                    .map((column) => {
-                      return (
-                        <DropdownMenuCheckboxItem
-                          key={column.id}
-                          className="capitalize"
-                          checked={column.getIsVisible()}
-                          onCheckedChange={(value) =>
-                            column.toggleVisibility(!!value)
-                          }
-                        >
+              {showVisibilityToggle && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">
+                      Columns <ChevronDown className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {table
+                      .getAllColumns()
+                      .filter((column) => column.getCanHide())
+                      .map((column) => {
+                        return (
+                          <DropdownMenuCheckboxItem
+                            key={column.id}
+                            className="capitalize"
+                            checked={column.getIsVisible()}
+                            onCheckedChange={(value) =>
+                              column.toggleVisibility(!!value)
+                            }
+                          >
                           {getHeaderValue(column as any) /* eslint-disable-line */}
-                        </DropdownMenuCheckboxItem>
-                      )
-                    })}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                          </DropdownMenuCheckboxItem>
+                        )
+                      })}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
               {addFunction && (
                 <Button
                   variant="outline"

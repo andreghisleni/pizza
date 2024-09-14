@@ -3,7 +3,7 @@ import { memberSchema, memberUpdateSchema } from '@pizza/schema'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
-import { createTRPCRouter, protectedProcedure } from '../trpc'
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 
 export const membersRouter = createTRPCRouter({
   createMembers: protectedProcedure
@@ -132,5 +132,29 @@ export const membersRouter = createTRPCRouter({
       })
 
       return { members }
+    }),
+
+  getMemberByRegister: publicProcedure
+    .input(
+      z.object({
+        register: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const member = await prisma.member.findFirst({
+        where: {
+          register: input.register,
+        },
+        include: {
+          tickets: {
+            orderBy: {
+              number: 'asc',
+            },
+          },
+          session: true,
+        },
+      })
+
+      return { member }
     }),
 })
