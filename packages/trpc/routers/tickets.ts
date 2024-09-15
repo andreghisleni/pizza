@@ -85,7 +85,6 @@ export const ticketsRouter = createTRPCRouter({
           },
         },
         data: {
-          status: 'DELIVERED',
           deliveredAt: new Date(),
         },
       })
@@ -98,6 +97,7 @@ export const ticketsRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         phone: z.string(),
+        description: z.string().optional(),
         ticketIds: z.array(z.string()),
       }),
     )
@@ -109,10 +109,10 @@ export const ticketsRouter = createTRPCRouter({
           },
         },
         data: {
-          status: 'DELIVERED',
           deliveredAt: new Date(),
           name: input.name,
           phone: input.phone,
+          description: input.description,
         },
       })
 

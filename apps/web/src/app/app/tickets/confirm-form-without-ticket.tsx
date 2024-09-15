@@ -17,6 +17,7 @@ import { inputPhoneMask } from '@/utils/inputMasks'
 const confirmFormWithoutTicketSchema = z.object({
   name: z.string(),
   phone: z.string(),
+  description: z.string().optional(),
 })
 
 export type ConfirmFormWithoutTicket = z.infer<
@@ -30,6 +31,9 @@ export function ConfirmFormWithoutTicket({
 }) {
   const form = useForm<ConfirmFormWithoutTicket>({
     resolver: zodResolver(confirmFormWithoutTicketSchema),
+    defaultValues: {
+      description: '',
+    },
   })
 
   return (
@@ -61,6 +65,20 @@ export function ConfirmFormWithoutTicket({
                   value={inputPhoneMask(field.value || '')}
                   maxLength={16}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Obervação/anotação</FormLabel>
+              <FormControl>
+                <Input placeholder="Obervação/anotação" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

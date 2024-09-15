@@ -27,9 +27,7 @@ export const TicketsTable: React.FC<IProps> = ({ tickets }) => {
           data={data?.tickets || tickets}
           // addComponent={<TicketForm refetch={refetch} />}
           actionComponent={ticketActions({ refetch })}
-          actionDisabledFunction={({ row }) =>
-            row.original.status === 'DELIVERED'
-          }
+          actionDisabledFunction={({ row }) => !!row.original.deliveredAt}
           initialColumnVisibility={{ cleanName: false }}
         />
       </CardContent>

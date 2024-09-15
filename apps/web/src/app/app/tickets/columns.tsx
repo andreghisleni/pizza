@@ -44,7 +44,10 @@ export const columns = ({}: ColumnsProps): ColumnDef<Ticket>[] => [ // eslint-di
     cell: ({ row }) => (
       <div className="flex flex-col">
         <span>{row.original.name}</span>
-        <span className="text-xs text-gray-500">{row.original.phone}</span>
+        <span className="text-sm text-gray-500">{row.original.phone}</span>
+        <span className="text-xs text-gray-500">
+          {row.original.description}
+        </span>
       </div>
     ),
   },
