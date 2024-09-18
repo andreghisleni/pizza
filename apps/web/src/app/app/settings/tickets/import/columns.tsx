@@ -2,8 +2,6 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 
-import { tdb } from '@/components/TableDataButton'
-
 import { Item } from './page'
 
 // This type is used to define the shape of our data.

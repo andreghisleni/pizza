@@ -14,7 +14,7 @@ export async function OtherHeader() {
     <div className="border-b">
       <div className="flex h-[3rem] items-center justify-between px-8 sm:hidden ">
         <div className="flex w-auto items-center space-x-4 overflow-x-auto">
-          <h1 className="text-xl">Mutirão CEPE</h1>
+          <h1 className="text-xl">Pizza extra</h1>
         </div>
 
         <div className="flex items-center space-x-4">

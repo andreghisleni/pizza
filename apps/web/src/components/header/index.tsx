@@ -27,7 +27,7 @@ export async function Header({
     <div className={cn('border-b', className)}>
       <div className="hidden h-[3.5rem] items-center  justify-between px-8 sm:flex ">
         <div className="flex w-auto items-center gap-4 space-x-4 overflow-x-auto sm:gap-0">
-          <h1 className="text-xl">Mutirão CEPE</h1>
+          <h1 className="text-xl">Pizza extra</h1>
 
           <Separator orientation="vertical" className="hidden h-6 sm:block" />
           <Separator orientation="horizontal" className="sm:hidden" />

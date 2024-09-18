@@ -17,6 +17,12 @@ importers:
       '@aws-sdk/client-s3':
         specifier: 3.509.0
         version: 3.509.0
+      '@highlight-run/node':
+        specifier: ^3.9.0
+        version: 3.9.2
+      '@hookform/resolvers':
+        specifier: 3.3.4
+        version: 3.3.4(react-hook-form@7.49.3(react@18.3.1))
       '@pizza/auth':
         specifier: workspace:*
         version: link:../../packages/auth
@@ -38,12 +44,6 @@ importers:
       '@pizza/trpc':
         specifier: workspace:*
         version: link:../../packages/trpc
-      '@highlight-run/node':
-        specifier: ^3.9.0
-        version: 3.9.2
-      '@hookform/resolvers':
-        specifier: 3.3.4
-        version: 3.3.4(react-hook-form@7.49.3(react@18.3.1))
       '@prisma/client':
         specifier: 5.11.0
         version: 5.11.0(prisma@5.19.1)
@@ -185,6 +185,9 @@ importers:
       jotai-immer:
         specifier: 0.2.0
         version: 0.2.0(immer@10.0.3)(jotai@2.6.3(@types/react@18.2.55)(react@18.3.1))(react@18.3.1)
+      json-as-xlsx:
+        specifier: ^2.5.6
+        version: 2.5.6
       lucide-react:
         specifier: 0.319.0
         version: 0.319.0(react@18.3.1)
@@ -459,15 +462,15 @@ importers:
 
   packages/prisma:
     dependencies:
-      '@pizza/env':
-        specifier: workspace:*
-        version: link:../env
       '@faker-js/faker':
         specifier: ^8.4.1
         version: 8.4.1
       '@neondatabase/serverless':
         specifier: ^0.7.2
         version: 0.7.2
+      '@pizza/env':
+        specifier: workspace:*
+        version: link:../env
       '@prisma/adapter-neon':
         specifier: ^5.11.0
         version: 5.19.1(@neondatabase/serverless@0.7.2)
@@ -854,6 +857,11 @@ packages:
   '@babel/types@7.25.6':
     resolution: {integrity: sha512-/l42B1qxpG6RdfYf343Uw1vmDjeNhneUXtzhojE7pDgfpEypmRhI6j1kr17XCVv4Cgl9HdAiQY2x0GwKm7rWCw==}
     engines: {node: '>=6.9.0'}
+
+  '@e965/xlsx@0.20.3':
+    resolution: {integrity: sha512-703RN/3OdsRD5mtse2HBX7Um7xwaP9tlswEG6svOtjqokXoX7rJdQj7DyabD2I+xk22RgaIIU+R6BHgkpZGB/w==}
+    engines: {node: '>=0.8'}
+    hasBin: true
 
   '@emnapi/runtime@1.2.0':
     resolution: {integrity: sha512-bV21/9LQmcQeCPEg3BDFtvwL6cwiTMksYNWQQ4KOxCZikEGalWtenoZ0wCiukJINlGCIi2KXx01g4FoH/LxpzQ==}
@@ -4114,6 +4122,9 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
 
+  json-as-xlsx@2.5.6:
+    resolution: {integrity: sha512-z7phlB+VgS9wZv2N4SBKlguC3C7uauSj2PYSZICCrPaiu1lu8zkCpzZ4sOHWi0/3Je0CJl87q+J+3mpZbxpOew==}
+
   json-buffer@3.0.1:
     resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==}
 
@@ -6151,6 +6162,8 @@ snapshots:
       '@babel/helper-string-parser': 7.24.8
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
+
+  '@e965/xlsx@0.20.3': {}
 
   '@emnapi/runtime@1.2.0':
     dependencies:
@@ -9812,6 +9825,10 @@ snapshots:
       argparse: 2.0.1
 
   jsesc@2.5.2: {}
+
+  json-as-xlsx@2.5.6:
+    dependencies:
+      '@e965/xlsx': 0.20.3
 
   json-buffer@3.0.1: {}
 

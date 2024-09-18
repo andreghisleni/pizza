@@ -11,6 +11,7 @@ import { nativeClient } from '@/lib/trpc/client'
 import { trpc } from '@/lib/trpc/react'
 
 import { columns } from './columns'
+import { ExportWithErrorButton } from './export-with-error-button'
 
 export type Item = {
   visionId: string
@@ -204,6 +205,10 @@ export default function MyNextJsExcelSheet() {
           </ul>
 
           <Button onClick={handleCreate}>Cadastrar tickets</Button>
+          <ExportWithErrorButton
+            itensWithError={items.filter((i) => i.error?.length)}
+            disabled={!items.length || !items.filter((i) => i.updated).length}
+          />
         </div>
 
         <div>
