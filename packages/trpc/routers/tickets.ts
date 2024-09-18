@@ -131,4 +131,17 @@ export const ticketsRouter = createTRPCRouter({
 
     return { totalTickets, totalDeliveredTickets }
   }),
+
+  getTicketsAfterImport: protectedProcedure.query(async () => {
+    const tickets = await prisma.ticket.findMany({
+      where: {
+        created: 'AFTERIMPORT',
+      },
+      orderBy: {
+        number: 'asc',
+      },
+    })
+
+    return { tickets }
+  }),
 })
