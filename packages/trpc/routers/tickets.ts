@@ -1,5 +1,6 @@
 import { prisma } from '@pizza/prisma'
 import { ticketSchema, ticketUpdateSchema } from '@pizza/schema'
+import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 import { createTRPCRouter, protectedProcedure } from '../trpc'
@@ -18,6 +19,28 @@ export const ticketsRouter = createTRPCRouter({
       })
 
       return { tickets }
+    }),
+  createTicket: protectedProcedure
+    .input(ticketSchema)
+    .mutation(async ({ input }) => {
+      const ticketExistis = await prisma.ticket.findFirst({
+        where: {
+          number: input.number,
+        },
+      })
+
+      if (ticketExistis) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'Ticket already exists',
+        })
+      }
+
+      const ticket = await prisma.ticket.create({
+        data: { ...input, created: 'AFTERIMPORT' },
+      })
+
+      return ticket
     }),
 
   updateTicket: protectedProcedure

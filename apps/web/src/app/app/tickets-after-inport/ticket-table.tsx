@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { trpc } from '@/lib/trpc/react'
 
 import { columns, Ticket } from './columns'
+import { ConfirmTicketForm } from './create-ticket-form'
 
 type IProps = {
   tickets: Ticket[]
@@ -24,7 +25,7 @@ export const TicketsTable: React.FC<IProps> = ({ tickets }) => {
         <DataTable
           columns={columns({ refetch })}
           data={data?.tickets || tickets}
-          // addComponent={<TicketForm refetch={refetch} />}
+          addComponent={<ConfirmTicketForm refetch={refetch} />}
         />
       </CardContent>
     </Card>
