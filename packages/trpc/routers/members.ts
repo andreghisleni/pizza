@@ -1,5 +1,9 @@
 import { prisma } from '@pizza/prisma'
-import { memberSchema, memberUpdateSchema } from '@pizza/schema'
+import {
+  memberCreateSchema,
+  memberSchema,
+  memberUpdateSchema,
+} from '@pizza/schema'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
@@ -51,6 +55,49 @@ export const membersRouter = createTRPCRouter({
       })
 
       return { members }
+    }),
+
+  createMember: protectedProcedure
+    .input(memberCreateSchema)
+    .mutation(async ({ input }) => {
+      const verifyMember = await prisma.member.findFirst({
+        where: {
+          OR: [
+            {
+              name: input.name,
+            },
+            {
+              register: input.register,
+            },
+            {
+              visionId: input.visionId,
+            },
+          ],
+        },
+      })
+
+      if (verifyMember) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'Member already exists',
+        })
+      }
+
+      const member = await prisma.member.create({
+        data: {
+          ...input,
+          visionId: input.visionId === 'undefined' ? null : input.visionId,
+          name: input.name
+            .toLowerCase()
+            .replace(/(?:^|\s)\S/g, (a) => a.toUpperCase()),
+          cleanName: input.name
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, ''),
+        },
+      })
+
+      return { member }
     }),
 
   updateMember: protectedProcedure

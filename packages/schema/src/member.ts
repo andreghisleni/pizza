@@ -9,9 +9,15 @@ export const memberSchema = z
   })
   .describe('Sessão')
 
-export const memberUpdateSchema = memberSchema.merge(
+export const memberCreateSchema = memberSchema.merge(
+  z.object({
+    sessionId: z.string().uuid().describe('Seção'),
+    sessionName: z.undefined(),
+  }),
+)
+
+export const memberUpdateSchema = memberCreateSchema.merge(
   z.object({
     id: z.string().uuid(),
-    sessionId: z.string().uuid(),
   }),
 )

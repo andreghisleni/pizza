@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { trpc } from '@/lib/trpc/react'
 
 import { columns, Member } from './columns'
+import { MemberForm } from './member-form'
 
 type IProps = {
   members: Member[]
@@ -16,6 +17,7 @@ type IProps = {
 
 export const MembersTable: React.FC<IProps> = ({ members }) => {
   const { data, refetch } = trpc.getMembers.useQuery()
+  const { data: sessionsData } = trpc.getSessions.useQuery()
 
   return (
     <Card>
@@ -24,12 +26,18 @@ export const MembersTable: React.FC<IProps> = ({ members }) => {
       </CardHeader>
       <CardContent>
         <DataTable
-          columns={columns({ refetch })}
+          columns={columns({ refetch, sessions: sessionsData?.sessions || [] })}
           data={data?.members || members}
           addComponent={
-            <Button asChild>
-              <Link href="/app/settings/members/import">Adicionar</Link>
-            </Button>
+            <>
+              <Button asChild>
+                <Link href="/app/settings/members/import">Adicionar</Link>
+              </Button>
+              <MemberForm
+                refetch={refetch}
+                sessions={sessionsData?.sessions || []}
+              />
+            </>
           }
         />
       </CardContent>

@@ -36,8 +36,26 @@ export const ticketsRouter = createTRPCRouter({
         })
       }
 
+      if (input.memberId) {
+        const member = await prisma.member.findFirst({
+          where: {
+            id: input.memberId,
+          },
+        })
+
+        if (!member) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Member not found',
+          })
+        }
+      }
+
       const ticket = await prisma.ticket.create({
-        data: { ...input, created: 'AFTERIMPORT' },
+        data: {
+          ...input,
+          created: input.memberId ? undefined : 'AFTERIMPORT',
+        },
       })
 
       return ticket

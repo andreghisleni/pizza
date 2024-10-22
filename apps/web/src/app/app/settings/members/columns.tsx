@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 
 import { tdb } from '@/components/TableDataButton'
 
-import { MemberForm } from './member-form'
+import { MemberForm, Session } from './member-form'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -14,9 +14,13 @@ export type Member = RouterOutput['getMembers']['members'][0]
 
 type ColumnsProps = {
   refetch: () => void
+  sessions: Session[]
 }
 
-export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
+export const columns = ({
+  refetch,
+  sessions,
+}: ColumnsProps): ColumnDef<Member>[] => [
   tdb('visionId', 'Vision'),
   tdb('name', 'Nome'),
   // {
@@ -42,7 +46,9 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
   {
     id: 'actions',
     enableHiding: false,
-    cell: ({ row }) => <MemberForm refetch={refetch} member={row.original} />,
+    cell: ({ row }) => (
+      <MemberForm refetch={refetch} member={row.original} sessions={sessions} />
+    ),
   },
   // { accessorKey: 'cleanName', header: 'N', size: 0 },
 ]
