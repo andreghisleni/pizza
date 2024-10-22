@@ -95,6 +95,8 @@ model Ticket {
 
   deliveredAt DateTime? @map("delivered_at")
 
+  returned Boolean @default(false)
+
   createdAt DateTime      @default(now()) @map("created_at")
   created   TicketCreated @default(ONTHELOT) @map("created")
 

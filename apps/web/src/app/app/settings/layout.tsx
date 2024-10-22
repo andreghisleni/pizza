@@ -37,7 +37,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
                 <Users className="mr-2 size-4" />
                 Membros
               </AsideLink>
-              <AsideLink href="/app/settings/tickets/import">
+              <AsideLink href="/app/settings/tickets">
                 <Ticket className="mr-2 size-4" />
                 Tickets
               </AsideLink>

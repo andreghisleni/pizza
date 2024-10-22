@@ -5,6 +5,7 @@ import { Loading } from '@/components/summary/loading'
 import { TotalDeliveredTicket } from '@/components/summary/total-delivered-tickets'
 import { TotalMembers } from '@/components/summary/total-members'
 import { TotalTicket } from '@/components/summary/total-tickets'
+import { TotalTicketWithoutImported } from '@/components/summary/total-tickets-without-imported'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -20,6 +21,11 @@ export default function DashboardPage() {
         <div className="col-span-2">
           <Suspense fallback={<Loading />}>
             <TotalTicket />
+          </Suspense>
+        </div>
+        <div className="col-span-2">
+          <Suspense fallback={<Loading />}>
+            <TotalTicketWithoutImported />
           </Suspense>
         </div>
         <div className="col-span-2">

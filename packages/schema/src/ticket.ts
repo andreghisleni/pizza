@@ -2,8 +2,9 @@ import { z } from 'zod'
 
 export const ticketSchema = z
   .object({
-    memberId: z.string().uuid().optional(),
-    number: z.number().int(),
+    memberId: z.string().uuid().optional().describe('Membro'),
+    number: z.coerce.number().int().describe('Número'),
+    returned: z.boolean().optional().describe('Devolvido'),
   })
   .describe('Ingresso')
 
