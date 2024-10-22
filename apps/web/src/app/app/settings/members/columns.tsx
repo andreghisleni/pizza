@@ -39,10 +39,10 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
       )
     },
   },
-  // {
-  //   id: 'actions',
-  //   enableHiding: false,
-  //   cell: ({ row }) => <MemberForm refetch={refetch} member={row.original} />,
-  // },
+  {
+    id: 'actions',
+    enableHiding: false,
+    cell: ({ row }) => <MemberForm refetch={refetch} member={row.original} />,
+  },
   // { accessorKey: 'cleanName', header: 'N', size: 0 },
 ]
