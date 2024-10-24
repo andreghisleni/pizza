@@ -22,7 +22,7 @@ export const TicketsTable: React.FC<IProps> = ({ tickets }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Membros</CardTitle>
+        <CardTitle>Tickets</CardTitle>
       </CardHeader>
       <CardContent>
         <DataTable
