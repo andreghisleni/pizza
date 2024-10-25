@@ -30,6 +30,16 @@ export const columns = ({}: ColumnsProps): ColumnDef<Ticket>[] => [ // eslint-di
   //   enableHiding: false,
   //   cell: ({ row }) => <TicketForm refetch={refetch} ticket={row.original} />,
   // },
+
+  {
+    accessorKey: 'returned',
+    header: 'Devolvido',
+    cell: ({ getValue }) => {
+      const v = getValue<boolean>()
+      return <span>{v ? 'Sim' : 'Não'}</span>
+    },
+  },
+
   {
     id: 'cleanName',
     accessorKey: 'member.cleanName',
