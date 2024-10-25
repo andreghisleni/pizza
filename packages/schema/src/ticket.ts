@@ -4,7 +4,7 @@ export const ticketSchema = z
   .object({
     memberId: z.string().uuid().optional().describe('Membro'),
     number: z.coerce.number().int().describe('Número'),
-    returned: z.boolean().optional().describe('Devolvido'),
+    returned: z.boolean().optional().describe('Critica'),
   })
   .describe('Ingresso')
 

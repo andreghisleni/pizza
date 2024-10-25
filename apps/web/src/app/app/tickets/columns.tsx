@@ -33,7 +33,7 @@ export const columns = ({}: ColumnsProps): ColumnDef<Ticket>[] => [ // eslint-di
 
   {
     accessorKey: 'returned',
-    header: 'Devolvido',
+    header: 'Critica',
     cell: ({ getValue }) => {
       const v = getValue<boolean>()
       return <span>{v ? 'Sim' : 'Não'}</span>

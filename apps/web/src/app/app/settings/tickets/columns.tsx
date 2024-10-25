@@ -25,7 +25,7 @@ export const columns = ({
   tdb('member.name', 'Name'),
   {
     accessorKey: 'returned',
-    header: 'Devolvido',
+    header: 'Critica',
     cell: ({ row }) => {
       return <span>{row.getValue('returned') ? 'Sim' : 'Não'}</span>
     },
