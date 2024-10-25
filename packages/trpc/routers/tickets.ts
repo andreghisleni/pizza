@@ -175,7 +175,18 @@ export const ticketsRouter = createTRPCRouter({
       },
     })
 
-    return { totalTickets, totalDeliveredTickets, totalTicketsAfterImport }
+    const totalWithCritica = await prisma.ticket.count({
+      where: {
+        returned: true,
+      },
+    })
+
+    return {
+      totalTickets,
+      totalDeliveredTickets,
+      totalTicketsAfterImport,
+      totalWithCritica,
+    }
   }),
 
   getTicketsAfterImport: protectedProcedure.query(async () => {
