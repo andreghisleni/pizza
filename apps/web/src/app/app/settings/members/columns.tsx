@@ -93,7 +93,7 @@ export const columns = ({
           <DialogTrigger asChild>
             <Button>Tickets</Button>
           </DialogTrigger>
-          <DialogContent className="w-auto">
+          <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>Tickets: {row.original.name}</DialogTitle>
             </DialogHeader>
