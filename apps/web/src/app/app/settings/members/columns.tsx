@@ -4,7 +4,7 @@ import { RouterOutput } from '@pizza/trpc'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
-import { tdb } from '@/components/TableDataButton'
+import { tableDataButton, tdb } from '@/components/TableDataButton'
 import { agruparNumbers } from '@/utils/agrupar-numaros'
 
 import { MemberForm, Session } from './member-form'
@@ -47,7 +47,7 @@ export const columns = ({
   // tdb('tickets', 'N° Tickets'),
   {
     id: 'tickets',
-    header: 'N° Tickets',
+    header: tableDataButton('N° Tickets'),
     cell: ({ row }) => {
       return <span>{row.original.tickets.length}</span>
     },
