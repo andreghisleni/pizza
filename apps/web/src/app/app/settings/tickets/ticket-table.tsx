@@ -33,6 +33,9 @@ export const TicketsTable: React.FC<IProps> = ({ tickets }) => {
               <Button asChild>
                 <Link href="/app/settings/tickets/import">Importar</Link>
               </Button>
+              <Button asChild>
+                <Link href="/app/settings/tickets/critica">Importar</Link>
+              </Button>
               <TicketForm
                 refetch={refetch}
                 members={membersData?.members || []}

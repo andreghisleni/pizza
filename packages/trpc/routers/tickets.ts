@@ -116,6 +116,26 @@ export const ticketsRouter = createTRPCRouter({
     return { tickets }
   }),
 
+  getTicketsWithCritica: protectedProcedure.query(async () => {
+    const tickets = await prisma.ticket.findMany({
+      orderBy: [
+        {
+          member: {
+            name: 'asc',
+          },
+        },
+        {
+          number: 'asc',
+        },
+      ],
+      include: {
+        member: true,
+      },
+    })
+
+    return { tickets }
+  }),
+
   confirmTickets: protectedProcedure
     .input(z.array(z.string()))
     .mutation(async ({ input }) => {
@@ -180,12 +200,21 @@ export const ticketsRouter = createTRPCRouter({
         returned: true,
       },
     })
+    const totalWithCriticaAndDelivered = await prisma.ticket.count({
+      where: {
+        returned: true,
+        deliveredAt: {
+          not: null,
+        },
+      },
+    })
 
     return {
       totalTickets,
       totalDeliveredTickets,
       totalTicketsAfterImport,
       totalWithCritica,
+      totalWithCriticaAndDelivered,
     }
   }),
 

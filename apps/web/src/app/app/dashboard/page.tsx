@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 
 import { Loading } from '@/components/summary/loading'
 import { TotalDeliveredTicket } from '@/components/summary/total-delivered-tickets'
+import { TotalDeliveredTicketWithCritica } from '@/components/summary/total-delivered-tickets-with-critica'
 import { TotalMembers } from '@/components/summary/total-members'
 import { TotalTicket } from '@/components/summary/total-tickets'
 import { TotalTicketWithoutImported } from '@/components/summary/total-tickets-without-imported'
@@ -31,6 +32,11 @@ export default function DashboardPage() {
         <div className="col-span-2">
           <Suspense fallback={<Loading />}>
             <TotalDeliveredTicket />
+          </Suspense>
+        </div>
+        <div className="col-span-2">
+          <Suspense fallback={<Loading />}>
+            <TotalDeliveredTicketWithCritica />
           </Suspense>
         </div>
         <div className="col-span-2">
