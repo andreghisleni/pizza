@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 
 import { DataTable } from '@/components/data-table'
 import { tableDataButton, tdb } from '@/components/TableDataButton'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -89,8 +90,10 @@ export const columns = ({
         />
 
         <Dialog>
-          <DialogTrigger>Tickets</DialogTrigger>
-          <DialogContent>
+          <DialogTrigger asChild>
+            <Button>Tickets</Button>
+          </DialogTrigger>
+          <DialogContent className="w-auto">
             <DialogHeader>
               <DialogTitle>Tickets: {row.original.name}</DialogTitle>
             </DialogHeader>
