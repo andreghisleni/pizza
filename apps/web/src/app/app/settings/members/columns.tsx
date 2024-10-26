@@ -4,9 +4,18 @@ import { RouterOutput } from '@pizza/trpc'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
+import { DataTable } from '@/components/data-table'
 import { tableDataButton, tdb } from '@/components/TableDataButton'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { agruparNumbers } from '@/utils/agrupar-numaros'
 
+import { columnsTickets } from './columns-tickets'
 import { MemberForm, Session } from './member-form'
 
 // This type is used to define the shape of our data.
@@ -72,7 +81,27 @@ export const columns = ({
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => (
-      <MemberForm refetch={refetch} member={row.original} sessions={sessions} />
+      <>
+        <MemberForm
+          refetch={refetch}
+          member={row.original}
+          sessions={sessions}
+        />
+
+        <Dialog>
+          <DialogTrigger>Tickets</DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Tickets: {row.original.name}</DialogTitle>
+            </DialogHeader>
+            <DataTable
+              columns={columnsTickets}
+              data={row.original.tickets}
+              initialColumnVisibility={{ cleanName: false }}
+            />
+          </DialogContent>
+        </Dialog>
+      </>
     ),
   },
   // { accessorKey: 'cleanName', header: 'N', size: 0 },
