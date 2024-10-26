@@ -39,6 +39,13 @@ export async function TotalTicketWithoutDelivered() {
           (Total de ingressos - Total de ingressos entregues - Total de
           ingressos com critica e entregues)
         </p>
+        <p className="text-xs text-muted-foreground">
+          ({totalTickets} - {totalDeliveredTickets} -
+          {Math.abs(
+            diferenceBetweenTotalWithCriticaAndDeliveredAndTotalWithCritica,
+          )}
+          )
+        </p>
       </CardContent>
     </Card>
   )
