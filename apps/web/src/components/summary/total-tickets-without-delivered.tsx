@@ -21,7 +21,7 @@ export async function TotalTicketWithoutDelivered() {
   const totalToDeliver =
     totalTickets -
     totalDeliveredTickets -
-    diferenceBetweenTotalWithCriticaAndDeliveredAndTotalWithCritica
+    Math.abs(diferenceBetweenTotalWithCriticaAndDeliveredAndTotalWithCritica)
 
   return (
     <Card>
