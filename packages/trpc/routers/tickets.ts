@@ -131,6 +131,9 @@ export const ticketsRouter = createTRPCRouter({
       include: {
         member: true,
       },
+      where: {
+        returned: true,
+      },
     })
 
     return { tickets }

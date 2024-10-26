@@ -6,7 +6,7 @@ import { serverClient } from '@/lib/trpc/server'
 import { TicketsTable } from './ticket-table'
 
 export const metadata: Metadata = {
-  title: 'Tickets',
+  title: 'Tickets com critica',
 }
 
 export default async function TicketPage() {

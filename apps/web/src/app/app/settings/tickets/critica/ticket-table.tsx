@@ -18,7 +18,7 @@ export const TicketsTable: React.FC<IProps> = ({ tickets }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Tickets</CardTitle>
+        <CardTitle>Tickets com critica</CardTitle>
       </CardHeader>
       <CardContent>
         <DataTable
