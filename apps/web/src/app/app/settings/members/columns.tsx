@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
 import { tdb } from '@/components/TableDataButton'
+import { agruparNumbers } from '@/utils/agrupar-numaros'
 
 import { MemberForm, Session } from './member-form'
 
@@ -40,6 +41,30 @@ export const columns = ({
         <span>
           {format(new Date(row.getValue('createdAt')), 'dd/MM/yyyy HH:mm')}
         </span>
+      )
+    },
+  },
+  // tdb('tickets', 'N° Tickets'),
+  {
+    id: 'tickets',
+    header: 'N° Tickets',
+    cell: ({ row }) => {
+      return <span>{row.original.tickets.length}</span>
+    },
+  },
+  {
+    id: 'faixas',
+    header: 'Números',
+    cell: ({ row }) => {
+      const numeros = row.original.tickets.map((ticket) => ticket.number)
+
+      const faixa = agruparNumbers(numeros)
+      return (
+        <div className="flex flex-col">
+          {faixa.map((f, i) => (
+            <span key={i}>{f}</span>
+          ))}
+        </div>
       )
     },
   },

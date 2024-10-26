@@ -142,6 +142,11 @@ export const membersRouter = createTRPCRouter({
       },
       include: {
         session: true,
+        tickets: {
+          orderBy: {
+            number: 'asc',
+          },
+        },
       },
     })
 
