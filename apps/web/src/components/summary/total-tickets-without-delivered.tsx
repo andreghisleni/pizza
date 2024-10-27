@@ -8,20 +8,10 @@ import { serverClient } from '@/lib/trpc/server'
 export async function TotalTicketWithoutDelivered() {
   unstable_noStore()
 
-  const {
-    totalWithCritica,
-    totalDeliveredTickets,
-    totalTickets,
-    totalWithCriticaAndDelivered,
-  } = await serverClient.getTotalTickets()
+  const { totalDeliveredTickets, totalTickets } =
+    await serverClient.getTotalTickets()
 
-  const diferenceBetweenTotalWithCriticaAndDeliveredAndTotalWithCritica =
-    totalWithCriticaAndDelivered - totalWithCritica
-
-  const totalToDeliver =
-    totalTickets -
-    totalDeliveredTickets -
-    Math.abs(diferenceBetweenTotalWithCriticaAndDeliveredAndTotalWithCritica)
+  const totalToDeliver = totalTickets - totalDeliveredTickets
 
   return (
     <Card>
@@ -36,15 +26,10 @@ export async function TotalTicketWithoutDelivered() {
           {String(totalToDeliver).padStart(4, '0')}
         </span>
         <p className="text-xs text-muted-foreground">
-          (Total de ingressos - Total de ingressos entregues - Total de
-          ingressos com critica e entregues)
+          (Total de ingressos - Total de ingressos entregues)
         </p>
         <p className="text-xs text-muted-foreground">
-          ({totalTickets} - {totalDeliveredTickets} -
-          {Math.abs(
-            diferenceBetweenTotalWithCriticaAndDeliveredAndTotalWithCritica,
-          )}
-          )
+          ({totalTickets} - {totalDeliveredTickets})
         </p>
       </CardContent>
     </Card>
