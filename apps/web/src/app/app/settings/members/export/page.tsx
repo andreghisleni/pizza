@@ -27,7 +27,19 @@ export default function MyNextJsExcelSheet() {
         <CardTitle>Exportar ingressos não vendidos</CardTitle>
       </CardHeader>
       <CardContent className="flex justify-between gap-16">
-        <ExportButton members={members} tickets={tickets} />
+        <div className="min-w-96">
+          <ul>
+            <li>
+              <span>Total de membros com tickets para retirar: </span>{' '}
+              {members.length}
+            </li>
+            <li>
+              <span>Total de tickets para retirar: </span> {tickets.length}
+            </li>
+          </ul>
+
+          <ExportButton members={members} tickets={tickets} />
+        </div>
       </CardContent>
     </Card>
   )
