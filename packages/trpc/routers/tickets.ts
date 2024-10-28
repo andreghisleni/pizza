@@ -109,7 +109,11 @@ export const ticketsRouter = createTRPCRouter({
         },
       ],
       include: {
-        member: true,
+        member: {
+          include: {
+            session: true,
+          },
+        },
       },
     })
 
