@@ -72,7 +72,11 @@ export const columnsTickets = ({
     cell: ({ row }) => {
       return (
         <div className="flex flex-row space-x-2">
-          <DeleteTicketButton id={row.original.id} refetch={refetch} />
+          <DeleteTicketButton
+            id={row.original.id}
+            refetch={refetch}
+            isDelivered={!!row.original.deliveredAt}
+          />
         </div>
       )
     },

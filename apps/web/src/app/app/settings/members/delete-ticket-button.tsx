@@ -9,9 +9,10 @@ import { trpc } from '@/lib/trpc/react'
 type IProps = {
   id: string
   refetch: () => void
+  isDelivered: boolean
 }
 
-export function DeleteTicketButton({ id, refetch }: IProps) {
+export function DeleteTicketButton({ id, refetch, isDelivered }: IProps) {
   const { toast } = useToast()
   const { mutateAsync: deleteTicket, isPending: isPendingTicket } =
     trpc.deleteTicket.useMutation({
@@ -38,7 +39,10 @@ export function DeleteTicketButton({ id, refetch }: IProps) {
   }
 
   return (
-    <Button disabled={isPendingTicket} onClick={handleDeleteTicket}>
+    <Button
+      disabled={isDelivered || isPendingTicket}
+      onClick={handleDeleteTicket}
+    >
       {isPendingTicket ? <Loader2 className="animate-spin" /> : 'Excluir'}
     </Button>
   )
