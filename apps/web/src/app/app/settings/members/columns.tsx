@@ -5,7 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
 import { DataTable } from '@/components/data-table'
-import { tableDataButton, tdb } from '@/components/TableDataButton'
+import { tdb } from '@/components/TableDataButton'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -21,7 +21,10 @@ import { MemberForm, Session } from './member-form'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Member = RouterOutput['getMembers']['members'][0]
+export type Member = RouterOutput['getMembers']['members'][0] & {
+  totalTickets: number
+  totalTicketsToDeliver: number
+}
 
 type ColumnsProps = {
   refetch: () => void
@@ -55,20 +58,21 @@ export const columns = ({
     },
   },
   // tdb('tickets', 'N° Tickets'),
-  {
-    id: 'tickets',
-    header: tableDataButton('N° Tickets'),
-    cell: ({ row }) => {
-      return <span>{row.original.tickets.length}</span>
-    },
+  // {
+  //   id: 'tickets',
+  //   header: tableDataButton('N° Tickets'),
+  //   cell: ({ row }) => {
+  //     return <span>{row.original.tickets.length}</span>
+  //   },
 
-    sortingFn: (rowA, rowB, columnId) => {
-      const numA = rowA.getValue<Member>(columnId).tickets.length
-      const numB = rowB.getValue<Member>(columnId).tickets.length
+  //   sortingFn: (rowA, rowB, columnId) => {
+  //     const numA = rowA.getValue<Member>(columnId).tickets.length
+  //     const numB = rowB.getValue<Member>(columnId).tickets.length
 
-      return numA < numB ? 1 : numA > numB ? -1 : 0
-    },
-  },
+  //     return numA < numB ? 1 : numA > numB ? -1 : 0
+  //   },
+  // },
+  tdb('totalTickets', 'N° Tickets'),
   {
     id: 'faixas',
     header: 'Números',
@@ -85,32 +89,33 @@ export const columns = ({
       )
     },
   },
-  {
-    id: 'tickets-a-retirar',
-    header: tableDataButton('A retirar'),
-    cell: ({ row }) => {
-      return (
-        <span>
-          {row.original.tickets.length -
-            row.original.tickets.filter((t) => !!t.deliveredAt).length}
-        </span>
-      )
-    },
+  // {
+  //   id: 'tickets-a-retirar',
+  //   header: tableDataButton('A retirar'),
+  //   cell: ({ row }) => {
+  //     return (
+  //       <span>
+  //         {row.original.tickets.length -
+  //           row.original.tickets.filter((t) => !!t.deliveredAt).length}
+  //       </span>
+  //     )
+  //   },
 
-    sortingFn: (rowA, rowB, columnId) => {
-      const vRowA = rowA.getValue<Member>(columnId)
-      const vRowB = rowB.getValue<Member>(columnId)
+  //   sortingFn: (rowA, rowB, columnId) => {
+  //     const vRowA = rowA.getValue<Member>(columnId)
+  //     const vRowB = rowB.getValue<Member>(columnId)
 
-      const numA =
-        vRowA.tickets.length -
-        vRowA.tickets.filter((t) => !!t.deliveredAt).length
-      const numB =
-        vRowB.tickets.length -
-        vRowB.tickets.filter((t) => !!t.deliveredAt).length
+  //     const numA =
+  //       vRowA.tickets.length -
+  //       vRowA.tickets.filter((t) => !!t.deliveredAt).length
+  //     const numB =
+  //       vRowB.tickets.length -
+  //       vRowB.tickets.filter((t) => !!t.deliveredAt).length
 
-      return numA < numB ? 1 : numA > numB ? -1 : 0
-    },
-  },
+  //     return numA < numB ? 1 : numA > numB ? -1 : 0
+  //   },
+  // },
+  tdb('totalTicketsToDeliver', 'A retirar'),
   {
     id: 'actions',
     enableHiding: false,

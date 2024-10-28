@@ -27,7 +27,13 @@ export const MembersTable: React.FC<IProps> = ({ members }) => {
       <CardContent>
         <DataTable
           columns={columns({ refetch, sessions: sessionsData?.sessions || [] })}
-          data={data?.members || members}
+          data={(data?.members || members).map((member) => ({
+            ...member,
+            totalTickets: member.tickets.length,
+            totalTicketsToDeliver: member.tickets.filter(
+              (ticket) => !ticket.deliveredAt,
+            ).length,
+          }))}
           addComponent={
             <>
               <Button asChild>
