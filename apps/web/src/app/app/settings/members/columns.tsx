@@ -86,7 +86,7 @@ export const columns = ({
     },
   },
   {
-    id: 'tickets',
+    id: 'tickets-a-retirar',
     header: tableDataButton('A retirar'),
     cell: ({ row }) => {
       return (
