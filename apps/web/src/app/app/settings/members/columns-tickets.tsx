@@ -6,11 +6,17 @@ import { format } from 'date-fns'
 
 import { tdb } from '@/components/TableDataButton'
 
+import { DeleteTicketButton } from './delete-ticket-button'
+
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Ticket = RouterOutput['getMembers']['members'][0]['tickets'][0]
 
-export const columnsTickets: ColumnDef<Ticket>[] = [
+export const columnsTickets = ({
+  refetch,
+}: {
+  refetch: () => void
+}): ColumnDef<Ticket>[] => [
   tdb('number', 'N'),
   tdb('member.name', 'Name'),
   {
@@ -59,5 +65,16 @@ export const columnsTickets: ColumnDef<Ticket>[] = [
         </span>
       </div>
     ),
+  },
+  {
+    accessorKey: 'id',
+    header: 'Ações',
+    cell: ({ row }) => {
+      return (
+        <div className="flex flex-row space-x-2">
+          <DeleteTicketButton id={row.original.id} refetch={refetch} />
+        </div>
+      )
+    },
   },
 ]

@@ -233,4 +233,34 @@ export const ticketsRouter = createTRPCRouter({
 
     return { tickets }
   }),
+
+  deleteTicket: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      const ticket = await prisma.ticket.findUnique({
+        where: {
+          id: input.id,
+        },
+      })
+
+      if (!ticket) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Ticket not found',
+        })
+      }
+
+      if (ticket.deliveredAt) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Ticket already delivered',
+        })
+      }
+
+      await prisma.ticket.delete({
+        where: {
+          id: input.id,
+        },
+      })
+    }),
 })

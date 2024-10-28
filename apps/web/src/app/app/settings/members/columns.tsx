@@ -131,7 +131,7 @@ export const columns = ({
               <DialogTitle>Tickets: {row.original.name}</DialogTitle>
             </DialogHeader>
             <DataTable
-              columns={columnsTickets}
+              columns={columnsTickets({ refetch })}
               data={row.original.tickets}
               initialColumnVisibility={{ cleanName: false }}
             />
