@@ -61,6 +61,13 @@ export const columns = ({
     cell: ({ row }) => {
       return <span>{row.original.tickets.length}</span>
     },
+
+    sortingFn: (rowA, rowB, columnId) => {
+      const numA = rowA.getValue<Member>(columnId).tickets.length
+      const numB = rowB.getValue<Member>(columnId).tickets.length
+
+      return numA < numB ? 1 : numA > numB ? -1 : 0
+    },
   },
   {
     id: 'faixas',
@@ -76,6 +83,32 @@ export const columns = ({
           ))}
         </div>
       )
+    },
+  },
+  {
+    id: 'tickets',
+    header: tableDataButton('A retirar'),
+    cell: ({ row }) => {
+      return (
+        <span>
+          {row.original.tickets.length -
+            row.original.tickets.filter((t) => !!t.deliveredAt).length}
+        </span>
+      )
+    },
+
+    sortingFn: (rowA, rowB, columnId) => {
+      const vRowA = rowA.getValue<Member>(columnId)
+      const vRowB = rowB.getValue<Member>(columnId)
+
+      const numA =
+        vRowA.tickets.length -
+        vRowA.tickets.filter((t) => !!t.deliveredAt).length
+      const numB =
+        vRowB.tickets.length -
+        vRowB.tickets.filter((t) => !!t.deliveredAt).length
+
+      return numA < numB ? 1 : numA > numB ? -1 : 0
     },
   },
   {
