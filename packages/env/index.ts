@@ -13,6 +13,8 @@ export const env = createEnv({
     CLOUDFLARE_UPLOAD_BUCKET_NAME: z.string().min(1),
     AUTH_SECRET: z.string().min(1),
     HIGHLIGHT_PROJECT_ID: z.string().optional(),
+    WEB_PDF_HTML_URL: z.string().url().default('http://host.docker.internal:6010'),
+    API_PDF_URL: z.string().url().default('http://localhost:2305'),
   },
   client: {
     NEXT_PUBLIC_VERCEL_URL: z.string().url().min(1),
@@ -33,6 +35,8 @@ export const env = createEnv({
     CLOUDFLARE_UPLOAD_BUCKET_NAME: process.env.CLOUDFLARE_UPLOAD_BUCKET_NAME,
     AUTH_SECRET: process.env.AUTH_SECRET,
     HIGHLIGHT_PROJECT_ID: process.env.HIGHLIGHT_PROJECT_ID,
+    WEB_PDF_HTML_URL: process.env.WEB_PDF_HTML_URL,
+    API_PDF_URL: process.env.API_PDF_URL,
   },
   emptyStringAsUndefined: true,
 })
