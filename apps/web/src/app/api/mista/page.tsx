@@ -69,7 +69,7 @@ async function PostiteItem({ number }: { number: string }) {
         <img
           src={`data:image/png;base64, ${barcode}`}
           alt="Barcode"
-          className="absolute right-[14px] top-[222px] h-[40px] w-24"
+          className="absolute right-[14px] top-[224px] h-[40px] w-24"
         />
       )}
       {/* <div className="absolute right-56 top-60 text-4xl font-bold text-white">

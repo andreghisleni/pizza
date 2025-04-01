@@ -4,6 +4,7 @@ import { useState } from 'react'
 import * as XLSX from 'xlsx'
 
 import { DataTable } from '@/components/data-table'
+import { ShowJson } from '@/components/show-json'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useToast } from '@/components/ui/use-toast'
@@ -12,9 +13,9 @@ import { trpc } from '@/lib/trpc/react'
 import { columns } from './columns'
 
 export type Item = {
-  visionId: string
+  VISION: string
   name: string
-  sessionName: string
+  session: string
   register: string
 }
 
@@ -69,9 +70,9 @@ export default function MyNextJsExcelSheet() {
     createMembers.mutate({
       data: items.map((item) => ({
         name: item.name,
-        sessionName: item.sessionName,
+        sessionName: item.session,
         register: String(item.register),
-        visionId: String(item.visionId),
+        visionId: String(item.VISION),
       })),
     })
   }
@@ -93,6 +94,7 @@ export default function MyNextJsExcelSheet() {
               const file = e.target.files[0]
               readExcel(file)
             }}
+            accept=".xlsx"
           />
           <ul>
             <li>
@@ -100,7 +102,7 @@ export default function MyNextJsExcelSheet() {
             </li>
             <li>
               <span>Total de registros sem visionId: </span>{' '}
-              {items.filter((i) => !i.visionId).length}
+              {items.filter((i) => !i.VISION).length}
             </li>
             <li>
               <span>Total de registros sem registro: </span>{' '}
@@ -108,11 +110,13 @@ export default function MyNextJsExcelSheet() {
             </li>
             <li>
               <span>Total de registros sem registro e visionId: </span>{' '}
-              {items.filter((i) => !i.register && !i.visionId).length}
+              {items.filter((i) => !i.register && !i.VISION).length}
             </li>
           </ul>
 
           <Button onClick={handleCreate}>Cadastrar membros</Button>
+
+          {/* <ShowJson data={items} /> */}
         </div>
 
         <div>

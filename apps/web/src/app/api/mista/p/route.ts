@@ -9,7 +9,7 @@ export async function GET() {
     const response = await axios.post(
       `${env.API_PDF_URL}/1/pdf`,
       {
-        url: `${env.WEB_PDF_HTML_URL}/api/mista?start=1&end=1000`,
+        url: `${env.WEB_PDF_HTML_URL}/api/mista?start=2000&end=3000`,
         export: {
           // width: '515px',
           // height: '735px',

@@ -10,8 +10,8 @@ import { Item } from './page'
 // You can use a Zod schema here if you want.
 
 export const columns: ColumnDef<Item>[] = [
-  tdb('visionId', 'Vision'),
+  tdb('VISION', 'Vision'),
   tdb('name', 'Nome'),
   tdb('register', 'Registro'),
-  tdb('sessionName', 'Seção'),
+  tdb('session', 'Seção'),
 ]

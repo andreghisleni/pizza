@@ -18,7 +18,7 @@ export const membersRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const sessionNames = Array.from(
-        new Set(input.data.map((member) => member.sessionName)),
+        new Set(input.data.map((member) => member.sessionName.toLowerCase())),
       )
 
       const sessions = await prisma.session.findMany({
@@ -49,7 +49,8 @@ export const membersRouter = createTRPCRouter({
             .toLowerCase()
             .normalize('NFD')
             .replace(/[\u0300-\u036f]/g, ''),
-          sessionId: sessions.find((s) => s.name === sessionName)!.id,
+          sessionId: sessions.find((s) => s.name === sessionName.toLowerCase())!
+            .id,
         })),
         skipDuplicates: true,
       })
