@@ -56,18 +56,39 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
   // },
   tdb('totalTickets', 'N° Tickets'),
   {
-    id: 'faixas',
-    header: 'Números',
+    id: 'calabresa',
+    header: 'N° Calabresa',
     cell: ({ row }) => {
       return (
         <div className="flex flex-col">
-          {row.original.ticketRanges.map((f, i) => (
-            <span key={i}>
-              {f.start.toString().padStart(4, '0')}
-              {' - '}
-              {f.end.toString().padStart(4, '0')}
-            </span>
-          ))}
+          {row.original.ticketRanges
+            .filter((f) => f.start < 1001)
+            .map((f, i) => (
+              <span key={i}>
+                {f.start.toString().padStart(4, '0')}
+                {' - '}
+                {f.end.toString().padStart(4, '0')}
+              </span>
+            ))}
+        </div>
+      )
+    },
+  },
+  {
+    id: 'mistas',
+    header: 'N° Mistas',
+    cell: ({ row }) => {
+      return (
+        <div className="flex flex-col">
+          {row.original.ticketRanges
+            .filter((f) => f.start > 1999)
+            .map((f, i) => (
+              <span key={i}>
+                {f.start.toString().padStart(4, '0')}
+                {' - '}
+                {f.end.toString().padStart(4, '0')}
+              </span>
+            ))}
         </div>
       )
     },
