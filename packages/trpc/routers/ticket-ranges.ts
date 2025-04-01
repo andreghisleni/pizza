@@ -205,6 +205,31 @@ export const ticketRangesRouter = createTRPCRouter({
     }
   }),
 
+  getTotalTicketRangeToGenerate: protectedProcedure.query(async () => {
+    const ticketRanges = await prisma.ticketRange.findMany({
+      where: {
+        generatedAt: null,
+        deletedAt: null,
+      },
+    })
+
+    const numbers: number[] = []
+    ticketRanges.forEach((ticketRange) => {
+      if (ticketRange.end) {
+        for (let i = ticketRange.start; i <= ticketRange.end; i++) {
+          numbers.push(i)
+        }
+      } else {
+        numbers.push(ticketRange.start)
+      }
+    })
+
+    return {
+      totalTicketRangeToGenerate: ticketRanges.length,
+      totalNumbersToGenerate: numbers.length,
+    }
+  }),
+
   // getTicketRangesAfterImport: protectedProcedure.query(async () => {
   //   const ticketRanges = await prisma.ticketRange.findMany({
   //     where: {
