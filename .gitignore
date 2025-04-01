@@ -12,3 +12,5 @@ node_modules
 # turborepo
 .turbo
 .vercel
+
+*.pdf

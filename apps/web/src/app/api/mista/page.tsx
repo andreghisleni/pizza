@@ -1,15 +1,15 @@
 /* eslint @next/next/no-img-element: off */
 import { toBuffer } from 'bwip-js'
 import { Metadata } from 'next'
+import Image from 'next/image'
 import { z } from 'zod'
 
-import IngressoImg from '@/assets/ingresso.png'
-import Image from 'next/image'
+import IngressoImg from '@/assets/mista.png'
 
 const propsSchema = z.object({
   searchParams: z.object({
     start: z.coerce.number(),
-    end: z.coerce.number()
+    end: z.coerce.number(),
   }),
 })
 
@@ -42,22 +42,15 @@ export default async function PintSale(props: z.infer<typeof propsSchema>) {
 
   return (
     <div className="box-border flex h-screen w-screen flex-col bg-white font-sans text-black">
-      <div className="flex flex-wrap items-start gap-x-[3mm] break-words ">
-        {gerarArrayStrings4Caracteres(start, end).map((n) => <PostiteItem
-          {...{
-            key: n,
-            number: n,
-          }}
-        />)}
+      <div className="flex flex-wrap items-start gap-[2mm] break-words ">
+        {gerarArrayStrings4Caracteres(start, end).map((n) => (
+          <PostiteItem key={n} number={n} />
+        ))}
       </div>
     </div>
   )
 }
-async function PostiteItem({
-  number,
-}: {
-  number: string
-}) {
+async function PostiteItem({ number }: { number: string }) {
   const barcode = (
     await toBuffer({
       bcid: 'code128', // Tipo de código de barras
@@ -70,22 +63,21 @@ async function PostiteItem({
   ).toString('base64')
 
   return (
-    <div className="relative w-[515px] h-[735px] overflow-auto whitespace-nowrap text-[8px] bg-white">
-      <Image src={IngressoImg} alt="Ingresso" className="" />
+    <div className="relative h-[92.6mm] w-[65mm] whitespace-nowrap bg-white text-[8px]">
+      <Image src={IngressoImg} alt="Ingresso" className="h-[92.6mm] w-[65mm]" />
       {barcode && (
         <img
           src={`data:image/png;base64, ${barcode}`}
           alt="Barcode"
-          className="absolute top-48 right-5 w-44 h-24"
+          className="absolute right-[14px] top-[222px] h-[40px] w-24"
         />
       )}
-      <div className="absolute top-60 right-56 font-bold text-4xl text-white">
+      {/* <div className="absolute right-56 top-60 text-4xl font-bold text-white">
         <p>{number}</p>
-      </div>
+      </div> */}
     </div>
   )
 }
-
 
 function gerarArrayStrings4Caracteres(start: number, end: number): string[] {
   /**
@@ -98,17 +90,19 @@ function gerarArrayStrings4Caracteres(start: number, end: number): string[] {
    */
 
   if (!Number.isInteger(start) || !Number.isInteger(end)) {
-    throw new Error("Os valores de 'start' e 'end' devem ser inteiros.");
+    throw new Error("Os valores de 'start' e 'end' devem ser inteiros.")
   }
 
   if (start > end) {
-    throw new Error("O valor de 'start' deve ser menor ou igual ao valor de 'end'.");
+    throw new Error(
+      "O valor de 'start' deve ser menor ou igual ao valor de 'end'.",
+    )
   }
 
-  const arrayStrings: string[] = [];
+  const arrayStrings: string[] = []
   for (let numero = start; numero <= end; numero++) {
-    const stringFormatada: string = String(numero).padStart(4, '0');
-    arrayStrings.push(stringFormatada);
+    const stringFormatada: string = String(numero).padStart(4, '0')
+    arrayStrings.push(stringFormatada)
   }
-  return arrayStrings;
+  return arrayStrings
 }
