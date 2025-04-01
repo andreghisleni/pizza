@@ -56,7 +56,27 @@ model Member {
 
   createdAt DateTime @default(now()) @map("created_at")
 
+  tickets      Ticket[]
+  ticketRanges TicketRange[]
+}
+
+model TicketRange {
+  id String @id @default(uuid())
+
+  start Int
+  end   Int
+
+  memberId String? @map("member_id")
+  member   Member? @relation(fields: [memberId], references: [id])
+
+  generatedAt DateTime? @map("generated_at")
+
   tickets Ticket[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("ticket_ranges")
 }
 
 model Session {
@@ -99,6 +119,9 @@ model Ticket {
 
   createdAt DateTime      @default(now()) @map("created_at")
   created   TicketCreated @default(ONTHELOT) @map("created")
+
+  ticketRangeId String?      @map("ticket_range_id")
+  ticketRange   TicketRange? @relation(fields: [ticketRangeId], references: [id])
 
   @@map("tickets")
 }

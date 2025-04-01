@@ -148,6 +148,11 @@ export const membersRouter = createTRPCRouter({
             number: 'asc',
           },
         },
+        ticketRanges: {
+          orderBy: {
+            start: 'asc',
+          },
+        },
       },
     })
 

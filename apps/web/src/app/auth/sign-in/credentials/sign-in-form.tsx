@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, LogIn } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -22,6 +22,8 @@ type SignInFormSchema = z.infer<typeof signInFormSchema>
 export function SignInForm({ user, pass }: { user?: string; pass?: string }) {
   const { toast } = useToast()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectUrl = searchParams.get('callbackUrl') || '/app/dashboard'
   const {
     register,
     handleSubmit,
@@ -58,7 +60,9 @@ export function SignInForm({ user, pass }: { user?: string; pass?: string }) {
         description: 'Você foi autenticado com sucesso.',
       })
 
-      router.push('/app/dashboard')
+      console.log('response', redirectUrl)
+
+      router.push(redirectUrl)
     }
   }
 

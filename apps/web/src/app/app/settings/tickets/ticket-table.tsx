@@ -30,8 +30,10 @@ export const TicketsTable: React.FC<IProps> = ({ tickets }) => {
           data={data?.tickets || tickets}
           addComponent={
             <>
-              <Button asChild>
-                <Link href="/app/settings/tickets/import">Importar</Link>
+              <Button variant="outline" asChild>
+                <Link href="/app/settings/tickets/ranges">
+                  Faixas de ingressos
+                </Link>
               </Button>
               <Button asChild>
                 <Link href="/app/settings/tickets/critica">Importar</Link>
