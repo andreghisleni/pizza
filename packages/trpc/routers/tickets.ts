@@ -243,10 +243,14 @@ export const ticketsRouter = createTRPCRouter({
       totalTicketsAfterImport,
       totalWithCritica,
       totalWithCriticaAndDelivered,
-      totalPayedTickets,
-      totalPayedTicketsOnLastWeek,
+      // totalPayedTickets,
+      // totalPayedTicketsOnLastWeek,
     ] = await prisma.$transaction([
-      prisma.ticket.count(),
+      prisma.ticket.count({
+        where: {
+          returned: false,
+        },
+      }),
       prisma.ticket.count({
         where: {
           deliveredAt: {
@@ -272,26 +276,26 @@ export const ticketsRouter = createTRPCRouter({
           },
         },
       }),
-      prisma.ticket.count({
-        where: {
-          ticketPaymentId: {
-            not: null,
-          },
-        },
-      }),
-      prisma.ticket.count({
-        where: {
-          ticketPaymentId: {
-            not: null,
-          },
-          ticketPayment: {
-            payedAt: {
-              gte: new Date(new Date().setDate(new Date().getDate() - 7)),
-              lte: new Date(),
-            },
-          },
-        },
-      }),
+      // prisma.ticket.count({
+      //   where: {
+      //     ticketPaymentId: {
+      //       not: null,
+      //     },
+      //   },
+      // }),
+      // prisma.ticket.count({
+      //   where: {
+      //     ticketPaymentId: {
+      //       not: null,
+      //     },
+      //     ticketPayment: {
+      //       payedAt: {
+      //         gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+      //         lte: new Date(),
+      //       },
+      //     },
+      //   },
+      // }),
     ])
 
     return {
@@ -300,8 +304,8 @@ export const ticketsRouter = createTRPCRouter({
       totalTicketsAfterImport,
       totalWithCritica,
       totalWithCriticaAndDelivered,
-      totalPayedTickets,
-      totalPayedTicketsOnLastWeek,
+      // totalPayedTickets,
+      // totalPayedTicketsOnLastWeek,
     }
   }),
 
@@ -346,5 +350,73 @@ export const ticketsRouter = createTRPCRouter({
           id: input.id,
         },
       })
+    }),
+
+  returnTickets: protectedProcedure
+    .input(
+      z.object({
+        ticketIds: z.array(z.string()),
+        memberId: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const totalPayedTickets = await prisma.ticketPayment.findMany({
+        where: {
+          memberId: input.memberId,
+        },
+      })
+
+      const totalTickets = await prisma.ticket.count({
+        where: {
+          memberId: input.memberId,
+        },
+      })
+
+      if (totalPayedTickets.length > 0) {
+        const totalPayedTicketsValue = totalPayedTickets.reduce(
+          (acc, ticketPayment) => acc + ticketPayment.amount,
+          0,
+        )
+
+        if (
+          totalPayedTicketsValue >=
+          (input.ticketIds.length + totalTickets) * 50
+        ) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Member already paid for the tickets',
+          })
+        }
+      }
+
+      const tickets = await prisma.ticket.findMany({
+        where: {
+          id: {
+            in: input.ticketIds,
+          },
+          memberId: input.memberId,
+        },
+      })
+
+      if (input.ticketIds.length !== tickets.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Some tickets not found',
+        })
+      }
+
+      const ticketsUpdated = await prisma.ticket.updateMany({
+        where: {
+          id: {
+            in: input.ticketIds,
+          },
+          memberId: input.memberId,
+        },
+        data: {
+          returned: true,
+        },
+      })
+
+      return { tickets: ticketsUpdated }
     }),
 })

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { GroupBase, OptionsOrGroups } from 'react-select'
+import { GroupBase, Options, OptionsOrGroups } from 'react-select'
 
 import { ReactSelect } from './Select'
 
@@ -18,6 +18,13 @@ interface MySelectProps<Option, Group extends GroupBase<Option>> {
   className?: string
 
   placeholder?: string
+
+  menuPosition?: 'absolute' | 'fixed'
+  isOptionSelected?: (option: Option, selectValue: Options<Option>) => boolean
+
+  id?: string
+
+  closeMenuOnSelect?: boolean
 }
 
 export function MySelect({
@@ -28,12 +35,21 @@ export function MySelect({
   isMulti,
   className,
   placeholder,
+  menuPosition,
+  isOptionSelected,
+  id,
+  closeMenuOnSelect,
 }: MySelectProps<any, any>) {
   return (
     <ReactSelect
+      id={id}
       className={className}
-      defaultValue={options.filter((option) => value?.includes(option.value))}
-      value={options.filter((option) => value?.includes(option.value))}
+      defaultValue={options.filter((option) =>
+        isMulti ? value?.includes(option.value) : value === option.value,
+      )}
+      value={options.filter((option) =>
+        isMulti ? value?.includes(option.value) : value === option.value,
+      )}
       onChange={(v: any) => {
         // console.log(v); // eslint-disable-line no-console
 
@@ -41,9 +57,11 @@ export function MySelect({
       }}
       options={options}
       isDisabled={disabled}
-      closeMenuOnSelect
+      closeMenuOnSelect={closeMenuOnSelect}
       isMulti={isMulti}
       placeholder={placeholder ?? 'Select...'}
+      menuPosition={menuPosition}
+      isOptionSelected={isOptionSelected}
     />
   )
 }

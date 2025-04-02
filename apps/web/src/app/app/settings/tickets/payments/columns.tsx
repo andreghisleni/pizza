@@ -6,6 +6,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { tdbNew } from '@/components/table/TableDataButton'
 import { tdb } from '@/components/TableDataButton'
 
+import { ReturnTicketForm } from './return-tickets-form'
 import { TicketPaymentForm } from './ticket-payment-form'
 
 // This type is used to define the shape of our data.
@@ -38,6 +39,7 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
   // tdb('session.name', 'Seção'),
 
   tdb('totalTickets', 'N° Tickets'),
+  tdb('totalReturned', 'N° Retornos'),
   {
     id: 'calabresa',
     header: 'Calabresa',
@@ -111,19 +113,18 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
         return <span>Sem ingressos</span>
       }
 
-      const ticketsWithoutPayment = row.original.tickets.filter(
-        (t) => t.ticketPaymentId === null,
-      )
-      if (ticketsWithoutPayment.length === 0) {
+      if (row.original.total >= 0) {
         return <span>Pago</span>
       }
 
       return (
         <>
-          <TicketPaymentForm
+          <TicketPaymentForm refetch={refetch} memberId={row.original.id} />
+          <ReturnTicketForm
             refetch={refetch}
             memberId={row.original.id}
-            ticketsWithoutPayment={ticketsWithoutPayment}
+            ticketsReturn={row.original.tickets.filter((t) => !t.returned)}
+            total={row.original.total}
           />
         </>
       )

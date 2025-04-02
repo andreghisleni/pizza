@@ -3,12 +3,13 @@ import { unstable_noStore } from 'next/cache'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { serverClient } from '@/lib/trpc/server'
+import { formatToBRL } from '@/utils/formatToBRL'
 // import { serverClient } from '@/lib/trpc/server'
 
-export async function TotalPayedTicket() {
+export async function TotalValuePayedTicket() {
   unstable_noStore()
 
-  const { totalPayedTickets, totalPayedTicketsOnLastWeek } =
+  const { totalValuePayedTickets, totalValuePayedTicketsOnLastWeek } =
     await serverClient.getTotalTicketPayments()
 
   return (
@@ -21,10 +22,10 @@ export async function TotalPayedTicket() {
       </CardHeader>
       <CardContent className="space-y-1">
         <span className="text-2xl font-bold">
-          {String(totalPayedTickets).padStart(4, '0')}
+          {formatToBRL(totalValuePayedTickets)}
         </span>
         <p className="text-xs text-muted-foreground">
-          + {totalPayedTicketsOnLastWeek} nos últimos 7 dias
+          + {formatToBRL(totalValuePayedTicketsOnLastWeek)} nos últimos 7 dias
         </p>
       </CardContent>
     </Card>

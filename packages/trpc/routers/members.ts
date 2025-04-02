@@ -168,6 +168,8 @@ export const membersRouter = createTRPCRouter({
       members: members.map((member) => ({
         ...member,
         totalTickets: member.tickets.length,
+        totalReturned: member.tickets.filter((ticket) => ticket.returned)
+          .length,
         totalAmount: member.tickets.length * 50,
         totalPayed: member.ticketPayments.reduce(
           (acc, payment) => acc + payment.amount || 0,
@@ -187,7 +189,7 @@ export const membersRouter = createTRPCRouter({
             (acc, payment) => acc + payment.amount || 0,
             0,
           ) -
-          member.tickets.length * 50, // Saldo
+          member.tickets.filter((ticket) => !ticket.returned).length * 50, // Saldo
       })),
     }
   }),

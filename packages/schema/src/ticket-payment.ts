@@ -5,7 +5,7 @@ export const ticketPaymentCreateSchema = z
     visionId: z.string().optional().describe('Visão'),
     amount: z.coerce.number().describe('Valor Pago'),
     type: z.enum(['CASH', 'PIX']).describe('Tipo de Pagamento'),
-    ticketIds: z.array(z.string()).nonempty().describe('Ingressos'),
+    // ticketIds: z.array(z.string()).nonempty().describe('Ingressos'),
     payedAt: z.coerce.date().default(new Date()).describe('Data do Pagamento'),
   })
   .describe('Pagamento do Ingresso')

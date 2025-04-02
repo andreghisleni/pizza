@@ -124,9 +124,6 @@ model Ticket {
   ticketRangeId String?      @map("ticket_range_id")
   ticketRange   TicketRange? @relation(fields: [ticketRangeId], references: [id])
 
-  ticketPaymentId String?        @map("ticket_payment_id")
-  ticketPayment   TicketPayment? @relation(fields: [ticketPaymentId], references: [id])
-
   @@map("tickets")
 }
 
@@ -139,8 +136,6 @@ model TicketPayment {
   id String @id @default(uuid())
 
   visionId String? @map("vision_id")
-
-  tickets Ticket[]
 
   amount Float
 

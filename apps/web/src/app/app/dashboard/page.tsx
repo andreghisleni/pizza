@@ -10,6 +10,7 @@ import { TotalTicketRanges } from '@/components/summary/total-ticket-ranges'
 import { TotalTicket } from '@/components/summary/total-tickets'
 import { TotalTicketWithoutDelivered } from '@/components/summary/total-tickets-without-delivered'
 import { TotalTicketWithoutImported } from '@/components/summary/total-tickets-without-imported'
+import { TotalValuePayedTicket } from '@/components/summary/total-value-payed-tickets'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -30,6 +31,11 @@ export default function DashboardPage() {
         <div className="col-span-2">
           <Suspense fallback={<Loading />}>
             <TotalPayedTicket />
+          </Suspense>
+        </div>
+        <div className="col-span-2">
+          <Suspense fallback={<Loading />}>
+            <TotalValuePayedTicket />
           </Suspense>
         </div>
         <div className="col-span-2">

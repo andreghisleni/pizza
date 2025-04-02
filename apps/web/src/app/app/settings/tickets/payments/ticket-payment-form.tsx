@@ -40,14 +40,9 @@ import { cn } from '@/lib/utils'
 export function TicketPaymentForm({
   refetch,
   memberId,
-  ticketsWithoutPayment,
 }: {
   refetch: () => void
   memberId: string
-  ticketsWithoutPayment: {
-    id: string
-    number: number
-  }[]
 }) {
   const { toast } = useToast()
   const [isOpen, setIsOpen] = useState(false)
@@ -81,15 +76,6 @@ export function TicketPaymentForm({
     console.log('values', values)
 
     try {
-      if (values.ticketIds.length * 50 !== values.amount) {
-        toast({
-          title: `Valor inválido`,
-          description: `O valor deve ser igual a ${values.ticketIds.length * 50}`,
-          variant: 'destructive',
-        })
-        return
-      }
-
       await createTicketPayment.mutateAsync({
         ...values,
         memberId,
@@ -141,32 +127,7 @@ export function TicketPaymentForm({
                 <FormItem>
                   <FormLabel>Valor</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Valor"
-                      {...field}
-                      onChange={(v) => {
-                        if (
-                          Number(v.target.value) ===
-                          ticketsWithoutPayment.length * 50
-                        ) {
-                          form.setValue(
-                            'ticketIds',
-                            ticketsWithoutPayment.map(
-                              (ticket) => ticket.id,
-                            ) as [string, ...string[]],
-                          )
-                        }
-
-                        if (
-                          Number(v.target.value) <
-                          ticketsWithoutPayment.length * 50
-                        ) {
-                          form.setValue('ticketIds', [] as any) // eslint-disable-line @typescript-eslint/no-explicit-any
-                        }
-
-                        field.onChange(v)
-                      }}
-                    />
+                    <Input placeholder="Valor" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -187,28 +148,6 @@ export function TicketPaymentForm({
                         { label: 'Dinheiro', value: 'CASH' },
                         { label: 'PIX', value: 'PIX' },
                       ]}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="ticketIds"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ingressos</FormLabel>
-                  <FormControl>
-                    <MySelect
-                      placeholder="Selecione os ingressos"
-                      {...field}
-                      options={ticketsWithoutPayment.map((ticket) => ({
-                        label: ticket.number.toString(),
-                        value: ticket.id,
-                      }))}
-                      isMulti
                     />
                   </FormControl>
                   <FormMessage />
