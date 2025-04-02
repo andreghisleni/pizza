@@ -19,10 +19,10 @@
         "!.next/cache/**"
       ]
     },
-    "db:generate": {},
-    "db:migrate": {},
+    "db:g": {},
+    "db:m": {},
     "db:migrate:deploy": {},
-    "db:studio": {},
+    "db:s": {},
     "db:seed": {},
     "dev": {
       "cache": false,

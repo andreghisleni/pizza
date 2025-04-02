@@ -56,8 +56,9 @@ model Member {
 
   createdAt DateTime @default(now()) @map("created_at")
 
-  tickets      Ticket[]
-  ticketRanges TicketRange[]
+  tickets        Ticket[]
+  ticketRanges   TicketRange[]
+  ticketPayments TicketPayment[]
 }
 
 model TicketRange {
@@ -123,10 +124,40 @@ model Ticket {
   ticketRangeId String?      @map("ticket_range_id")
   ticketRange   TicketRange? @relation(fields: [ticketRangeId], references: [id])
 
+  ticketPaymentId String?        @map("ticket_payment_id")
+  ticketPayment   TicketPayment? @relation(fields: [ticketPaymentId], references: [id])
+
   @@map("tickets")
 }
 
 enum TicketCreated {
   ONTHELOT
   AFTERIMPORT
+}
+
+model TicketPayment {
+  id String @id @default(uuid())
+
+  visionId String? @map("vision_id")
+
+  tickets Ticket[]
+
+  amount Float
+
+  type TicketPaymentType
+
+  payedAt DateTime @default(now()) @map("paid_at")
+
+  memberId String @map("member_id")
+  member   Member @relation(fields: [memberId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("ticket_payments")
+}
+
+enum TicketPaymentType {
+  CASH
+  PIX
 }

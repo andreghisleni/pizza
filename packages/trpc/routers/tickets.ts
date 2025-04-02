@@ -188,33 +188,111 @@ export const ticketsRouter = createTRPCRouter({
     }),
 
   getTotalTickets: protectedProcedure.query(async () => {
-    const totalTickets = await prisma.ticket.count()
-    const totalDeliveredTickets = await prisma.ticket.count({
-      where: {
-        deliveredAt: {
-          not: null,
-        },
-      },
-    })
-    const totalTicketsAfterImport = await prisma.ticket.count({
-      where: {
-        created: 'AFTERIMPORT',
-      },
-    })
+    // const totalTickets = await prisma.ticket.count()
+    // const totalDeliveredTickets = await prisma.ticket.count({
+    //   where: {
+    //     deliveredAt: {
+    //       not: null,
+    //     },
+    //   },
+    // })
+    // const totalTicketsAfterImport = await prisma.ticket.count({
+    //   where: {
+    //     created: 'AFTERIMPORT',
+    //   },
+    // })
 
-    const totalWithCritica = await prisma.ticket.count({
-      where: {
-        returned: true,
-      },
-    })
-    const totalWithCriticaAndDelivered = await prisma.ticket.count({
-      where: {
-        returned: true,
-        deliveredAt: {
-          not: null,
+    // const totalWithCritica = await prisma.ticket.count({
+    //   where: {
+    //     returned: true,
+    //   },
+    // })
+    // const totalWithCriticaAndDelivered = await prisma.ticket.count({
+    //   where: {
+    //     returned: true,
+    //     deliveredAt: {
+    //       not: null,
+    //     },
+    //   },
+    // })
+
+    // const totalPayedTickets = await prisma.ticket.count({
+    //   where: {
+    //     ticketPaymentId: {
+    //       not: null,
+    //     },
+    //   },
+    // })
+
+    // const totalPayedTicketsOnLastWeek = await prisma.ticket.count({
+    //   where: {
+    //     ticketPaymentId: {
+    //       not: null,
+    //     },
+    //     ticketPayment: {
+    //       payedAt: {
+    //         gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+    //       },
+    //     },
+    //   },
+    // })
+
+    const [
+      totalTickets,
+      totalDeliveredTickets,
+      totalTicketsAfterImport,
+      totalWithCritica,
+      totalWithCriticaAndDelivered,
+      totalPayedTickets,
+      totalPayedTicketsOnLastWeek,
+    ] = await prisma.$transaction([
+      prisma.ticket.count(),
+      prisma.ticket.count({
+        where: {
+          deliveredAt: {
+            not: null,
+          },
         },
-      },
-    })
+      }),
+      prisma.ticket.count({
+        where: {
+          created: 'AFTERIMPORT',
+        },
+      }),
+      prisma.ticket.count({
+        where: {
+          returned: true,
+        },
+      }),
+      prisma.ticket.count({
+        where: {
+          returned: true,
+          deliveredAt: {
+            not: null,
+          },
+        },
+      }),
+      prisma.ticket.count({
+        where: {
+          ticketPaymentId: {
+            not: null,
+          },
+        },
+      }),
+      prisma.ticket.count({
+        where: {
+          ticketPaymentId: {
+            not: null,
+          },
+          ticketPayment: {
+            payedAt: {
+              gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+              lte: new Date(),
+            },
+          },
+        },
+      }),
+    ])
 
     return {
       totalTickets,
@@ -222,6 +300,8 @@ export const ticketsRouter = createTRPCRouter({
       totalTicketsAfterImport,
       totalWithCritica,
       totalWithCriticaAndDelivered,
+      totalPayedTickets,
+      totalPayedTicketsOnLastWeek,
     }
   }),
 

@@ -26,7 +26,8 @@ export const tableDataButton =
   (label: string) =>
   ({ column }: {column: Column<any>}) => (<TableDataButton column={column}>{label}</TableDataButton>)// eslint-disable-line
 
-export const tdb = (name: string, label: string) => ({
+export const tdb = (name: string, label: string, w?: number) => ({
   accessorKey: name,
   header: tableDataButton(label),
+  ...(w ? { size: w } : {}),
 })

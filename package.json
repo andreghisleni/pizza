@@ -3,12 +3,12 @@
   "scripts": {
     "dev": "turbo run dev --parallel --",
     "start": "turbo run start --",
-    "build": "turbo run db:generate; turbo run build --",
+    "build": "turbo run db:g; turbo run build --",
     "lint": "turbo run lint --",
-    "db:generate": "turbo run db:generate",
-    "db:migrate": "turbo run db:migrate",
+    "db:g": "turbo run db:g",
+    "db:m": "turbo run db:m",
     "db:migrate:deploy": "turbo run db:migrate:deploy",
-    "db:studio": "turbo run db:studio",
+    "db:s": "turbo run db:s",
     "db:seed": "turbo run db:seed"
   },
   "dependencies": {

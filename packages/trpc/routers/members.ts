@@ -148,6 +148,11 @@ export const membersRouter = createTRPCRouter({
             number: 'asc',
           },
         },
+        ticketPayments: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
         ticketRanges: {
           orderBy: {
             start: 'asc',
@@ -159,7 +164,32 @@ export const membersRouter = createTRPCRouter({
       },
     })
 
-    return { members }
+    return {
+      members: members.map((member) => ({
+        ...member,
+        totalTickets: member.tickets.length,
+        totalAmount: member.tickets.length * 50,
+        totalPayed: member.ticketPayments.reduce(
+          (acc, payment) => acc + payment.amount || 0,
+          0,
+        ),
+        totalPayedWithCash: member.ticketPayments.reduce(
+          (acc, payment) =>
+            acc + (payment.type === 'CASH' ? payment.amount : 0),
+          0,
+        ),
+        totalPayedWithPix: member.ticketPayments.reduce(
+          (acc, payment) => acc + (payment.type === 'PIX' ? payment.amount : 0),
+          0,
+        ),
+        total:
+          member.ticketPayments.reduce(
+            (acc, payment) => acc + payment.amount || 0,
+            0,
+          ) -
+          member.tickets.length * 50, // Saldo
+      })),
+    }
   }),
 
   getMembersWithVisionIdsOrNames: protectedProcedure

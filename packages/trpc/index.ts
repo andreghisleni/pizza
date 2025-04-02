@@ -4,6 +4,7 @@ import { membersRouter } from './routers/members'
 import { sessionRouter } from './routers/session'
 import { settingsRouter } from './routers/settings'
 import { storageRouter } from './routers/storage'
+import { ticketPaymentsRouter } from './routers/ticket-payments'
 import { ticketRangesRouter } from './routers/ticket-ranges'
 import { ticketsRouter } from './routers/tickets'
 import { usersRouter } from './routers/users'
@@ -17,6 +18,7 @@ export const appRouter = mergeRouters(
   membersRouter,
   ticketsRouter,
   ticketRangesRouter,
+  ticketPaymentsRouter,
 )
 
 export { createCallerFactory }
