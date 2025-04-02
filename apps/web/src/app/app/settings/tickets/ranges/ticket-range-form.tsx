@@ -60,11 +60,12 @@ export function TicketRangeForm({
       })
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onError: (error: any) => {
+    onError: (error) => {
       console.log(error) // eslint-disable-line no-console
+      console.log(JSON.stringify(error)) // eslint-disable-line no-console
       toast({
         title: `Erro ao cadastrar o ${formName}`,
-        description: error.response?.data as string,
+        description: error.message,
 
         variant: 'destructive',
       })

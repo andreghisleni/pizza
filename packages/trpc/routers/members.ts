@@ -152,6 +152,9 @@ export const membersRouter = createTRPCRouter({
           orderBy: {
             start: 'asc',
           },
+          where: {
+            deletedAt: null,
+          },
         },
       },
     })

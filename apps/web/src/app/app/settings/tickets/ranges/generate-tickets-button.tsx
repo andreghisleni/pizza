@@ -12,19 +12,18 @@ import { useToast } from '@/components/ui/use-toast'
 import { trpc } from '@/lib/trpc/react'
 
 type IProps = {
-  id: string
   refetch: () => void
-  children: React.ReactNode
+  totalToGenerate: number
 }
 
-export function DeleteTicketRangeButton({ id, refetch, children }: IProps) {
+export function GenerateTicketsButton({ refetch, totalToGenerate }: IProps) {
   const { toast } = useToast()
-  const { mutateAsync: deleteTicket, isPending: isPendingTicket } =
-    trpc.deleteTicketRange.useMutation({
+  const { mutateAsync: generateTickets, isPending: isPendingTicket } =
+    trpc.generateTicketsFromTicketRange.useMutation({
       onSuccess: () => {
         toast({
           title: 'Sucesso',
-          description: 'Faixa de ingresso excluída com sucesso',
+          description: 'Faixa de ingresso gerada com sucesso',
         })
         refetch()
       },
@@ -37,34 +36,37 @@ export function DeleteTicketRangeButton({ id, refetch, children }: IProps) {
       },
     })
 
-  async function handleDeleteTicket() {
-    await deleteTicket({
-      id,
-    })
+  async function handleGenerateTickets() {
+    await generateTickets()
   }
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          disabled={isPendingTicket}
-          variant="link"
-          className="m-0 justify-start p-0"
-        >
-          {isPendingTicket ? <Loader2 className="animate-spin" /> : children}
+        <Button disabled={isPendingTicket} variant="outline">
+          {isPendingTicket ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            'Gerar ingressos'
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        Tem certeza que deseja excluir essa faixa de ingressos?
+        Tem certeza que deseja gerar os ingressos não gerados ({totalToGenerate}{' '}
+        números a serem gerados)?
         <div className="flex">
           <Button
             variant="destructive"
-            onClick={handleDeleteTicket}
+            onClick={handleGenerateTickets}
             size="sm"
             className="mt-4"
             disabled={isPendingTicket}
           >
-            Excluir
+            {isPendingTicket ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              'Gerar ingressos'
+            )}
           </Button>
         </div>
       </PopoverContent>

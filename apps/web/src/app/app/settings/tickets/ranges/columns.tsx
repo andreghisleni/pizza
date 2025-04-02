@@ -2,15 +2,18 @@
 
 import { RouterOutput } from '@pizza/trpc'
 import { ColumnDef } from '@tanstack/react-table'
-import { format } from 'date-fns'
 
 import { tdb } from '@/components/TableDataButton'
 
+import { DeleteTicketRangeButton } from './delete-ticket-button'
 import { TicketRangeForm } from './ticket-range-form'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Member = RouterOutput['getMembers']['members'][0]
+export type Member = RouterOutput['getMembers']['members'][0] & {
+  totalTickets: number
+  totalTicketsToGenerate: number
+}
 
 type ColumnsProps = {
   refetch: () => void
@@ -28,67 +31,59 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
   // },
   tdb('register', 'Registro'),
   tdb('session.name', 'Seção'),
-  {
-    accessorKey: 'createdAt',
-    header: 'Criado em',
-    cell: ({ row }) => {
-      return (
-        <span>
-          {format(new Date(row.getValue('createdAt')), 'dd/MM/yyyy HH:mm')}
-        </span>
-      )
-    },
-  },
-  // tdb('tickets', 'N° Tickets'),
-  // {
-  //   id: 'tickets',
-  //   header: tableDataButton('N° Tickets'),
-  //   cell: ({ row }) => {
-  //     return <span>{row.original.tickets.length}</span>
-  //   },
 
-  //   sortingFn: (rowA, rowB, columnId) => {
-  //     const numA = rowA.getValue<Member>(columnId).tickets.length
-  //     const numB = rowB.getValue<Member>(columnId).tickets.length
-
-  //     return numA < numB ? 1 : numA > numB ? -1 : 0
-  //   },
-  // },
   tdb('totalTickets', 'N° Tickets'),
+  tdb('totalTicketsToGenerate', 'N° Tickets a gerar'),
   {
     id: 'calabresa',
-    header: 'N° Calabresa',
+    header: 'Calabresa',
     cell: ({ row }) => {
       return (
         <div className="flex flex-col">
           {row.original.ticketRanges
             .filter((f) => f.start < 1001)
-            .map((f, i) => (
-              <span key={i}>
-                {f.start.toString().padStart(4, '0')}
-                {' - '}
-                {f.end.toString().padStart(4, '0')}
-              </span>
-            ))}
+            .map((f, i) =>
+              f.generatedAt ? (
+                <span key={i}>
+                  {f.start.toString().padStart(4, '0')}
+                  {' - '}
+                  {f.end.toString().padStart(4, '0')}
+                </span>
+              ) : (
+                <DeleteTicketRangeButton key={i} id={f.id} refetch={refetch}>
+                  {f.start.toString().padStart(4, '0')}
+                  {' - '}
+                  {f.end.toString().padStart(4, '0')}
+                </DeleteTicketRangeButton>
+              ),
+            )}
         </div>
       )
     },
   },
   {
     id: 'mistas',
-    header: 'N° Mistas',
+    header: 'Mistas',
     cell: ({ row }) => {
       return (
         <div className="flex flex-col">
           {row.original.ticketRanges
             .filter((f) => f.start > 1999)
-            .map((f, i) => (
-              <span key={i}>
-                {f.start.toString().padStart(4, '0')}
-                {' - '}
-                {f.end.toString().padStart(4, '0')}
-              </span>
-            ))}
+            .map((f, i) =>
+              f.generatedAt ? (
+                <span key={i}>
+                  {f.start.toString().padStart(4, '0')}
+                  {' - '}
+                  {f.end.toString().padStart(4, '0')}
+                </span>
+              ) : (
+                <DeleteTicketRangeButton key={i} id={f.id} refetch={refetch}>
+                  {f.start.toString().padStart(4, '0')}
+                  {' - '}
+                  {f.end.toString().padStart(4, '0')}
+                </DeleteTicketRangeButton>
+              ),
+            )}
         </div>
       )
     },
@@ -119,7 +114,6 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
   //     return numA < numB ? 1 : numA > numB ? -1 : 0
   //   },
   // },
-  tdb('totalTicketsToDeliver', 'A retirar'),
   {
     id: 'actions',
     enableHiding: false,

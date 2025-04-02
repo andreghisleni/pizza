@@ -230,19 +230,6 @@ export const ticketRangesRouter = createTRPCRouter({
     }
   }),
 
-  // getTicketRangesAfterImport: protectedProcedure.query(async () => {
-  //   const ticketRanges = await prisma.ticketRange.findMany({
-  //     where: {
-  //       created: 'AFTERIMPORT',
-  //     },
-  //     orderBy: {
-  //       number: 'asc',
-  //     },
-  //   })
-
-  //   return { ticketRanges }
-  // }),
-
   deleteTicketRange: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
@@ -266,6 +253,13 @@ export const ticketRangesRouter = createTRPCRouter({
         })
       }
 
+      if (ticketRange.generatedAt) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'TicketRange already generated',
+        })
+      }
+
       await prisma.ticketRange.update({
         where: {
           id: input.id,
@@ -275,4 +269,53 @@ export const ticketRangesRouter = createTRPCRouter({
         },
       })
     }),
+
+  generateTicketsFromTicketRange: protectedProcedure.mutation(async () => {
+    const ticketRanges = await prisma.ticketRange.findMany({
+      where: {
+        generatedAt: null,
+        deletedAt: null,
+      },
+    })
+    const numbers: {
+      number: number
+      memberId: string | null
+      ticketRangeId: string
+    }[] = []
+    ticketRanges.forEach((ticketRange) => {
+      if (ticketRange.end) {
+        for (let i = ticketRange.start; i <= ticketRange.end; i++) {
+          numbers.push({
+            number: i,
+            memberId: ticketRange.memberId,
+            ticketRangeId: ticketRange.id,
+          })
+        }
+      } else {
+        numbers.push({
+          number: ticketRange.start,
+          memberId: ticketRange.memberId,
+          ticketRangeId: ticketRange.id,
+        })
+      }
+    })
+    const tickets = await prisma.ticket.createMany({
+      data: numbers,
+      skipDuplicates: true,
+    })
+
+    await prisma.ticketRange.updateMany({
+      where: {
+        generatedAt: null,
+        deletedAt: null,
+      },
+      data: {
+        generatedAt: new Date(),
+      },
+    })
+
+    return {
+      tickets,
+    }
+  }),
 })

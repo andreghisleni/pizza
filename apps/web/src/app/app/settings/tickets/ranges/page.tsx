@@ -14,5 +14,31 @@ export default async function TicketRangesPage() {
 
   const { members } = await serverClient.getMembers()
 
-  return <TicketRangesTable members={members} />
+  return (
+    <TicketRangesTable
+      members={members.map((member) => ({
+        ...member,
+        totalTickets: member.ticketRanges.reduce((acc, ticketRange) => {
+          const numbers: number[] = []
+
+          for (let i = ticketRange.start; i <= ticketRange.end; i++) {
+            numbers.push(i)
+          }
+
+          return acc + numbers.length
+        }, 0),
+        totalTicketsToGenerate: member.ticketRanges
+          .filter((ticketRange) => !ticketRange.generatedAt)
+          .reduce((acc, ticketRange) => {
+            const numbers: number[] = []
+
+            for (let i = ticketRange.start; i <= ticketRange.end; i++) {
+              numbers.push(i)
+            }
+
+            return acc + numbers.length
+          }, 0),
+      }))}
+    />
+  )
 }
