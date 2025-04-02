@@ -106,16 +106,27 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
   {
     id: 'actions',
     enableHiding: false,
-    cell: ({ row }) => (
-      <>
-        <TicketPaymentForm
-          refetch={refetch}
-          memberId={row.original.id}
-          ticketsWithoutPayment={row.original.tickets.filter(
-            (t) => t.ticketPaymentId === null,
-          )}
-        />
-      </>
-    ),
+    cell: ({ row }) => {
+      if (!row.original.tickets || row.original.tickets.length === 0) {
+        return <span>Sem ingressos</span>
+      }
+
+      const ticketsWithoutPayment = row.original.tickets.filter(
+        (t) => t.ticketPaymentId === null,
+      )
+      if (ticketsWithoutPayment.length === 0) {
+        return <span>Pago</span>
+      }
+
+      return (
+        <>
+          <TicketPaymentForm
+            refetch={refetch}
+            memberId={row.original.id}
+            ticketsWithoutPayment={ticketsWithoutPayment}
+          />
+        </>
+      )
+    },
   },
 ]

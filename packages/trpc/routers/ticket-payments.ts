@@ -34,6 +34,13 @@ export const ticketPaymentsRouter = createTRPCRouter({
         })
       }
 
+      if (input.ticketIds.length * 50 !== input.amount) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: `The amount must be equal to ${input.ticketIds.length * 50}`,
+        })
+      }
+
       const ticketPayment = await prisma.ticketPayment.create({
         data: {
           visionId: input.visionId,
