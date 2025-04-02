@@ -70,6 +70,44 @@ export const ticketRangesRouter = createTRPCRouter({
         })
       }
 
+      // check if number already exists in ticketRange
+      const ticketRangeExists = await prisma.ticketRange.findMany({
+        where: {
+          deletedAt: null,
+          OR: numbers.flatMap((number) => [
+            {
+              start: {
+                lte: number,
+              },
+              end: {
+                gte: number,
+              },
+            },
+            {
+              start: {
+                gte: number,
+                lte: number,
+              },
+            },
+            {
+              end: {
+                gte: number,
+                lte: number,
+              },
+            },
+          ]),
+        },
+      })
+
+      console.log('ticketRangeExists', ticketRangeExists)
+
+      if (ticketRangeExists && ticketRangeExists.length > 0) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: `TicketRange already exists, this range is already used from other ticket ranges.`,
+        })
+      }
+
       const member = await prisma.member.findFirst({
         where: {
           id: input.memberId,
