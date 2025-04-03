@@ -16,10 +16,10 @@ export async function GET() {
           format: 'A4',
           printBackground: true,
           margin: {
-            top: '0',
+            top: '0.5cm',
             right: '0',
             bottom: '0',
-            left: '0',
+            left: '0.5cm',
           },
         },
       },
