@@ -42,7 +42,7 @@ export default async function PintSale(props: z.infer<typeof propsSchema>) {
 
   return (
     <div className="box-border flex h-screen w-screen flex-col bg-white font-sans text-black">
-      <div className="flex flex-wrap items-start gap-[2mm] break-words ">
+      <div className="flex flex-wrap items-start break-words ">
         {gerarArrayStrings4Caracteres(start, end).map((n) => (
           <PostiteItem key={n} number={n} />
         ))}
@@ -63,13 +63,13 @@ async function PostiteItem({ number }: { number: string }) {
   ).toString('base64')
 
   return (
-    <div className="relative h-[92.6mm] w-[65mm] whitespace-nowrap bg-white text-[8px]">
-      <Image src={IngressoImg} alt="Ingresso" className="h-[92.6mm] w-[65mm]" />
+    <div className="relative h-[95mm] w-[65mm] whitespace-nowrap bg-white text-[8px]">
+      <Image src={IngressoImg} alt="Ingresso" className="h-[95mm] w-[65mm]" />
       {barcode && (
         <img
           src={`data:image/png;base64, ${barcode}`}
           alt="Barcode"
-          className="absolute right-[83px] top-[88px] h-[50px] w-28"
+          className="absolute right-[87px] top-[92px] h-[50px] w-28"
         />
       )}
       {/* <div className="absolute right-56 top-60 text-4xl font-bold text-white">

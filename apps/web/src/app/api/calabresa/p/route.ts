@@ -19,7 +19,7 @@ export async function GET() {
             top: '0.5cm',
             right: '0',
             bottom: '0',
-            left: '0.5cm',
+            left: '0.8cm',
           },
         },
       },
