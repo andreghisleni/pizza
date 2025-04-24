@@ -151,6 +151,8 @@ export function TicketRangeForm({
     }
   }, [isOpen, form])
 
+  form.watch('start') && form.setValue('end', Number(form.watch('start')) + 4)
+
   return (
     <Sheet onOpenChange={setIsOpen} open={isOpen}>
       <SheetTrigger asChild>
