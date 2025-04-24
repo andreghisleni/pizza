@@ -32,9 +32,13 @@ export const membersRouter = createTRPCRouter({
       console.log(sessions)
 
       if (sessions.length !== sessionNames.length) {
+        const missingSessions = sessionNames.filter(
+          (sessionName) =>
+            !sessions.find((session) => session.name === sessionName),
+        )
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Session not found',
+          message: `Sessions not found: ${missingSessions.join(', ')}`,
         })
       }
 
