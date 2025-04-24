@@ -239,6 +239,7 @@ export const ticketsRouter = createTRPCRouter({
 
     const [
       totalTickets,
+      totalWithoutCritica,
       totalDeliveredTickets,
       totalTicketsAfterImport,
       totalWithCritica,
@@ -246,6 +247,7 @@ export const ticketsRouter = createTRPCRouter({
       // totalPayedTickets,
       // totalPayedTicketsOnLastWeek,
     ] = await prisma.$transaction([
+      prisma.ticket.count(),
       prisma.ticket.count({
         where: {
           returned: false,
@@ -300,6 +302,7 @@ export const ticketsRouter = createTRPCRouter({
 
     return {
       totalTickets,
+      totalWithoutCritica,
       totalDeliveredTickets,
       totalTicketsAfterImport,
       totalWithCritica,
