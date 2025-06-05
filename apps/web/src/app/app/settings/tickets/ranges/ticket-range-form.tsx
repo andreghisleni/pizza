@@ -151,7 +151,7 @@ export function TicketRangeForm({
     }
   }, [isOpen, form])
 
-  form.watch('start') && form.setValue('end', Number(form.watch('start')) + 4)
+  // form.watch('start') && form.setValue('end', Number(form.watch('start')) + 4)
 
   return (
     <Sheet onOpenChange={setIsOpen} open={isOpen}>
@@ -252,7 +252,17 @@ export function TicketRangeForm({
                       <FormItem>
                         <FormLabel>{label}</FormLabel>
                         <FormControl>
-                          <Input placeholder={label} {...field} />
+                          <Input
+                            placeholder={label}
+                            {...field}
+                            onChange={(e) => {
+                              if (fieldName === 'start') {
+                                form.setValue('end', Number(e.target.value) + 4)
+                              }
+
+                              field.onChange(e)
+                            }}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -310,7 +320,20 @@ export function TicketRangeForm({
                         <FormItem>
                           <FormLabel>{label}</FormLabel>
                           <FormControl>
-                            <Input placeholder={label} {...field} />
+                            <Input
+                              placeholder={label}
+                              {...field}
+                              onChange={(e) => {
+                                if (fieldName === 'start') {
+                                  form.setValue(
+                                    'end',
+                                    Number(e.target.value) + 4,
+                                  )
+                                }
+
+                                field.onChange(e)
+                              }}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
