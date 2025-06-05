@@ -113,6 +113,10 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
         return <span>Sem ingressos</span>
       }
 
+      if (row.original.totalTickets === row.original.totalReturned) {
+        return <span>Todos retornados</span>
+      }
+
       if (row.original.total >= 0) {
         return <span>Pago</span>
       }

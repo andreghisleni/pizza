@@ -33,7 +33,7 @@ export * from '@prisma/client'
 export const prisma = new PrismaClient(
   env.NODE_ENV === 'development'
     ? {
-        log: ['error', 'info', 'query', 'warn'],
+        log: [], // 'error', 'info', 'query', 'warn'],
       }
     : {
         log: ['error'],

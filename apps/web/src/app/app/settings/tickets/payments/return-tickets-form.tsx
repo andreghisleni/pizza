@@ -75,8 +75,18 @@ export function ReturnTicketForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log('values', values)
 
+    console.log({
+      'values.ticketIds.length': values.ticketIds.length,
+      'values.ticketIds.length * 50': values.ticketIds.length * 50,
+      total,
+      'total * -1': total * -1,
+      'values.ticketIds.length * 50 > total * -1':
+        values.ticketIds.length * 50 > total * -1,
+      '(total * -1) / 50': (total * -1) / 50,
+    })
+
     try {
-      if (values.ticketIds.length * 50 !== total * -1) {
+      if (values.ticketIds.length * 50 > total * -1) {
         toast({
           title: `Você não pode devolver mais ingressos do que o total não pago`,
           description: `Você só pode devolver ${(total * -1) / 50} ingressos`,
