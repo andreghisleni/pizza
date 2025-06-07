@@ -8,7 +8,11 @@ import { serverClient } from '@/lib/trpc/server'
 export async function TotalTicketWithoutCritica() {
   unstable_noStore()
 
-  const { totalWithoutCritica } = await serverClient.getTotalTickets()
+  const {
+    totalWithoutCritica,
+    totalWithoutCriticaCalabresa,
+    totalWithoutCriticaMista,
+  } = await serverClient.getTotalTickets()
 
   return (
     <Card>
@@ -22,9 +26,12 @@ export async function TotalTicketWithoutCritica() {
         <span className="text-2xl font-bold">
           {String(totalWithoutCritica).padStart(4, '0')}
         </span>
-        {/* <p className="text-xs text-muted-foreground">
-          + {amountLastMonth} in last 30 days
-        </p> */}
+        <p className="text-xs text-muted-foreground">
+          Calabresa: {String(totalWithoutCriticaCalabresa).padStart(4, '0')}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Mista: {String(totalWithoutCriticaMista).padStart(4, '0')}
+        </p>
       </CardContent>
     </Card>
   )

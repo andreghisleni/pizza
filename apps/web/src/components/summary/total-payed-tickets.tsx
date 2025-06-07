@@ -8,8 +8,12 @@ import { serverClient } from '@/lib/trpc/server'
 export async function TotalPayedTicket() {
   unstable_noStore()
 
-  const { totalPayedTickets, totalPayedTicketsOnLastWeek } =
-    await serverClient.getTotalTicketPayments()
+  const {
+    totalPayedTickets,
+    totalPayedTicketsOnLastWeek,
+    totalCalabresaPayed,
+    totalMistaPayed,
+  } = await serverClient.getTotalTicketPayments()
 
   return (
     <Card>
@@ -25,6 +29,12 @@ export async function TotalPayedTicket() {
         </span>
         <p className="text-xs text-muted-foreground">
           + {totalPayedTicketsOnLastWeek} nos últimos 7 dias
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Calabresa: {String(totalCalabresaPayed).padStart(4, '0')}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Mista: {String(totalMistaPayed).padStart(4, '0')}
         </p>
       </CardContent>
     </Card>

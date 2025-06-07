@@ -44,18 +44,40 @@ export const ticketPaymentsRouter = createTRPCRouter({
   //   }),
 
   getTotalTicketPayments: protectedProcedure.query(async () => {
-    const [totalValuePayedTickets, totalValuePayedTicketsOnLastWeek] =
-      await prisma.$transaction([
-        prisma.ticketPayment.findMany(),
-        prisma.ticketPayment.findMany({
-          where: {
-            payedAt: {
-              gte: new Date(new Date().setDate(new Date().getDate() - 7)),
-              lte: new Date(),
+    const [
+      totalValuePayedTickets,
+      totalValuePayedTicketsOnLastWeek,
+      membersWithPizzaAndPaymentData,
+    ] = await prisma.$transaction([
+      prisma.ticketPayment.findMany(),
+      prisma.ticketPayment.findMany({
+        where: {
+          payedAt: {
+            gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+            lte: new Date(),
+          },
+        },
+      }),
+      prisma.member.findMany({
+        where: {
+          ticketPayments: {
+            some: {}, // Garante que apenas membros com pagamentos sejam retornados
+          },
+        },
+        include: {
+          tickets: {
+            select: {
+              number: true, // Apenas o número do ingresso é necessário para a contagem
             },
           },
-        }),
-      ])
+          ticketPayments: {
+            select: {
+              amount: true, // Apenas o valor do pagamento é necessário para a soma
+            },
+          },
+        },
+      }),
+    ])
 
     const totalValue = totalValuePayedTickets.reduce(
       (acc, ticket) => acc + ticket.amount,
@@ -67,6 +89,55 @@ export const ticketPaymentsRouter = createTRPCRouter({
       0,
     )
 
+    const payedPerMember = membersWithPizzaAndPaymentData
+      .map((member) => {
+        // Use Array.prototype.reduce to count calabresa and mista pizzas
+        const { calabresaCount, mistaCount } = member.tickets.reduce(
+          (acc, ticket) => {
+            if (ticket.number >= 0 && ticket.number <= 1000) {
+              acc.calabresaCount++
+            } else if (ticket.number >= 2000 && ticket.number <= 3000) {
+              acc.mistaCount++
+            }
+            return acc
+          },
+          { calabresaCount: 0, mistaCount: 0 },
+        )
+
+        // Use Array.prototype.reduce to sum up all payments
+        const totalPaymentsMade = member.ticketPayments.reduce(
+          (sum, payment) => sum + payment.amount,
+          0,
+        )
+
+        const totalPizzas = calabresaCount + mistaCount
+        const totalPizzasCostExpected = totalPizzas * 50
+        const isPaidOff = totalPaymentsMade >= totalPizzasCostExpected
+
+        return {
+          memberId: member.id,
+          memberName: member.name,
+          calabresaPizzas: calabresaCount,
+          mistaPizzas: mistaCount,
+          totalPizzasOrdered: totalPizzas,
+          totalPaymentsMade,
+          totalPizzasCostExpected,
+          isPaidOff, // true if the member is paid off, false otherwise
+          status: isPaidOff ? 'Quitado' : 'Devendo',
+        }
+      })
+      .filter((m) => m.isPaidOff)
+      .reduce(
+        (acc, member) => ({
+          calabresa: acc.calabresa + member.calabresaPizzas,
+          mista: acc.mista + member.mistaPizzas,
+        }),
+        {
+          calabresa: 0,
+          mista: 0,
+        },
+      )
+
     return {
       totalPayedTickets: Number((totalValue / 50).toFixed(0)),
       totalPayedTicketsOnLastWeek: Number(
@@ -74,6 +145,8 @@ export const ticketPaymentsRouter = createTRPCRouter({
       ),
       totalValuePayedTickets: totalValue,
       totalValuePayedTicketsOnLastWeek: totalValueOnLastWeek,
+      totalCalabresaPayed: payedPerMember.calabresa,
+      totalMistaPayed: payedPerMember.mista,
     }
   }),
 })

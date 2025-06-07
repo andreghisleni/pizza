@@ -246,6 +246,8 @@ export const ticketsRouter = createTRPCRouter({
       totalWithCriticaAndDelivered,
       // totalPayedTickets,
       // totalPayedTicketsOnLastWeek,
+      totalWithoutCriticaCalabresa,
+      totalWithoutCriticaMista,
     ] = await prisma.$transaction([
       prisma.ticket.count(),
       prisma.ticket.count({
@@ -298,6 +300,25 @@ export const ticketsRouter = createTRPCRouter({
       //     },
       //   },
       // }),
+
+      prisma.ticket.count({
+        where: {
+          returned: false,
+          number: {
+            gte: 0,
+            lte: 1000,
+          },
+        },
+      }),
+      prisma.ticket.count({
+        where: {
+          returned: false,
+          number: {
+            gte: 2000,
+            lte: 3000,
+          },
+        },
+      }),
     ])
 
     return {
@@ -309,6 +330,8 @@ export const ticketsRouter = createTRPCRouter({
       totalWithCriticaAndDelivered,
       // totalPayedTickets,
       // totalPayedTicketsOnLastWeek,
+      totalWithoutCriticaCalabresa,
+      totalWithoutCriticaMista,
     }
   }),
 
