@@ -2,10 +2,12 @@
 
 import Link from 'next/link'
 import React from 'react'
+import { useLocalStorage } from 'react-storage-complete'
 
 import { DataTable } from '@/components/data-table'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import { trpc } from '@/lib/trpc/react'
 
 import { columns, Ticket } from './columns'
@@ -18,13 +20,18 @@ type IProps = {
 export const TicketsTable: React.FC<IProps> = ({ tickets }) => {
   const { data, refetch } = trpc.getTickets.useQuery()
   const { data: membersData } = trpc.getMembers.useQuery()
-
+  // const [name, setName] = useLocalStorage('name')
   return (
     <Card>
       <CardHeader>
         <CardTitle>Tickets</CardTitle>
       </CardHeader>
       <CardContent>
+        {/* <Input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        /> */}
         <DataTable
           columns={columns({ refetch, members: membersData?.members || [] })}
           data={data?.tickets || tickets}

@@ -242,6 +242,9 @@ importers:
       react-select:
         specifier: ^5.8.0
         version: 5.10.1(@types/react@18.2.55)(react-dom@18.3.1)(react@18.3.1)
+      react-storage-complete:
+        specifier: ^1.1.13
+        version: 1.1.13(react-dom@18.3.1)(react@18.3.1)
       recharts:
         specifier: 2.11.0
         version: 2.11.0(prop-types@15.8.1)(react-dom@18.3.1)(react@18.3.1)
@@ -9221,6 +9224,17 @@ packages:
       react-transition-group: 2.9.0(react-dom@18.3.1)(react@18.3.1)
     dev: false
 
+  /react-storage-complete@1.1.13(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-xb1RqvfgmHcsMSH3Ka7ObYkhHQyN88yagtorTQ9TJwancJefLpmCMFwTte5pVbjWruuLi6rZwQiFiZ+gLXLa9w==}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0
+      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-sub-unsub: 2.2.8(react-dom@18.3.1)(react@18.3.1)
+    dev: false
+
   /react-style-singleton@2.2.3(@types/react@18.2.55)(react@18.3.1):
     resolution: {integrity: sha512-b6jSvxvVnyptAiLjbkWLE/lOnR4lfTtDAl+eUC7RZy+QQWc6wRzIV2CE6xBuMmDxc2qIihtDCZD5NPOFl7fRBQ==}
     engines: {node: '>=10'}
@@ -9235,6 +9249,16 @@ packages:
       get-nonce: 1.0.1
       react: 18.3.1
       tslib: 2.8.1
+    dev: false
+
+  /react-sub-unsub@2.2.8(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-o3tmiOOZPdQUCmRhkdCHXRFLOHnCwdz/N3QZ1JQ14fQGA2HysKMF0kWu56ERnQUCK7wYVCQzI8pFbnivAYNQ+A==}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0
+      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0 || ^22.0.0
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /react-transition-group@2.9.0(react-dom@18.3.1)(react@18.3.1):
