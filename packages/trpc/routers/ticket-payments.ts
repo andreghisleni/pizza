@@ -1,5 +1,5 @@
 import { prisma } from '@pizza/prisma'
-import { ticketPaymentSchema } from '@pizza/schema'
+import { ticketPaymentSchema, ticketPaymentUpdateSchema } from '@pizza/schema'
 
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
@@ -20,28 +20,28 @@ export const ticketPaymentsRouter = createTRPCRouter({
       return ticketPayment
     }),
 
-  // updateTicketPayment: protectedProcedure
-  //   .input(ticketPaymentUpdateSchema)
-  //   .mutation(async ({ input }) => {
-  //     const findTicketPayment = await prisma.ticketPayment.findFirst({
-  //       where: {
-  //         id: input.id,
-  //       },
-  //     })
+  updateTicketPayment: protectedProcedure
+    .input(ticketPaymentUpdateSchema)
+    .mutation(async ({ input }) => {
+      const findTicketPayment = await prisma.ticketPayment.findFirst({
+        where: {
+          id: input.id,
+        },
+      })
 
-  //     if (!findTicketPayment) {
-  //       throw new Error('TicketPayment not found')
-  //     }
+      if (!findTicketPayment) {
+        throw new Error('TicketPayment not found')
+      }
 
-  //     const ticketPayment = await prisma.ticketPayment.update({
-  //       where: {
-  //         id: input.id,
-  //       },
-  //       data: input,
-  //     })
+      const ticketPayment = await prisma.ticketPayment.update({
+        where: {
+          id: input.id,
+        },
+        data: input,
+      })
 
-  //     return ticketPayment
-  //   }),
+      return ticketPayment
+    }),
 
   getTotalTicketPayments: protectedProcedure.query(async () => {
     const [

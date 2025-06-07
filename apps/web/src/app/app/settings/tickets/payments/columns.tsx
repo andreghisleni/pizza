@@ -6,6 +6,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { tdbNew } from '@/components/table/TableDataButton'
 import { tdb } from '@/components/TableDataButton'
 
+import { MemberPaymentsTableModal } from './member-payments-table-modal'
 import { ReturnTicketForm } from './return-tickets-form'
 import { TicketPaymentForm } from './ticket-payment-form'
 
@@ -118,11 +119,30 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
       }
 
       if (row.original.total >= 0) {
-        return <span>Pago</span>
+        return (
+          <>
+            <span>Pago</span>
+            <MemberPaymentsTableModal
+              memberId={row.original.id}
+              memberName={row.original.name}
+              refetchMembers={refetch}
+              payments={row.original.ticketPayments}
+              visionId={row.original.visionId || ''}
+            />
+          </>
+        )
       }
 
       return (
         <>
+          <MemberPaymentsTableModal
+            memberId={row.original.id}
+            memberName={row.original.name}
+            refetchMembers={refetch}
+            payments={row.original.ticketPayments}
+            visionId={row.original.visionId || ''}
+          />
+          {/* <--- New Button/Modal */}
           <TicketPaymentForm refetch={refetch} memberId={row.original.id} />
           <ReturnTicketForm
             refetch={refetch}
