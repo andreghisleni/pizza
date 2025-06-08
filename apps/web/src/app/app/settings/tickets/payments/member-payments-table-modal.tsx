@@ -120,6 +120,7 @@ export const MemberPaymentsTableModal: React.FC<
                     isEditing={editingPaymentId === payment.id}
                     onEdit={() => handleEdit(payment.id)}
                     onCancel={handleCancelEdit}
+                    refetch={refetchMembers}
                   />
                 ))
               )}

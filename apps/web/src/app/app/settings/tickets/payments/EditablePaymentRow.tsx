@@ -27,6 +27,7 @@ import {
 import { TableCell, TableRow } from '@/components/ui/table'
 
 import { Member } from './columns'
+import { DeletePaymentButton } from './delete-payment-button'
 
 // Schema de validação para o formulário de pagamento
 const paymentSchema = z.object({
@@ -44,6 +45,7 @@ type EditablePaymentRowProps = {
   isEditing: boolean
   onEdit: () => void
   onCancel: () => void
+  refetch: () => void
 }
 
 export const EditablePaymentRow: React.FC<EditablePaymentRowProps> = ({
@@ -52,6 +54,7 @@ export const EditablePaymentRow: React.FC<EditablePaymentRowProps> = ({
   isEditing,
   onEdit,
   onCancel,
+  refetch,
 }) => {
   const {
     control,
@@ -233,6 +236,7 @@ export const EditablePaymentRow: React.FC<EditablePaymentRowProps> = ({
           >
             <Edit className="h-4 w-4" />
           </Button>
+          <DeletePaymentButton paymentId={payment.id} refetch={refetch} />
         </div>
       </TableCell>
     </TableRow>

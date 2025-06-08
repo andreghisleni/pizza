@@ -389,6 +389,7 @@ export const ticketsRouter = createTRPCRouter({
       const totalPayedTickets = await prisma.ticketPayment.findMany({
         where: {
           memberId: input.memberId,
+          deletedAt: null,
         },
       })
 

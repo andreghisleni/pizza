@@ -1,5 +1,6 @@
 import { prisma } from '@pizza/prisma'
 import { ticketPaymentSchema, ticketPaymentUpdateSchema } from '@pizza/schema'
+import { z } from 'zod'
 
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
@@ -49,9 +50,14 @@ export const ticketPaymentsRouter = createTRPCRouter({
       totalValuePayedTicketsOnLastWeek,
       membersWithPizzaAndPaymentData,
     ] = await prisma.$transaction([
-      prisma.ticketPayment.findMany(),
       prisma.ticketPayment.findMany({
         where: {
+          deletedAt: null,
+        },
+      }),
+      prisma.ticketPayment.findMany({
+        where: {
+          deletedAt: null,
           payedAt: {
             gte: new Date(new Date().setDate(new Date().getDate() - 7)),
             lte: new Date(),
@@ -61,7 +67,9 @@ export const ticketPaymentsRouter = createTRPCRouter({
       prisma.member.findMany({
         where: {
           ticketPayments: {
-            some: {}, // Garante que apenas membros com pagamentos sejam retornados
+            some: {
+              deletedAt: null,
+            },
           },
         },
         include: {
@@ -69,10 +77,16 @@ export const ticketPaymentsRouter = createTRPCRouter({
             select: {
               number: true, // Apenas o número do ingresso é necessário para a contagem
             },
+            where: {
+              returned: false, // Considera apenas ingressos não retornados
+            },
           },
           ticketPayments: {
             select: {
               amount: true, // Apenas o valor do pagamento é necessário para a soma
+            },
+            where: {
+              deletedAt: null,
             },
           },
         },
@@ -149,4 +163,23 @@ export const ticketPaymentsRouter = createTRPCRouter({
       totalMistaPayed: payedPerMember.mista,
     }
   }),
+
+  deleteTicketPayment: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.session?.user.id
+      if (!userId) throw new Error('User not authenticated')
+
+      const ticketPayment = await prisma.ticketPayment.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          deletedAt: new Date(),
+          deletedBy: userId,
+        },
+      })
+
+      return ticketPayment
+    }),
 })

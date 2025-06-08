@@ -19,8 +19,9 @@ model User {
 
   isActive Boolean @default(true) @map("is_active")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  ticketPayments TicketPayment[]
 
   @@map("users")
 }
@@ -148,6 +149,10 @@ model TicketPayment {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  deletedAt     DateTime? @map("deleted_at")
+  deletedBy     String?   @map("deleted_by")
+  deletedByUser User?     @relation(fields: [deletedBy], references: [id])
 
   @@map("ticket_payments")
 }
