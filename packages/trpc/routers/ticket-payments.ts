@@ -182,4 +182,26 @@ export const ticketPaymentsRouter = createTRPCRouter({
 
       return ticketPayment
     }),
+
+  getTicketPayments: protectedProcedure.query(async () => {
+    const ticketPayments = await prisma.ticketPayment.findMany({
+      where: {
+        deletedAt: null,
+      },
+      orderBy: {
+        visionId: 'asc',
+      },
+      include: {
+        member: {
+          select: {
+            id: true,
+            name: true,
+            visionId: true,
+          },
+        },
+      },
+    })
+
+    return { ticketPayments }
+  }),
 })
