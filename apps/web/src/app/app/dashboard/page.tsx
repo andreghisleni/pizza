@@ -6,6 +6,7 @@ import { TotalDeliveredTicket } from '@/components/summary/total-delivered-ticke
 import { TotalDeliveredTicketWithCritica } from '@/components/summary/total-delivered-tickets-with-critica'
 import { TotalMembers } from '@/components/summary/total-members'
 import { TotalPayedTicket } from '@/components/summary/total-payed-tickets'
+import { TotalPredictedPayedTicket } from '@/components/summary/total-predicted-to-payed-tickets'
 import { TotalTicketRanges } from '@/components/summary/total-ticket-ranges'
 import { TotalTicket } from '@/components/summary/total-tickets'
 import { TotalTicketWithoutCritica } from '@/components/summary/total-tickets-without-critica'
@@ -37,6 +38,11 @@ export default function DashboardPage() {
         <div className="col-span-2">
           <Suspense fallback={<Loading />}>
             <TotalPayedTicket />
+          </Suspense>
+        </div>
+        <div className="col-span-2">
+          <Suspense fallback={<Loading />}>
+            <TotalPredictedPayedTicket />
           </Suspense>
         </div>
         <div className="col-span-2">

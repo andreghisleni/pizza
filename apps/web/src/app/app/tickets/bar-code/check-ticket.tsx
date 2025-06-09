@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { trpc } from '@/lib/trpc/react'
 import { cn } from '@/lib/utils'
 
+import { ErrorPopup } from './error-popup'
+
 export function CheckTicket() {
   // const { toast } = useToast()
 
@@ -60,11 +62,15 @@ export function CheckTicket() {
     }
   }
 
+  function handleCloseError() {
+    setError(null)
+  }
+
   return (
     <div>
       <Card>
         <CardHeader>
-          <CardTitle>Código da do item da venda</CardTitle>
+          <CardTitle>Código do ingresso</CardTitle>
         </CardHeader>
         <CardContent>
           <input
@@ -282,6 +288,8 @@ export function CheckTicket() {
           </Card> */}
         </div>
       )}
+      {/* Popup de erro */}
+      <ErrorPopup error={error} onClose={handleCloseError} />
     </div>
   )
 }

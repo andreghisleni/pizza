@@ -263,4 +263,37 @@ export const membersRouter = createTRPCRouter({
 
     return { totalMembers }
   }),
+
+  toggleIsAllConfirmedButNotYetFullyPaid: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const member = await prisma.member.findFirst({
+        where: {
+          id: input.id,
+        },
+      })
+
+      if (!member) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Member not found',
+        })
+      }
+
+      const updatedMember = await prisma.member.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          isAllConfirmedButNotYetFullyPaid:
+            !member.isAllConfirmedButNotYetFullyPaid,
+        },
+      })
+
+      return { updatedMember }
+    }),
 })

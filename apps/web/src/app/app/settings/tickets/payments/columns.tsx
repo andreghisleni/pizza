@@ -9,6 +9,7 @@ import { tdb } from '@/components/TableDataButton'
 import { MemberPaymentsTableModal } from './member-payments-table-modal'
 import { ReturnTicketForm } from './return-tickets-form'
 import { TicketPaymentForm } from './ticket-payment-form'
+import { ToggleIsAllConfirmedButNotYetFullyPaidButton } from './toggle-member-toggleIsAllConfirmedButNotYetFullyPaid-button'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -120,7 +121,7 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
 
       if (row.original.total >= 0) {
         return (
-          <>
+          <div className="block">
             <span>Pago</span>
             <MemberPaymentsTableModal
               memberId={row.original.id}
@@ -129,7 +130,7 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
               payments={row.original.ticketPayments}
               visionId={row.original.visionId || ''}
             />
-          </>
+          </div>
         )
       }
 
@@ -149,6 +150,13 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
             memberId={row.original.id}
             ticketsReturn={row.original.tickets.filter((t) => !t.returned)}
             total={row.original.total}
+          />
+          <ToggleIsAllConfirmedButNotYetFullyPaidButton
+            memberId={row.original.id}
+            refetch={refetch}
+            isAllConfirmedButNotYetFullyPaid={
+              row.original.isAllConfirmedButNotYetFullyPaid
+            }
           />
         </>
       )

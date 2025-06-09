@@ -131,9 +131,14 @@ export const ticketPaymentsRouter = createTRPCRouter({
       }),
       prisma.member.findMany({
         where: {
-          ticketPayments: {
+          // ticketPayments: {
+          //   some: {
+          //     deletedAt: null,
+          //   },
+          // },
+          tickets: {
             some: {
-              deletedAt: null,
+              returned: false, // Considera apenas ingressos não retornados
             },
           },
         },
@@ -168,43 +173,44 @@ export const ticketPaymentsRouter = createTRPCRouter({
       0,
     )
 
-    const payedPerMember = membersWithPizzaAndPaymentData
-      .map((member) => {
-        // Use Array.prototype.reduce to count calabresa and mista pizzas
-        const { calabresaCount, mistaCount } = member.tickets.reduce(
-          (acc, ticket) => {
-            if (ticket.number >= 0 && ticket.number <= 1000) {
-              acc.calabresaCount++
-            } else if (ticket.number >= 2000 && ticket.number <= 3000) {
-              acc.mistaCount++
-            }
-            return acc
-          },
-          { calabresaCount: 0, mistaCount: 0 },
-        )
+    const processedMembers = membersWithPizzaAndPaymentData.map((member) => {
+      const { calabresaCount, mistaCount } = member.tickets.reduce(
+        (acc, ticket) => {
+          if (ticket.number >= 0 && ticket.number <= 1000) {
+            acc.calabresaCount++
+          } else if (ticket.number >= 2000 && ticket.number <= 3000) {
+            acc.mistaCount++
+          }
+          return acc
+        },
+        { calabresaCount: 0, mistaCount: 0 },
+      )
 
-        // Use Array.prototype.reduce to sum up all payments
-        const totalPaymentsMade = member.ticketPayments.reduce(
-          (sum, payment) => sum + payment.amount,
-          0,
-        )
+      const totalPaymentsMade = member.ticketPayments.reduce(
+        (sum, payment) => sum + payment.amount,
+        0,
+      )
 
-        const totalPizzas = calabresaCount + mistaCount
-        const totalPizzasCostExpected = totalPizzas * 50
-        const isPaidOff = totalPaymentsMade >= totalPizzasCostExpected
+      const totalPizzas = calabresaCount + mistaCount
+      const totalPizzasCostExpected = totalPizzas * 50
+      const isPaidOff = totalPaymentsMade >= totalPizzasCostExpected
 
-        return {
-          memberId: member.id,
-          memberName: member.name,
-          calabresaPizzas: calabresaCount,
-          mistaPizzas: mistaCount,
-          totalPizzasOrdered: totalPizzas,
-          totalPaymentsMade,
-          totalPizzasCostExpected,
-          isPaidOff, // true if the member is paid off, false otherwise
-          status: isPaidOff ? 'Quitado' : 'Devendo',
-        }
-      })
+      return {
+        memberId: member.id,
+        memberName: member.name,
+        calabresaPizzas: calabresaCount,
+        mistaPizzas: mistaCount,
+        totalPizzasOrdered: totalPizzas,
+        totalPaymentsMade,
+        totalPizzasCostExpected,
+        isPaidOff,
+        isAllConfirmedButNotYetFullyPaid:
+          member.isAllConfirmedButNotYetFullyPaid, // Passa o campo para o objeto processado
+        status: isPaidOff ? 'Quitado' : 'Devendo',
+      }
+    })
+
+    const payedPerMember = processedMembers
       .filter((m) => m.isPaidOff)
       .reduce(
         (acc, member) => ({
@@ -212,6 +218,24 @@ export const ticketPaymentsRouter = createTRPCRouter({
           mista: acc.mista + member.mistaPizzas,
         }),
         {
+          calabresa: 0,
+          mista: 0,
+        },
+      )
+
+    const possibleTotalTicketsData = processedMembers
+      .filter(
+        (m) =>
+          m.isPaidOff || (!m.isPaidOff && m.isAllConfirmedButNotYetFullyPaid),
+      )
+      .reduce(
+        (acc, member) => ({
+          totalTickets: acc.totalTickets + member.totalPizzasOrdered,
+          calabresa: acc.calabresa + member.calabresaPizzas,
+          mista: acc.mista + member.mistaPizzas,
+        }),
+        {
+          totalTickets: 0,
           calabresa: 0,
           mista: 0,
         },
@@ -226,6 +250,9 @@ export const ticketPaymentsRouter = createTRPCRouter({
       totalValuePayedTicketsOnLastWeek: totalValueOnLastWeek,
       totalCalabresaPayed: payedPerMember.calabresa,
       totalMistaPayed: payedPerMember.mista,
+      possibleTotalTickets: possibleTotalTicketsData.totalTickets, // Novo campo adicionado
+      totalPredictedCalabresa: possibleTotalTicketsData.calabresa, // Novo campo adicionado
+      totalPredictedMista: possibleTotalTicketsData.mista, // Novo campo adicionado
     }
   }),
 
