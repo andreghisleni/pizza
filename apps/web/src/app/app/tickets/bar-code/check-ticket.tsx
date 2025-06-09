@@ -1,15 +1,46 @@
 'use client'
 
+import { RouterOutput } from '@pizza/trpc'
 import { useEffect, useRef, useState } from 'react'
+import { toast } from 'react-toastify'
 
+import { ShowJson } from '@/components/show-json'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useToast } from '@/components/ui/use-toast'
+import { trpc } from '@/lib/trpc/react'
 import { cn } from '@/lib/utils'
 
 export function CheckTicket() {
-  const { toast } = useToast()
+  // const { toast } = useToast()
 
-  const [data, setData] = useState()
+  const [data, setData] = useState<RouterOutput['confirmTicket'][]>()
+  const [error, setError] = useState<
+    'Ticket not found' | 'Ticket already delivered' | null
+  >(null)
+
+  const confirmTicket = trpc.confirmTicket.useMutation({
+    onSuccess: (data) => {
+      toast.success('Ingresso confirmado com sucesso.')
+      setError(null)
+      setData([data])
+    },
+    onError: (error) => {
+      console.log(error.message)
+      if (error.message === 'Ticket not found') {
+        toast.error('Ingresso não encontrado.')
+        setError('Ticket not found')
+
+        return
+      }
+      if (error.message === 'Ticket already delivered') {
+        toast.error('Ingresso já foi entregue.')
+        setError('Ticket already delivered')
+
+        return
+      }
+
+      toast.error(error.message)
+    },
+  })
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -17,42 +48,14 @@ export function CheckTicket() {
     inputRef.current?.focus()
   }, [])
 
-  // async function getSaleItemByShotId(id: string) {
-  //   if (!id) {
-  //     setData(undefined)
-  //     return
-  //   }
-  //   try {
-  //     const d =
-  //       await client.query<GetSaleItemByShortIdProductPostiteCheckQuery>({
-  //         query: GetSaleItemByShortIdProductPostiteCheckDocument,
-  //         variables: {
-  //           shortId: id,
-  //         },
-  //       })
-
-  //     if (d.data && d.data.saleItemByShortId) {
-  //       const { saleItemByShortId } = d.data
-
-  //       setData(saleItemByShortId)
-  //     } else {
-  //       setData(undefined)
-  //     }
-  //   } catch (error: any) {
-  //     setData(undefined)
-  //     toast({
-  //       title: 'Erro',
-  //       description: error.message,
-  //       variant: 'destructive',
-  //     })
-  //   }
-  // }
-
   async function handleKeyDown(event) {
     if (event.key === 'Enter') {
       // console.log('Enter pressionado! Valor:', event.target.value);
 
       // await getSaleItemByShotId(event.target.value)
+      confirmTicket.mutate({
+        number: event.target.value,
+      })
       event.target.value = ''; // eslint-disable-line
     }
   }
@@ -76,6 +79,7 @@ export function CheckTicket() {
       </Card>
       {data && (
         <div className="mt-4 flex w-full justify-center">
+          <ShowJson data={data} />
           {/* <Card className="w-[960px]">
             <CardHeader>
               <CardTitle>Produto: {data?.product?.name}</CardTitle>

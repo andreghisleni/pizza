@@ -160,6 +160,45 @@ export const ticketsRouter = createTRPCRouter({
       return ticket
     }),
 
+  confirmTicket: protectedProcedure
+    .input(
+      z.object({
+        number: z.coerce.number(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const ticketExists = await prisma.ticket.findFirst({
+        where: {
+          number: input.number,
+        },
+      })
+
+      if (!ticketExists) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Ticket not found',
+        })
+      }
+      if (ticketExists.deliveredAt) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Ticket already delivered',
+        })
+      }
+
+      const ticket = await prisma.ticket.update({
+        where: {
+          number: input.number,
+          deliveredAt: null,
+        },
+        data: {
+          deliveredAt: new Date(),
+        },
+      })
+
+      return ticket
+    }),
+
   confirmTicketsWithoutTicket: protectedProcedure
     .input(
       z.object({

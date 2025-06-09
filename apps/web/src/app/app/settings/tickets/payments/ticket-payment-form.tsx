@@ -48,7 +48,10 @@ export function TicketPaymentForm({
   const [isOpen, setIsOpen] = useState(false)
   const form = useForm<z.infer<typeof ticketPaymentCreateSchema>>({
     resolver: zodResolver(ticketPaymentCreateSchema),
-    defaultValues: {},
+    defaultValues: {
+      payedAt: new Date(),
+      type: 'PIX', // Default value for type
+    },
   })
 
   const createTicketPayment = trpc.createTicketPayment.useMutation({

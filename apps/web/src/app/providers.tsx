@@ -5,6 +5,7 @@ import { Provider as JotaiProvider } from 'jotai'
 import { SessionProvider } from 'next-auth/react'
 import { ThemeProvider } from 'next-themes'
 import { ReactNode, useState } from 'react'
+import { ToastContainer } from 'react-toastify'
 
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { trpcLinks } from '@/lib/trpc/client'
@@ -34,6 +35,18 @@ export function Providers({ children }: { children: ReactNode }) {
             <TooltipProvider>
               <SessionProvider>{children}</SessionProvider>
             </TooltipProvider>
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick={false}
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
           </JotaiProvider>
         </QueryClientProvider>
       </TRPCProvider>
