@@ -97,7 +97,7 @@ export function TicketPaymentForm({
   return (
     <Sheet onOpenChange={setIsOpen} open={isOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" size="sm" className="w-full">
+        <Button variant="outline" size="sm" className="w-full" color="blue">
           Pagamento
         </Button>
       </SheetTrigger>
