@@ -1,5 +1,10 @@
 import { prisma } from '@pizza/prisma'
-import { ticketPaymentSchema, ticketPaymentUpdateSchema } from '@pizza/schema'
+import {
+  ticketPaymentCreateWithVisionMemberIdSchema,
+  ticketPaymentSchema,
+  ticketPaymentUpdateSchema,
+} from '@pizza/schema'
+import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 import { createTRPCRouter, protectedProcedure } from '../trpc'
@@ -19,6 +24,66 @@ export const ticketPaymentsRouter = createTRPCRouter({
       })
 
       return ticketPayment
+    }),
+
+  createTicketPayments: protectedProcedure
+    .input(
+      z.object({
+        payments: z
+          .array(ticketPaymentCreateWithVisionMemberIdSchema)
+          .describe('Lista de pagamentos de ingressos'),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const uniqueMemberVisionIds = [
+        ...new Set(input.payments.map((p) => p.visionMemberId || '')),
+      ]
+
+      const members = await prisma.member.findMany({
+        where: {
+          visionId: {
+            in: uniqueMemberVisionIds,
+          },
+        },
+      })
+
+      if (members.length !== uniqueMemberVisionIds.length) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Nem todos os membros foram encontrados',
+        })
+      }
+      const paymentsData = input.payments.map((payment) => {
+        const member = members.find(
+          (m) => m.visionId === payment.visionMemberId,
+        )
+
+        if (!member) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: `Membro com Vision ID ${payment.visionMemberId} não encontrado`,
+          })
+        }
+
+        return {
+          visionId: payment.visionId,
+          amount: payment.amount,
+          type: payment.type,
+          payedAt: payment.payedAt,
+          memberId: member.id,
+        }
+      })
+
+      const ticketPayments = await prisma.ticketPayment.createMany({
+        data: paymentsData,
+        skipDuplicates: true, // Ignora pagamentos duplicados
+      })
+      if (ticketPayments.count === 0) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Nenhum pagamento foi criado',
+        })
+      }
     }),
 
   updateTicketPayment: protectedProcedure
@@ -204,4 +269,31 @@ export const ticketPaymentsRouter = createTRPCRouter({
 
     return { ticketPayments }
   }),
+
+  getTicketPaymentsByVisionId: protectedProcedure
+    .input(z.object({ visionIds: z.array(z.string()) }))
+    .query(async ({ input }) => {
+      const ticketPayments = await prisma.ticketPayment.findMany({
+        where: {
+          visionId: {
+            in: input.visionIds,
+          },
+          deletedAt: null,
+        },
+        orderBy: {
+          visionId: 'asc',
+        },
+        include: {
+          member: {
+            select: {
+              id: true,
+              name: true,
+              visionId: true,
+            },
+          },
+        },
+      })
+
+      return { ticketPayments }
+    }),
 })

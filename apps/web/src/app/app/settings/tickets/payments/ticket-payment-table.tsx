@@ -1,8 +1,10 @@
 'use client'
 
+import Link from 'next/link'
 import React from 'react'
 
 import { DataTable } from '@/components/data-table'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { trpc } from '@/lib/trpc/react'
 
@@ -33,7 +35,16 @@ export const TicketPaymentsTable: React.FC<IProps> = ({ members }) => {
         <DataTable
           columns={columns({ refetch })}
           data={d}
-          addComponent={<ExportButton />}
+          addComponent={
+            <>
+              <ExportButton />
+              <Button variant="outline" asChild>
+                <Link href="/app/settings/tickets/payments/import">
+                  Importar
+                </Link>
+              </Button>
+            </>
+          }
         />
       </CardContent>
     </Card>
