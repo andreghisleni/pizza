@@ -82,7 +82,7 @@ export const MemberPaymentsTableModal: React.FC<
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 gap-1">
+        <Button variant="outline" size="sm" className="w-full gap-1">
           Pagamentos
         </Button>
       </DialogTrigger>

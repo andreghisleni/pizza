@@ -121,7 +121,7 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
 
       if (row.original.total >= 0) {
         return (
-          <div className="block">
+          <div className="flex flex-col items-center gap-2">
             <span>Pago</span>
             <MemberPaymentsTableModal
               memberId={row.original.id}
@@ -135,15 +135,7 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
       }
 
       return (
-        <>
-          <MemberPaymentsTableModal
-            memberId={row.original.id}
-            memberName={row.original.name}
-            refetchMembers={refetch}
-            payments={row.original.ticketPayments}
-            visionId={row.original.visionId || ''}
-          />
-          {/* <--- New Button/Modal */}
+        <div className="flex flex-col items-center gap-2">
           <TicketPaymentForm refetch={refetch} memberId={row.original.id} />
           <ReturnTicketForm
             refetch={refetch}
@@ -158,7 +150,15 @@ export const columns = ({ refetch }: ColumnsProps): ColumnDef<Member>[] => [
               row.original.isAllConfirmedButNotYetFullyPaid
             }
           />
-        </>
+          <MemberPaymentsTableModal
+            memberId={row.original.id}
+            memberName={row.original.name}
+            refetchMembers={refetch}
+            payments={row.original.ticketPayments}
+            visionId={row.original.visionId || ''}
+          />
+          {/* <--- New Button/Modal */}
+        </div>
       )
     },
   },

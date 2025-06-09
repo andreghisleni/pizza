@@ -113,7 +113,9 @@ export function ReturnTicketForm({
   return (
     <Sheet onOpenChange={setIsOpen} open={isOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline">Devolver</Button>
+        <Button variant="outline" size="sm" className="w-full">
+          Devolver
+        </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>

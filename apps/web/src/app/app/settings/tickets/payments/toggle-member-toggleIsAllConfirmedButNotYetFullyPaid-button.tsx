@@ -37,7 +37,7 @@ export function ToggleIsAllConfirmedButNotYetFullyPaidButton({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="destructive">
+        <Button variant="destructive" size="sm" className="w-full">
           {!isAllConfirmedButNotYetFullyPaid
             ? 'Contabilizar'
             : 'Não contabilizar'}
