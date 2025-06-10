@@ -180,10 +180,10 @@ export const ticketsRouter = createTRPCRouter({
         })
       }
       if (ticketExists.deliveredAt) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Ticket already delivered',
-        })
+        return {
+          error: 'Ticket already delivered',
+          ticket: ticketExists,
+        }
       }
 
       const ticket = await prisma.ticket.update({
@@ -194,9 +194,12 @@ export const ticketsRouter = createTRPCRouter({
         data: {
           deliveredAt: new Date(),
         },
+        include: {
+          member: true,
+        },
       })
 
-      return ticket
+      return { ticket }
     }),
 
   confirmTicketsWithoutTicket: protectedProcedure

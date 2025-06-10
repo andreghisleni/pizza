@@ -1,8 +1,9 @@
 import { X } from 'lucide-react'
-import React from 'react'
+
+import { formatTimeDifference } from '@/utils/time-difference'
 
 interface ErrorPopupProps {
-  error: 'Ticket not found' | 'Ticket already delivered' | null
+  error: 'Ticket not found' | 'Ticket already delivered' | null | string
   onClose: () => void
 }
 
@@ -23,6 +24,13 @@ export function ErrorPopup({ error, onClose }: ErrorPopupProps) {
           description: 'Este ingresso já foi entregue anteriormente.',
         }
       default:
+        if (error.startsWith('Ticket already delivered-')) {
+          const ticket = JSON.parse(error.split('--->>')[1])
+          return {
+            title: 'Ingresso já entregue',
+            description: `Este ingresso já foi entregue anteriormente. à ${formatTimeDifference(ticket.deliveredAt)}.`,
+          }
+        }
         return {
           title: 'Erro',
           description: 'Ocorreu um erro inesperado.',

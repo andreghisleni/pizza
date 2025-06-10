@@ -10,7 +10,9 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  Row,
   SortingState,
+  Table as TableInstance,
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
@@ -36,6 +38,7 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 
+import { Checkbox } from './ui/checkbox'
 import { Skeleton } from './ui/skeleton'
 
 interface DataTableProps<TData, TValue> {
@@ -54,6 +57,12 @@ interface DataTableProps<TData, TValue> {
 
   filterComponent?: React.ReactNode
   ifJustFilterComponent?: boolean
+
+  actionComponent?: (props: { table: TableInstance<TData> }) => React.ReactNode
+  actionDisabledFunction?: (props: { row: Row<TData> }) => boolean
+
+  initialColumnVisibility?: VisibilityState
+  showVisibilityToggle?: boolean
 
   paginationComponent?: React.ReactNode
 
@@ -76,8 +85,42 @@ const getHeaderValue = (column: Column<unknown>): string => {
   return column.id
 }
 
+const select = ({
+  actionDisabledFunction,
+}: {
+  actionDisabledFunction: DataTableProps<any, any>['actionDisabledFunction'] // eslint-disable-line
+}) => ({
+  id: 'select',
+  header: ({ table }) => (
+    <Checkbox
+      checked={
+        table.getIsAllPageRowsSelected() ||
+        (table.getIsSomePageRowsSelected() && 'indeterminate')
+      }
+      onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+      aria-label="Select all"
+      className="border-gray-950 disabled:border-gray-400 dark:border-gray-500"
+    />
+  ),
+  cell: ({ row }) => (
+    <Checkbox
+      checked={row.getIsSelected()}
+      onCheckedChange={(value) => row.toggleSelected(!!value)}
+      aria-label="Select row"
+      className="border-gray-950 disabled:border-gray-400 dark:border-gray-500"
+      disabled={actionDisabledFunction && actionDisabledFunction({ row })}
+    />
+  ),
+  enableSorting: false,
+  enableHiding: false,
+  maxSize: 2,
+})
+
 export function DataTable<TData, TValue>({
-  columns,
+  paginationComponent,
+  rowBgColor,
+  loading,
+  columns: c,
   data,
   pagination = undefined,
   addFunction,
@@ -86,16 +129,21 @@ export function DataTable<TData, TValue>({
   onRowSelectionChange,
   filterComponent,
   ifJustFilterComponent = false,
-  paginationComponent,
-  rowBgColor,
-  loading,
+  actionComponent,
+  actionDisabledFunction,
+  initialColumnVisibility = {},
+  showVisibilityToggle = true,
 }: DataTableProps<TData, TValue>) {
+  const columns = actionComponent
+    ? [select({ actionDisabledFunction }), ...c]
+    : c
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   )
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>(initialColumnVisibility)
   const [rowSelection, setRowSelection] = React.useState({})
   const [globalFilter, setGlobalFilter] = React.useState('')
 
@@ -129,6 +177,9 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       globalFilter,
+    },
+    enableRowSelection(row) {
+      return actionDisabledFunction ? !actionDisabledFunction({ row }) : true
     },
   })
 
@@ -174,6 +225,7 @@ export function DataTable<TData, TValue>({
             paginationComponent,
             rowBgColor,
             loading,
+            showVisibilityToggle,
           }}
         />
       </div>
@@ -203,6 +255,7 @@ export function DataTable<TData, TValue>({
               paginationComponent,
               rowBgColor,
               loading,
+              showVisibilityToggle,
             }}
           />
         </Portal.Root>
@@ -227,6 +280,8 @@ function DateTableContent({
   paginationComponent,
   rowBgColor,
   loading,
+  showVisibilityToggle = true,
+  actionComponent,
 }: {
   table: any
   columns: any
@@ -243,6 +298,8 @@ function DateTableContent({
   paginationComponent: any
   rowBgColor?: (row: any) => string
   loading?: boolean
+  showVisibilityToggle?: boolean
+  actionComponent?: (props: { table: TableInstance<any> }) => React.ReactNode
 }) {
   return (
     <>
@@ -261,38 +318,41 @@ function DateTableContent({
           filterComponent && filterComponent
         )}
         <div className="ml-auto flex gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                Columns <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="max-h-96 overflow-auto">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {getHeaderValue(column as any) /* eslint-disable-line */}
-                    </DropdownMenuCheckboxItem>
-                  )
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {showVisibilityToggle && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  Columns <ChevronDown className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {table
+                  .getAllColumns()
+                  .filter((column) => column.getCanHide())
+                  .map((column) => {
+                    return (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
+                        {getHeaderValue(column)}
+                      </DropdownMenuCheckboxItem>
+                    )
+                  })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           {addFunction && (
             <Button variant="outline" className="ml-2" onClick={addFunction}>
               Add
             </Button>
           )}
           {addComponent && addComponent}
+          {actionComponent && actionComponent({ table })}
           <Button onClick={toggleFullScreen} variant="outline">
             {isFullScreen ? <Shrink /> : <Expand />}
           </Button>
