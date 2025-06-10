@@ -3,6 +3,8 @@
 import { RouterOutput } from '@pizza/trpc'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { Eye } from 'lucide-react'
+import Link from 'next/link'
 
 import { DataTable } from '@/components/data-table'
 import { tdb } from '@/components/TableDataButton'
@@ -120,7 +122,12 @@ export const columns = ({
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => (
-      <>
+      <div className="flex items-center gap-2">
+        <Button variant="outline" size="icon" asChild>
+          <Link href={`/app/settings/member/${row.original.id}`}>
+            <Eye />
+          </Link>
+        </Button>
         <MemberForm
           refetch={refetch}
           member={row.original}
@@ -142,7 +149,7 @@ export const columns = ({
             />
           </DialogContent>
         </Dialog>
-      </>
+      </div>
     ),
   },
   // { accessorKey: 'cleanName', header: 'N', size: 0 },

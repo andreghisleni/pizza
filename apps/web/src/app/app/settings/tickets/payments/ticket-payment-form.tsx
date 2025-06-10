@@ -7,6 +7,7 @@ import { ptBR } from 'date-fns/locale'
 import { CalendarIcon, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { MySelect } from '@/components/my-select'
@@ -33,7 +34,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet'
-import { useToast } from '@/components/ui/use-toast'
 import { trpc } from '@/lib/trpc/react'
 import { cn } from '@/lib/utils'
 
@@ -44,7 +44,6 @@ export function TicketPaymentForm({
   refetch: () => void
   memberId: string
 }) {
-  const { toast } = useToast()
   const [isOpen, setIsOpen] = useState(false)
   const form = useForm<z.infer<typeof ticketPaymentCreateSchema>>({
     resolver: zodResolver(ticketPaymentCreateSchema),
@@ -60,18 +59,11 @@ export function TicketPaymentForm({
       setIsOpen(false)
       refetch()
 
-      toast({
-        title: `Pagamento cadastrado com sucesso`,
-      })
+      toast.success(`Pagamento cadastrado com sucesso`)
     },
     onError: (error) => {
       console.log(error) // eslint-disable-line no-console
-      toast({
-        title: `Erro ao cadastrar pagamento`,
-        description: error.message,
-
-        variant: 'destructive',
-      })
+      toast.error(`Erro ao cadastrar pagamento: ${error.message}`)
     },
   })
 

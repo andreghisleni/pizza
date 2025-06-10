@@ -129,11 +129,35 @@ export const membersRouter = createTRPCRouter({
     }),
 
   getMember: protectedProcedure
-    .input(memberUpdateSchema)
+    .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
       const member = await prisma.member.findFirst({
         where: {
           id: input.id,
+        },
+        include: {
+          session: true,
+          tickets: {
+            orderBy: {
+              number: 'asc',
+            },
+          },
+          ticketPayments: {
+            orderBy: {
+              createdAt: 'desc',
+            },
+            where: {
+              deletedAt: null,
+            },
+          },
+          ticketRanges: {
+            orderBy: {
+              start: 'asc',
+            },
+            where: {
+              deletedAt: null,
+            },
+          },
         },
       })
 

@@ -2,12 +2,10 @@
 
 import Link from 'next/link'
 import React from 'react'
-import { useLocalStorage } from 'react-storage-complete'
 
 import { DataTable } from '@/components/data-table'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { trpc } from '@/lib/trpc/react'
 
 import { columns, Ticket } from './columns'
