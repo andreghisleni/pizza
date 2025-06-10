@@ -117,7 +117,7 @@ export const columns = ({
   //     return numA < numB ? 1 : numA > numB ? -1 : 0
   //   },
   // },
-  tdb('totalTicketsToDeliver', 'A retirar'),
+  // tdb('totalTicketsToDeliver', 'A retirar'),
   {
     id: 'actions',
     enableHiding: false,
