@@ -256,6 +256,7 @@ export function DataTable<TData, TValue>({
               rowBgColor,
               loading,
               showVisibilityToggle,
+              actionComponent,
             }}
           />
         </Portal.Root>

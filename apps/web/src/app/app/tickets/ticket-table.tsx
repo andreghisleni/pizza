@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { DataTable } from '@/components/data-table'
+import { DataTableOld } from '@/components/data-table-old'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { trpc } from '@/lib/trpc/react'
 
@@ -22,7 +22,7 @@ export const TicketsTable: React.FC<IProps> = ({ tickets }) => {
         <CardTitle>Tickets</CardTitle>
       </CardHeader>
       <CardContent>
-        <DataTable
+        <DataTableOld
           columns={columns({ refetch })}
           data={data?.tickets || tickets}
           // addComponent={<TicketForm refetch={refetch} />}
