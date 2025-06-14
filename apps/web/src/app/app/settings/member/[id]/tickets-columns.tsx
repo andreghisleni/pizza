@@ -4,6 +4,7 @@ import { RouterOutput } from '@pizza/trpc'
 import { ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
+import { tdbNew } from '@/components/table/TableDataButton'
 import { tdb } from '@/components/TableDataButton'
 
 import { ToggleReturnedTicketButton } from './toggle-returned-ticket'
@@ -29,6 +30,11 @@ export const ticketsColumns = ({
       return <span>{row.getValue('returned') ? 'Sim' : 'Não'}</span>
     },
   },
+  tdbNew({
+    name: 'deliveredAt',
+    label: 'Retirado em',
+    dataType: 'date-time',
+  }),
   {
     accessorKey: 'createdAt',
     header: 'Criado em',
