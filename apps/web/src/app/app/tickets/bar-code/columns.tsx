@@ -2,8 +2,8 @@
 
 import { RouterOutput } from '@pizza/trpc'
 import { ColumnDef } from '@tanstack/react-table'
-import { format } from 'date-fns'
 
+import { tdbNew } from '@/components/table/TableDataButton'
 import { tdb } from '@/components/TableDataButton'
 
 // This type is used to define the shape of our data.
@@ -14,14 +14,19 @@ export const columns: ColumnDef<Ticket>[] = [
   // eslint-disable-line
   tdb('number', 'N'),
   tdb('member.name', 'Name'),
-  {
-    accessorKey: 'deliveredAt',
-    header: 'Retirado em',
-    cell: ({ getValue }) => {
-      const v = getValue<string | null>()
-      return <span>{v ? format(new Date(v), 'dd/MM/yyyy HH:mm') : '-'}</span>
-    },
-  },
+  // {
+  //   accessorKey: 'deliveredAt',
+  //   header: 'Retirado em',
+  //   cell: ({ getValue }) => {
+  //     const v = getValue<string | null>()
+  //     return <span>{v ? format(new Date(v), 'dd/MM/yyyy HH:mm') : '-'}</span>
+  //   },
+  // },
+  tdbNew({
+    name: 'deliveredAt',
+    label: 'Retirado em',
+    dataType: 'date-time',
+  }),
   {
     accessorKey: 'returned',
     header: 'Critica',

@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 import { DataTable } from '@/components/data-table'
-import { ShowJson } from '@/components/show-json'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { trpc } from '@/lib/trpc/react'
 import { cn } from '@/lib/utils'
@@ -127,7 +126,7 @@ export function CheckTicket() {
                   // Converte as strings de data para objetos Date para uma comparação correta
                   const dateA = new Date(a.deliveredAt as Date | string)
                   const dateB = new Date(b.deliveredAt as Date | string)
-                  return dateA.getTime() - dateB.getTime() // Ordena do mais antigo para o mais recente
+                  return dateB.getTime() - dateA.getTime() // Ordena do mais antigo para o mais recente
                 })}
                 initialColumnVisibility={{ cleanName: false }}
               />
