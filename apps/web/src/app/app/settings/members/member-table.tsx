@@ -36,8 +36,11 @@ export const MembersTable: React.FC<IProps> = ({ members }) => {
           }))}
           addComponent={
             <>
-              <Button asChild>
-                <Link href="/app/settings/members/import">Adicionar</Link>
+              <Button color="emerald" asChild>
+                <Link href="/app/settings/members/import">Importar</Link>
+              </Button>
+              <Button color="indigo" asChild>
+                <Link href="/app/settings/members/export">Exportar</Link>
               </Button>
               <MemberForm
                 refetch={refetch}
