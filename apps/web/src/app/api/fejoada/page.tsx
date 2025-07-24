@@ -41,7 +41,7 @@ export default async function PintSale(props: z.infer<typeof propsSchema>) {
   const { start, end } = d.data.searchParams
 
   return (
-    <div className="box-border flex h-screen w-screen flex-col bg-white font-sans text-black">
+    <div className="box-border flex h-screen w-screen flex-col bg-white font-sans text-black print:m-0 print:p-0">
       <div className="flex flex-wrap items-start break-words ">
         {gerarArrayStrings4Caracteres(start, end).map((n) => (
           <PostiteItem key={n} number={n} />
@@ -64,7 +64,11 @@ async function PostiteItem({ number }: { number: string }) {
 
   return (
     <div className="relative h-[12cm] w-[7cm] whitespace-nowrap bg-white text-[8px]">
-      <Image src={IngressoImg} alt="Ingresso" className="h-[12cm] w-[7cm]" />
+      <img
+        src="http://localhost:6010/fejoada.png"
+        alt="Ingresso"
+        className="h-[12cm] w-[7cm]"
+      />
       {barcode && (
         <div className="absolute bottom-[30px] right-[8px] rounded-lg bg-white px-2 py-1">
           <img
