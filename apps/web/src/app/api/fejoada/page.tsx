@@ -70,11 +70,11 @@ async function PostiteItem({ number }: { number: string }) {
         className="h-[12cm] w-[7cm]"
       />
       {barcode && (
-        <div className="absolute bottom-[30px] right-[8px] rounded-lg bg-white px-2 py-1">
+        <div className="absolute bottom-[36px] right-[16px] rounded-lg bg-white px-2 py-1">
           <img
             src={`data:image/png;base64, ${barcode}`}
             alt="Barcode"
-            className="w-22 h-[50px]"
+            className="h-[50px] w-[95px]"
           />
         </div>
       )}
