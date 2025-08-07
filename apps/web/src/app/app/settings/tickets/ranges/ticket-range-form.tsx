@@ -257,7 +257,7 @@ export function TicketRangeForm({
                             {...field}
                             onChange={(e) => {
                               if (fieldName === 'start') {
-                                form.setValue('end', Number(e.target.value) + 4)
+                                form.setValue('end', Number(e.target.value) + 2)
                               }
 
                               field.onChange(e)
